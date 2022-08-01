@@ -7,8 +7,8 @@ package view;
 
 import Bean.Branch;
 import Bean.Employee;
-import DAO.ChiNhanhDAO;
-import DAO.KhoDAO;
+import DAO.BranchDAO;
+import DAO.WarehouseDAO;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -217,7 +217,7 @@ public class Kho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void setCBBChiNhanh() {
-        cn = ChiNhanhDAO.getList();
+        cn = BranchDAO.getListBranch();
         cityName = new DefaultComboBoxModel();
         for (int i = 0; i < cn.size(); i++) {
             cityName.addElement(cn.get(i));
@@ -258,7 +258,7 @@ public class Kho extends javax.swing.JFrame {
 
     public void showList() {
         model.setRowCount(0);
-        List< Object> list = KhoDAO.listProduct(nv.getBranchCode());
+        List< Object> list = WarehouseDAO.listProduct(nv.getBranchCode());
         for (Object b : list) {
             model.addRow((Object[]) b);
         }
@@ -301,7 +301,7 @@ public class Kho extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (txtTim.getText() != "") {
             Branch a = (Branch) cbbChiNhanh.getSelectedItem();
-            List<Object> list = KhoDAO.TimGanDung(a.getBranchCode(), txtTim.getText());
+            List<Object> list = WarehouseDAO.findProduct(a.getBranchCode(), txtTim.getText());
             model.setRowCount(0);
             for (Object b : list) {
                 model.addRow((Object[]) b);
@@ -322,7 +322,7 @@ public class Kho extends javax.swing.JFrame {
         // TODO add your handling code here:
         model.setRowCount(0);
         Branch a = (Branch) cbbChiNhanh.getSelectedItem();
-        List< Object> list = KhoDAO.listProduct(a.getBranchCode());
+        List< Object> list = WarehouseDAO.listProduct(a.getBranchCode());
         for (Object b : list) {
             model.addRow((Object[]) b);
         }

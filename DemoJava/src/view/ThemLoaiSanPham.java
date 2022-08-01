@@ -6,7 +6,7 @@
 package view;
 
 import Bean.Product;
-import DAO.KhoDAO;
+import DAO.WarehouseDAO;
 import javax.swing.JOptionPane;
 
 /**
@@ -217,7 +217,7 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
         sp.setPrice(Integer.parseInt(txtGiaSP.getText()));
         sp.setDescription(txtMoTa.getText());
         sp.setName(txtTenSP.getText());
-        if (KhoDAO.ThemSapPham(sp)) {
+        if (WarehouseDAO.addProduct(sp)) {
             JOptionPane.showMessageDialog(this, "Đã thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             nk.showList();
             txtGiaSP.setText("");

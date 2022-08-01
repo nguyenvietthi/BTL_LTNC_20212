@@ -5,11 +5,11 @@
  */
 package view;
 
-import Bean.HoaDonNhapKho;
+import Bean.WarehouseReceipt;
 import Bean.Employee;
 import Bean.Product;
-import Bean.SanPhamNhapKho;
-import DAO.KhoDAO;
+import Bean.ProductInWarehouseReceipt;
+import DAO.WarehouseDAO;
 import DAO.NhanVienDAO;
 import DAO.SanPhamDAO;
 import java.awt.Font;
@@ -34,7 +34,7 @@ public class NhapKho extends javax.swing.JFrame {
     private DefaultTableModel model1;
     private DefaultTableModel model2;
     private Employee nv;
-    private List<SanPhamNhapKho> listSPNK;
+    private List<ProductInWarehouseReceipt> listSPNK;
     private Kho kho;
 
     public NhapKho() {
@@ -236,11 +236,11 @@ public class NhapKho extends javax.swing.JFrame {
 
     private void showListSanPhamNhapKho() {
         model2.setRowCount(0);
-        for (SanPhamNhapKho a : listSPNK) {
-            model2.addRow(new Object[]{a.getMaSanPham(),
-                SanPhamDAO.getSanPham(a.getMaSanPham()).getName(),
-                a.getSoLuong(),
-                a.getGia()});
+        for (ProductInWarehouseReceipt a : listSPNK) {
+            model2.addRow(new Object[]{a.getProductCode(),
+                SanPhamDAO.getSanPham(a.getProductCode()).getName(),
+                a.getAmount(),
+                a.getPrice()});
         }
         model2.setRowCount(listSPNK.size() + 15);
     }
@@ -330,19 +330,19 @@ public class NhapKho extends javax.swing.JFrame {
         // TODO add your handling code here:
         Date now = new Date();
         try {
-            HoaDonNhapKho hd = new HoaDonNhapKho(0, nv.getBranchCode(), nv.getEmployeeCode(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
+            WarehouseReceipt hd = new WarehouseReceipt(0, nv.getBranchCode(), nv.getEmployeeCode(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
             System.out.println(hd);
-            if (KhoDAO.themHoaDonNhap(hd)) {
-                int MHD = KhoDAO.MaHoaDonMoiThem();
+            if (WarehouseDAO.addWarehouseReceipt(hd)) {
+                int MHD = WarehouseDAO.getLatestBillCode();
                 System.out.println(MHD);
                 boolean check = false;
-                for (SanPhamNhapKho a : listSPNK) {
-                    if (KhoDAO.themSanPhamHoaDonNhap(a, MHD)) {
+                for (ProductInWarehouseReceipt a : listSPNK) {
+                    if (WarehouseDAO.addProductInWarehouseReceipt(a, MHD)) {
                         check = true;
-                        if (KhoDAO.KiemTraSanPhamDaCo(nv.getBranchCode(), a.getMaSanPham()) == 1) {
-                            KhoDAO.themSanPhamVaoKho(nv.getBranchCode(), a.getMaSanPham(), a.getSoLuong());
+                        if (WarehouseDAO.checkAvailableProduct(nv.getBranchCode(), a.getProductCode()) == 1) {
+                            WarehouseDAO.addProduct(nv.getBranchCode(), a.getProductCode(), a.getAmount());
                         } else {
-                            KhoDAO.themSanPhamVaoKhoKhiChuaCo(nv.getBranchCode(), a.getMaSanPham(), a.getSoLuong());
+                            WarehouseDAO.addNotAvailableProductToWarehouseReceipt(nv.getBranchCode(), a.getProductCode(), a.getAmount());
                         }
                     }
                 }
@@ -372,7 +372,7 @@ public class NhapKho extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnThemSPMouseClicked
-    public void setListNhapKho(SanPhamNhapKho spnk) {
+    public void setListNhapKho(ProductInWarehouseReceipt spnk) {
         listSPNK.add(spnk);
         showListSanPhamNhapKho();
     }

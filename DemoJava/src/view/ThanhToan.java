@@ -9,8 +9,9 @@ import Bean.ProductInBill;
 import Bean.Discount;
 import Bean.Bill;
 import Bean.Product;
-import DAO.HoaDonDAO;
-import DAO.KhoDAO;
+import DAO.BillDAO;
+import DAO.CustomerDAO;
+import DAO.WarehouseDAO;
 import DAO.SanPhamDAO;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -67,7 +68,9 @@ public class ThanhToan extends javax.swing.JFrame {
         df.setGroupingSize(3);// định dạng số
         model = (DefaultTableModel) TbSanPham.getModel();
         soLuongtxt.setText(Integer.toString(soLuong));
-        txtMaHoaDon.setText("Mã hóa đơn: " + MaHoaDon);
+        txtBillCode.setText("Mã hóa đơn: " + MaHoaDon);
+//        System.out.println(CustomerDAO.getCustomer(MaHoaDon).getFullName());
+        txtCustomerName.setText("Tên khách hàng: " + CustomerDAO.getCustomer(MaHoaDon).getFullName());
         txtPhong.setText("Phòng: " + MaPhong);
         TbSanPham.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) TbSanPham.getTableHeader().getDefaultRenderer();
@@ -83,7 +86,7 @@ public class ThanhToan extends javax.swing.JFrame {
     }
 
     private void hienThiGioVaoRa() {
-        hoaDon = HoaDonDAO.getHoaDon(MaHoaDon);
+        hoaDon = BillDAO.getBill(MaHoaDon);
         SimpleDateFormat sf = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
         txtVao.setText(sf.format(hoaDon.getCheckIn()));
         if (hoaDon.getCheckOut()!= null) {
@@ -101,41 +104,41 @@ public class ThanhToan extends javax.swing.JFrame {
     }
 
     private void HienThiTongTienSanPham() {
-        txtTongTienSanPham.setText(String.valueOf(df.format(HoaDonDAO.TongTienSanPham(MaHoaDon))) + " VND");
+        txtTongTienSanPham.setText(String.valueOf(df.format(BillDAO.getTotalProductPrice(MaHoaDon))) + " VND");
     }
 
     private double TienVAT(double phantram) {
-        return phantram * (HoaDonDAO.TongCong(MaHoaDon) - HoaDonDAO.TienVAT(MaHoaDon));
+        return phantram * (BillDAO.getTotal(MaHoaDon) - BillDAO.getVATTax(MaHoaDon));
     }
 
     private void HienThiTienGiam() {
-        Discount gg = HoaDonDAO.giamGia(MaHoaDon);
+        Discount gg = BillDAO.giamGia(MaHoaDon);
         txtGiamGia.setText("(" + gg.getDiscountCode()+ ":" + String.valueOf(gg.getPercent()) + "%) "
-                + String.valueOf(df.format(gg.getPercent() * (HoaDonDAO.TongCong(MaHoaDon)
-                        - HoaDonDAO.TienVAT(MaHoaDon)))) + " VND");
+                + String.valueOf(df.format(gg.getPercent() * (BillDAO.getTotal(MaHoaDon)
+                        - BillDAO.getVATTax(MaHoaDon)))) + " VND");
     }
 
     private void HienThiThanhToan() {
-        txtTongThanhToan.setText(String.valueOf(df.format(HoaDonDAO.TongThanhToan(MaHoaDon))) + " VND");
+        txtTongThanhToan.setText(String.valueOf(df.format(BillDAO.getTotalPrice(MaHoaDon))) + " VND");
     }
 
     private void HienThiTongTienTongCong() {
-        txtTongCong.setText(String.valueOf(df.format(HoaDonDAO.TongCong(MaHoaDon))) + " VND");
+        txtTongCong.setText(String.valueOf(df.format(BillDAO.getTotalPrice(MaHoaDon))) + " VND");
 
     }
 
     private void HienThiVAT() {
-        txtThue.setText(String.valueOf(df.format(HoaDonDAO.TienVAT(MaHoaDon))) + " VND");
+        txtThue.setText(String.valueOf(df.format(BillDAO.getVATTax(MaHoaDon))) + " VND");
     }
 
     private void HienThiTongTienPhong() {
-        txtTongTienPhong.setText(String.valueOf(df.format(HoaDonDAO.TongTienPhong(MaHoaDon))) + " VND");
-        txtSoGio.setText(String.valueOf(HoaDonDAO.SoGio(MaHoaDon)) + " giờ");
+        txtTongTienPhong.setText(String.valueOf(df.format(BillDAO.getTotalRoomPrice(MaHoaDon))) + " VND");
+        txtSoGio.setText(String.valueOf(BillDAO.getTimes(MaHoaDon)) + " giờ");
     }
 
     private void showListSanPham() {
         ListModel = new DefaultListModel();
-        List<Product> list = KhoDAO.listProductInBranch(branchCode);
+        List<Product> list = WarehouseDAO.listProductInBranch(branchCode);
         for (Product a : list) {
             ListModel.addElement(a);
             System.out.println(a.toString());
@@ -156,7 +159,7 @@ public class ThanhToan extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         txtPhong = new javax.swing.JLabel();
         btnXoa = new javax.swing.JButton();
-        txtMaHoaDon = new javax.swing.JLabel();
+        txtCustomerName = new javax.swing.JLabel();
         btnThanhToan = new javax.swing.JButton();
         btnOK = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -190,6 +193,7 @@ public class ThanhToan extends javax.swing.JFrame {
         txtTongCong = new javax.swing.JLabel();
         txtThue = new javax.swing.JLabel();
         txtGiamGia = new javax.swing.JLabel();
+        txtBillCode = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocation(new java.awt.Point(385, 103));
@@ -205,7 +209,7 @@ public class ThanhToan extends javax.swing.JFrame {
                 jLabel1MouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1090, 10, -1, -1));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1120, 0, -1, -1));
 
         txtPhong.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 27)); // NOI18N
         txtPhong.setForeground(new java.awt.Color(153, 0, 0));
@@ -224,9 +228,9 @@ public class ThanhToan extends javax.swing.JFrame {
         });
         jPanel2.add(btnXoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(1040, 580, 80, 30));
 
-        txtMaHoaDon.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
-        txtMaHoaDon.setText("Mã hóa đơn: 12");
-        jPanel2.add(txtMaHoaDon, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 70, -1, -1));
+        txtCustomerName.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        txtCustomerName.setText("Tên khách hàng: Nguyen Viet Thi");
+        jPanel2.add(txtCustomerName, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 70, -1, -1));
 
         btnThanhToan.setBackground(new java.awt.Color(46, 204, 113));
         btnThanhToan.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
@@ -451,6 +455,10 @@ public class ThanhToan extends javax.swing.JFrame {
         txtGiamGia.setText("13000 VND");
         jPanel2.add(txtGiamGia, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 740, 190, 20));
 
+        txtBillCode.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
+        txtBillCode.setText("Mã hóa đơn: 12");
+        jPanel2.add(txtBillCode, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 70, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -480,20 +488,20 @@ public class ThanhToan extends javax.swing.JFrame {
         if (Integer.parseInt(soLuongtxt.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Số lượng sản phẩm phải lớn hơn 0!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int MaChiNhanh = HoaDonDAO.getHoaDon(MaHoaDon).getBranchCode();
-            if (KhoDAO.SoLuongSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode())
-                    > Integer.parseInt(soLuongtxt.getText())) {
-                if (!HoaDonDAO.kiemTraSanPhamDaCoTrongHoaDon(MaHoaDon, sanPham.get(0).getProductCode())) {
-                    if (HoaDonDAO.themSanPhamVaoHoaDon(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
-                        KhoDAO.TruSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
+            int MaChiNhanh = BillDAO.getBill(MaHoaDon).getBranchCode();
+            if (WarehouseDAO.getProductAmount(MaChiNhanh, sanPham.get(0).getProductCode())
+                    >= Integer.parseInt(soLuongtxt.getText())) {
+                if (!BillDAO.checkProductAlreadyInBill(MaHoaDon, sanPham.get(0).getProductCode())) {
+                    if (BillDAO.addProductToBill(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
+                        WarehouseDAO.delProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
                         soLuong = 0;
                         soLuongtxt.setText(Integer.toString(soLuong));
                         showListSanPham();
                         txtTim.setText("Tìm sản phẩm");
                     }
                 } else {
-                    if (HoaDonDAO.themSoLuongSanPham(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
-                        KhoDAO.TruSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
+                    if (BillDAO.addProductAmount(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
+                        WarehouseDAO.delProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
                         soLuong = 0;
                         soLuongtxt.setText(Integer.toString(soLuong));
                         showListSanPham();
@@ -501,7 +509,7 @@ public class ThanhToan extends javax.swing.JFrame {
                     }
                 }
             }else{
-                String ThongBao = "Trong kho đã hết hàng! Hiện trong kho có " + KhoDAO.SoLuongSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode()) + " tồn kho!"; 
+                String ThongBao = "Trong kho đã hết hàng! Hiện trong kho có " + WarehouseDAO.getProductAmount(MaChiNhanh, sanPham.get(0).getProductCode()) + " tồn kho!"; 
                 JOptionPane.showMessageDialog(this, ThongBao, 
                         "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -531,8 +539,8 @@ public class ThanhToan extends javax.swing.JFrame {
         // TODO add your handling code here:
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận thanh toán!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            hoaDon = HoaDonDAO.getHoaDon(MaHoaDon);
-            if (HoaDonDAO.CapNhatGioRa(MaHoaDon)) {
+            hoaDon = BillDAO.getBill(MaHoaDon);
+            if (BillDAO.checkOut(MaHoaDon)) {
                 hienThiGioVaoRa();
                 HienThiTongTienPhong();
                 HienThiTongTienTongCong();
@@ -550,11 +558,11 @@ public class ThanhToan extends javax.swing.JFrame {
 
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         // TODO add your handling code here:
-        HoaDonDAO.XoaSanPhamTrongHoaDon(MaHoaDon, getMaSanPhamSelected());
+        BillDAO.deleteProductInBill(MaHoaDon, getMaSanPhamSelected());
         int row = TbSanPham.getSelectedRow();
         ProductInBill msp = sp.get(row);
-        int MaChiNhanh = HoaDonDAO.getHoaDon(MaHoaDon).getBranchCode();
-        KhoDAO.themSanPhamVaoKho(MaChiNhanh, msp.getProductCode(), msp.getAmount());
+        int MaChiNhanh = BillDAO.getBill(MaHoaDon).getBranchCode();
+        WarehouseDAO.addProduct(MaChiNhanh, msp.getProductCode(), msp.getAmount());
         showList();
     }//GEN-LAST:event_btnXoaMouseClicked
 
@@ -670,10 +678,11 @@ public class ThanhToan extends javax.swing.JFrame {
     private javax.swing.JLabel lbnTru;
     private javax.swing.JLabel sadsa;
     private javax.swing.JTextField soLuongtxt;
+    private javax.swing.JLabel txtBillCode;
+    private javax.swing.JLabel txtCustomerName;
     private javax.swing.JLabel txtGiamGia;
     private javax.swing.JLabel txtGioRa;
     private javax.swing.JLabel txtGioRa1;
-    private javax.swing.JLabel txtMaHoaDon;
     private javax.swing.JLabel txtPhong;
     private javax.swing.JLabel txtRa;
     private javax.swing.JLabel txtSoGio;
@@ -687,7 +696,7 @@ public class ThanhToan extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void showList() {
-        sp = HoaDonDAO.listProductsInBill(MaHoaDon);
+        sp = BillDAO.listProductsInBill(MaHoaDon);
         model.setRowCount(0);
         for (ProductInBill sv : sp) {
             model.addRow(new Object[]{sv.getProductName(), sv.getAmount(), sv.getPrice(), sv.getTotalPrice()});

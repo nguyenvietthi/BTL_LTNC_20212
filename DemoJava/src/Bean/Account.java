@@ -10,43 +10,40 @@ package Bean;
  * @author VIETTHI_PC
  */
 public class Account {
-    private int EmployeeNumber;
-    private String UserName;
-    private String PassWord;
+    private int employeeCode;
+    private String userName;
+    private String passWord;
 
     public Account() {
     }
 
-    public Account(int EmployeeNumber, String UserName, String PassWord) {
-        this.EmployeeNumber = EmployeeNumber;
-        this.UserName = UserName;
-        this.PassWord = PassWord;
+    public Account(int employeeCode, String userName, String passWord) {
+        this.employeeCode = employeeCode;
+        this.userName = userName;
+        this.passWord = passWord;
     }
 
-    public int getEmployeeNumber() {
-        return EmployeeNumber;
-    }
-
-    public void setEmployeeNumber(int EmployeeNumber) {
-        this.EmployeeNumber = EmployeeNumber;
+    public int getEmployeeCode() {
+        return employeeCode;
     }
 
     public String getUserName() {
-        return UserName;
-    }
-
-    public void setUserName(String UserName) {
-        this.UserName = UserName;
+        return userName;
     }
 
     public String getPassWord() {
-        return PassWord;
+        return passWord;
     }
 
-    public void setPassWord(String PassWord) {
-        this.PassWord = PassWord;
+    public void setEmployeeCode(int employeeCode) {
+        this.employeeCode = employeeCode;
     }
 
-  
-   
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
 }

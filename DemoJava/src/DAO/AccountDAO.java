@@ -6,13 +6,11 @@
 package DAO;
 
 import Bean.Account;
-import Bean.NhanVien;
 import DB.DBConnection;
 import com.mysql.jdbc.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -149,14 +147,14 @@ public class AccountDAO {
         }
         return EN;
     }
-    public static boolean changePass(int maNhanVien, String Pass) {
+    public static boolean changePass(int employeeCode, String Pass) {
         java.sql.Connection conn = DBConnection.createConnection();
         com.mysql.jdbc.PreparedStatement ps = null;
         String SQL = "UPDATE qlks.account SET PassWord = ? WHERE EmployeeNumber = ?";
         try {
             ps = (com.mysql.jdbc.PreparedStatement) conn.prepareCall(SQL);
             ps.setString(1, Pass);
-            ps.setInt(2, maNhanVien);
+            ps.setInt(2, employeeCode);
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -179,13 +177,13 @@ public class AccountDAO {
         }
         return false;
     }
-     public static boolean addUserName(String userName, int maNhanVien) {
+     public static boolean addUserName(String userName, int branchCode) {
         java.sql.Connection conn = DBConnection.createConnection();
         com.mysql.jdbc.PreparedStatement ps = null;
         String sql = "INSERT INTO qlks.account(EmployeeNumber, UserName) VALUES(?,?)";
         try {
             ps = (com.mysql.jdbc.PreparedStatement) conn.prepareStatement(sql);
-            ps.setInt(1, maNhanVien);
+            ps.setInt(1, branchCode);
             ps.setString(2, userName);
             ps.execute();
             return true;
@@ -209,14 +207,14 @@ public class AccountDAO {
         }
         return false;
     }
-     public static boolean delAccount(int MaNhanVien) {
+     public static boolean delAccount(int branchCode) {
         java.sql.Connection conn = DBConnection.createConnection();
         com.mysql.jdbc.PreparedStatement ps = null;
 
         try {
             String sql = "DELETE FROM qlks.account WHERE EmployeeNumber = ?";
             ps = (com.mysql.jdbc.PreparedStatement) conn.prepareStatement(sql);
-            ps.setInt(1, MaNhanVien);
+            ps.setInt(1, branchCode);
             ps.execute();
             return true;
         } catch (SQLException ex) {

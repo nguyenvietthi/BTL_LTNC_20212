@@ -6,7 +6,7 @@
 package view;
 
 import Bean.HotelRoom;
-import DAO.ChiNhanhDAO;
+import DAO.BranchDAO;
 import DAO.PhongKhachSanDAO;
 import javax.swing.JOptionPane;
 
@@ -40,7 +40,7 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
     }
      */
     private void setUI() {
-        txtChiNhanh.setText(ChiNhanhDAO.getBranch(pks.getBranchCode()).getBranchName());
+        txtChiNhanh.setText(BranchDAO.getBranch(pks.getBranchCode()).getBranchName());
         txtMaPhong.setText(String.valueOf(pks.getRoomCode()));
         txtChiNhanh.setEnabled(false);
         txtMaPhong.setEnabled(false);
@@ -53,7 +53,7 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
     /*private void setInfo() {
         nv = NhanVienDAO.getEmployee(nv.getEmployeeNumber());
         txtHoTen.setText(nv.getName());
-       // txtChiNhanh.setText(ChiNhanhDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
+       // txtChiNhanh.setText(BranchDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
         txtMaNhanVien.setText(String.valueOf(nv.getEmployeeNumber()));
 
         dcNgaySinh.setDate(nv.getDateOfBirth());

@@ -7,7 +7,7 @@ package view;
 
 import Bean.Branch;
 import Bean.HotelRoom;
-import DAO.ChiNhanhDAO;
+import DAO.BranchDAO;
 import DAO.PhongKhachSanDAO;
 import java.awt.Font;
 import java.util.List;
@@ -53,7 +53,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
 
     }
     private void setComboBox(){
-        List<Branch> cn = ChiNhanhDAO.getList();
+        List<Branch> cn = BranchDAO.getListBranch();
         TenChiNhanh = new DefaultComboBoxModel();
         TenChiNhanh.addElement("Tất cả");
         for (int i = 0; i < cn.size(); i++) {
@@ -78,7 +78,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
     }
 
     public void showList() {
-        chiNhanh = ChiNhanhDAO.getChiNhanh();
+        chiNhanh = BranchDAO.getListBranch();
         model.setRowCount(0);
         for (Branch a : chiNhanh) {
              List<HotelRoom> pks = PhongKhachSanDAO.getListPhongKhachSan(a.getBranchCode());

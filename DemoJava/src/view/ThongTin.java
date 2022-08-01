@@ -8,7 +8,7 @@ package view;
 import Bean.Branch;
 import Bean.Position;
 import Bean.Employee;
-import DAO.ChiNhanhDAO;
+import DAO.BranchDAO;
 import DAO.NhanVienDAO;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -58,7 +58,7 @@ public class ThongTin extends javax.swing.JFrame {
     }
 
     private void setListChiNhanh() {
-        cn = ChiNhanhDAO.getList();
+        cn = BranchDAO.getListBranch();
         cityName = new DefaultComboBoxModel();
         int index = 0;
         for (int i = 0; i < cn.size(); i++) {
@@ -79,7 +79,7 @@ public class ThongTin extends javax.swing.JFrame {
     private void setInfo() {
         nv = NhanVienDAO.getEmployee(nv.getEmployeeCode());
         txtHoTen.setText(nv.getName());
-        // txtChiNhanh.setText(ChiNhanhDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
+        // txtChiNhanh.setText(BranchDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
         txtMaNhanVien.setText(String.valueOf(nv.getEmployeeCode()));
 
         dcNgaySinh.setDate(nv.getDateOfBirth());

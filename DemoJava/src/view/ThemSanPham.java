@@ -5,8 +5,7 @@
  */
 package view;
 
-import Bean.SanPham;
-import Bean.SanPhamNhapKho;
+import Bean.ProductInWarehouseReceipt;
 
 /**
  *
@@ -123,7 +122,7 @@ public class ThemSanPham extends javax.swing.JFrame {
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
 
-        SanPhamNhapKho spnk = new SanPhamNhapKho(MSP, Integer.parseInt(txtSoLuong.getText()),
+        ProductInWarehouseReceipt spnk = new ProductInWarehouseReceipt(MSP, Integer.parseInt(txtSoLuong.getText()),
                 Integer.parseInt(txtGia.getText()));
         nk.setListNhapKho(spnk);
         this.dispose();

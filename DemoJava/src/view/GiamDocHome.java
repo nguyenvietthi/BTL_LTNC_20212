@@ -8,9 +8,9 @@ package view;
 import Bean.Branch;
 import Bean.Employee;
 import Bean.HotelRoom;
-import DAO.ChiNhanhDAO;
-import DAO.DiemDanhDAO;
-import DAO.HoaDonDAO;
+import DAO.BranchDAO;
+import DAO.AttendanceDAO;
+import DAO.BillDAO;
 import DAO.NhanVienDAO;
 import DAO.PhongKhachSanDAO;
 import java.awt.Color;
@@ -54,7 +54,7 @@ public class GiamDocHome extends javax.swing.JFrame {
     }
 
     private void setCBBChiNhanh() {
-        List<Branch> cn = ChiNhanhDAO.getList();
+        List<Branch> cn = BranchDAO.getListBranch();
         cityName = new DefaultComboBoxModel();
         for (int i = 0; i < cn.size(); i++) {
             cityName.addElement(cn.get(i));
@@ -64,8 +64,8 @@ public class GiamDocHome extends javax.swing.JFrame {
 
     public void setInit(int EmployeeNumber) {
         nhanVien = NhanVienDAO.getEmployee(EmployeeNumber);
-        branch = ChiNhanhDAO.getBranch(nhanVien.getBranchCode());
-        chonCBB = ChiNhanhDAO.getList().get(0);
+        branch = BranchDAO.getBranch(nhanVien.getBranchCode());
+        chonCBB = BranchDAO.getListBranch().get(0);
     }
 
     public void ShowRoom() {
@@ -102,7 +102,7 @@ public class GiamDocHome extends javax.swing.JFrame {
         for (int i = 0; i < listR.size(); i++) {
             if (listR.get(i).isStatus()) {
                 list.get(i).setBackground(new java.awt.Color(255, 153, 102));
-                ListMaHoaDon[i] = HoaDonDAO.getHoaDon(i + 1, chonCBB.getBranchCode()).getBillCode();
+                ListMaHoaDon[i] = BillDAO.getBill(i + 1, chonCBB.getBranchCode()).getBillCode();
             } else {
                 list.get(i).setBackground(new java.awt.Color(247, 247, 247));
             }
@@ -788,9 +788,9 @@ public class GiamDocHome extends javax.swing.JFrame {
 
     private void btnDiemDanhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDiemDanhMouseClicked
         // TODO add your handling code here:
-        //System.out.println(DiemDanhDAO.Check(nhanVien.getEmployeeNumber()));
-        if (!DiemDanhDAO.Check(nhanVien.getEmployeeCode())) {
-            if (DiemDanhDAO.DiemDanh(nhanVien)) {
+        //System.out.println(AttendanceDAO.Check(nhanVien.getEmployeeNumber()));
+        if (!AttendanceDAO.check(nhanVien.getEmployeeCode())) {
+            if (AttendanceDAO.attendant(nhanVien)) {
                 JOptionPane.showMessageDialog(this, "Điểm danh thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {

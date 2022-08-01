@@ -5,7 +5,7 @@
  */
 package view;
 
-import DAO.KhoDAO;
+import DAO.WarehouseDAO;
 import javax.swing.JOptionPane;
 
 /**
@@ -118,7 +118,7 @@ public class DieuChinhGia extends javax.swing.JFrame {
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
         int Gia = Integer.parseInt(txtGia.getText());
-        if (KhoDAO.DieuChinhGia(MaSanPham, Gia)) {
+        if (WarehouseDAO.adjustPrice(MaSanPham, Gia)) {
             JOptionPane.showMessageDialog(this, "Thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
             k.setEnabled(true);

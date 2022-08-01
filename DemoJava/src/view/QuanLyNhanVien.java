@@ -7,7 +7,7 @@ package view;
 
 import Bean.Employee;
 import DAO.AccountDAO;
-import DAO.ChiNhanhDAO;
+import DAO.BranchDAO;
 import DAO.NhanVienDAO;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
@@ -78,7 +78,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         model.setRowCount(0);
         for (Employee a : nv) {
             model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getName(),
-                ChiNhanhDAO.getBranch(a.getBranchCode()).getBranchCode(), TrangThai(a.isStatus()), a.getEmail(),
+                BranchDAO.getBranch(a.getBranchCode()).getBranchCode(), TrangThai(a.isStatus()), a.getEmail(),
                 a.getAddress(), GioiTinh(a.isSex())});
         }
         model.setRowCount(nv.size() + 13);
@@ -217,7 +217,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
             model.setRowCount(0);
             for (Employee a : nv) {
                 model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getName(),
-                    ChiNhanhDAO.getBranch(a.getBranchCode()).getBranchName(), TrangThai(a.isStatus()), a.getEmail(),
+                    BranchDAO.getBranch(a.getBranchCode()).getBranchName(), TrangThai(a.isStatus()), a.getEmail(),
                     a.getAddress(), GioiTinh(a.isSex())});
             }
             model.setRowCount(nv.size() + 13);

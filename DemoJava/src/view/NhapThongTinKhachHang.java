@@ -6,7 +6,7 @@
 package view;
 
 import Bean.Customer;
-import DAO.KhachHangDAO;
+import DAO.CustomerDAO;
 import java.awt.event.KeyEvent;
 
 /**
@@ -277,10 +277,10 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
             kh.setEmail(txtEmail.getText());
             kh.setAddress(txtaDiaChi.getText());
             kh.setCustomerType("THU");
-            KhachHangDAO.themKhachHang(kh);
-            kh.setCustomerCode(KhachHangDAO.getKhachHang(kh.getPhoneNumber()).getCustomerCode());
+            CustomerDAO.addCustomer(kh);
+            kh.setCustomerCode(CustomerDAO.getCustomer(kh.getPhoneNumber()).getCustomerCode());
         } else {
-            kh.setCustomerCode(KhachHangDAO.getKhachHang(kh.getPhoneNumber()).getCustomerCode());
+            kh.setCustomerCode(CustomerDAO.getCustomer(kh.getPhoneNumber()).getCustomerCode());
         }
         eh.nhanPhong(MaPhong, kh.getCustomerCode());
         this.dispose();
@@ -302,7 +302,7 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
     private void txtSoDienThoaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoDienThoaiKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            kh = KhachHangDAO.getKhachHang(txtSoDienThoai.getText());
+            kh = CustomerDAO.getCustomer(txtSoDienThoai.getText());
             System.out.println(kh);
             if (kh != null) {
                 txtHoTen.setText(kh.getFullName());
