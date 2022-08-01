@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class PhongKhachSanDAO {
+public class HotelRoomDAO {
 
     /* public static List<HotelRoom> getListPhongKhachSan(int MaChiNhanh){
          List<HotelRoom> list = new ArrayList<>();
@@ -37,19 +37,19 @@ public class PhongKhachSanDAO {
                 list.add(tmp);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (st != null) {
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return list;
     }*/
-    public static List<HotelRoom> getListPhongKhachSan(int MaChiNhanh) {
+    public static List<HotelRoom> getListHotelRoom(int branchCode) {
         List<HotelRoom> list = new ArrayList<>();
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -57,7 +57,7 @@ public class PhongKhachSanDAO {
         String SQL = "SELECT * FROM qlks.phongkhachsan WHERE MaChiNhanh = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MaChiNhanh);
+            ps.setInt(1, branchCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -66,63 +66,63 @@ public class PhongKhachSanDAO {
                 list.add(tmp);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return list;
     }
 
-    public static int getGiaThue(int MaChiNhanh, int MaPhong) {
-        int giaThue = 0;
+    public static int getPrice(int branchCode, int roomCode) {
+        int price = 0;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT GiaThue FROM qlks.phongkhachsan WHERE MaChiNhanh = ? AND MaPhong = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MaChiNhanh);
-            ps.setInt(2, MaPhong);
+            ps.setInt(1, branchCode);
+            ps.setInt(2, roomCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                giaThue = rs.getInt("GiaThue");
+                price = rs.getInt("GiaThue");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        return giaThue;
+        return price;
     }
 
-    public static HotelRoom Phong(int MaChiNhanh, int MaPhong) {
+    public static HotelRoom getRoom(int branchCode, int roomCode) {
         HotelRoom a = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -130,8 +130,8 @@ public class PhongKhachSanDAO {
         String SQL = "SELECT * FROM qlks.phongkhachsan WHERE MaChiNhanh = ? AND MaPhong = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MaChiNhanh);
-            ps.setInt(2, MaPhong);
+            ps.setInt(1, branchCode);
+            ps.setInt(2, roomCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -139,28 +139,27 @@ public class PhongKhachSanDAO {
                         rs.getBoolean("TrangThai"), rs.getInt("GiaThue"), rs.getString("MoTa"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return a;
     }
 
-    public static boolean ChinhSua(HotelRoom pks) {
-        int giaThue = 0;
+    public static boolean editRoom(HotelRoom pks) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -174,27 +173,27 @@ public class PhongKhachSanDAO {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return false;
     }
 
-    public static boolean setPhong(HotelRoom phong) {
+    public static boolean setRoomStatus(HotelRoom phong) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String SQL = "UPDATE qlks.phongkhachsan SET TrangThai = ? WHERE MaChiNhanh = ? AND MaPhong = ?";
@@ -206,62 +205,58 @@ public class PhongKhachSanDAO {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return false;
     }
 
-    public static int SoPhongChiNhanh(int MaChiNhanh) {
-        int soPhong = 0;
+    public static int getRoomNumber(int branchCode) {
+        int roomNumber = 0;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT COUNT(*) AS 'SoPhong' FROM qlks.phongkhachsan WHERE MaChiNhanh = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MaChiNhanh);
+            ps.setInt(1, branchCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                soPhong = rs.getInt("SoPhong");
+                roomNumber = rs.getInt("SoPhong");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(PhongKhachSanDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        return soPhong;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(SoPhongChiNhanh(1));
+        return roomNumber;
     }
 }

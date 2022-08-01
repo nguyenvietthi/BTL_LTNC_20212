@@ -12,7 +12,7 @@ import DAO.BranchDAO;
 import DAO.AttendanceDAO;
 import DAO.BillDAO;
 import DAO.EmployeeDAO;
-import DAO.PhongKhachSanDAO;
+import DAO.HotelRoomDAO;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class GiamDocHome extends javax.swing.JFrame {
     }
 
     public void ShowRoom() {
-        int soPhong = PhongKhachSanDAO.SoPhongChiNhanh(chonCBB.getBranchCode());
+        int soPhong = HotelRoomDAO.getRoomNumber(chonCBB.getBranchCode());
         for(int i = 0; i < 12; i++){
             list.get(i).show();
             list.get(i).setOpaque(true);
@@ -95,7 +95,7 @@ public class GiamDocHome extends javax.swing.JFrame {
         list.add(Room11);
         list.add(Room12);
         System.out.println("Ma chi nhanh là:" + chonCBB.getBranchCode());
-        listR = PhongKhachSanDAO.getListPhongKhachSan(chonCBB.getBranchCode());
+        listR = HotelRoomDAO.getListHotelRoom(chonCBB.getBranchCode());
     }
 
     public void setUI() {

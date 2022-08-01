@@ -338,7 +338,7 @@ public class Kho extends javax.swing.JFrame {
         int x = TbSanPham.getSelectedRow();
         int MSP = (int) TbSanPham.getValueAt(x, 0);
         if(x >= 0){
-             new DieuChinhGia(this, MSP).setVisible(true);
+             new AdjustPrice(this, MSP).setVisible(true);
         } else{
             JOptionPane.showMessageDialog(this, "Chọn sản phẩm trước khi nhấn điều chỉnh!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }

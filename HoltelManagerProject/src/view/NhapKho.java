@@ -226,7 +226,7 @@ public class NhapKho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void showList() {
-        List<Product> list = WarehouseDAO.listProductInBranch(nv.getBranchCode());
+        List<Product> list = ProductDAO.getListProduct();
         model1.setRowCount(0);
         for (Product a : list) {
             model1.addRow(new Object[]{a.getProductCode(), a.getName()});
@@ -303,8 +303,8 @@ public class NhapKho extends javax.swing.JFrame {
     private void txtTimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKeyPressed
         // TODO add your handling code here:
         // TODO add your handling code here:
-        if (txtTim.getText() != "") {
-            List<Product> list = ProductDAO.findProductInBranch(txtTim.getText(), nv.getBranchCode());
+        if (!"".equals(txtTim.getText())) {
+            List<Product> list = ProductDAO.findProduct(txtTim.getText());
             model1.setRowCount(0);
             for (Product a : list) {
                 model1.addRow(new Object[]{

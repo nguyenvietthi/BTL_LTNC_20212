@@ -8,7 +8,7 @@ package view;
 import Bean.Branch;
 import Bean.HotelRoom;
 import DAO.BranchDAO;
-import DAO.PhongKhachSanDAO;
+import DAO.HotelRoomDAO;
 import java.awt.Font;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
@@ -81,7 +81,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         chiNhanh = BranchDAO.getListBranch();
         model.setRowCount(0);
         for (Branch a : chiNhanh) {
-             List<HotelRoom> pks = PhongKhachSanDAO.getListPhongKhachSan(a.getBranchCode());
+             List<HotelRoom> pks = HotelRoomDAO.getListHotelRoom(a.getBranchCode());
             for(HotelRoom b : pks){
                 model.addRow(new Object[]{a.getBranchCode(), a.getBranchName(),
                     b.getRoomCode(), b.getPrice(), b.getDescription(),TrangThai(b.isStatus())});
@@ -90,7 +90,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
     }
      public void showList(Branch cn) {
         model.setRowCount(0);
-             List<HotelRoom> pks = PhongKhachSanDAO.getListPhongKhachSan(cn.getBranchCode());
+             List<HotelRoom> pks = HotelRoomDAO.getListHotelRoom(cn.getBranchCode());
             for(HotelRoom b : pks){
                 model.addRow(new Object[]{cn.getBranchCode(), cn.getBranchName(),
                     b.getRoomCode(), b.getPrice(), b.getDescription(),TrangThai(b.isStatus())});
@@ -196,8 +196,8 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         int y =tblchiNhanh.getSelectedRow();
         int MaPhong = (int) tblchiNhanh.getValueAt(y, 2);
         int MaChiNhanh = (int) tblchiNhanh.getValueAt(y, 0);
-        HotelRoom a = PhongKhachSanDAO.Phong(MaChiNhanh, MaPhong);
-        new ChinhSuaPhongKhachSan(a, this).setVisible(true);
+        HotelRoom a = HotelRoomDAO.getRoom(MaChiNhanh, MaPhong);
+        new EditHotelRoom(a, this).setVisible(true);
         this.setEnabled(false);
         /*int y = tblchiNhanh.getSelectedRow();
         new ThongTin(nv.get(y), "GD").setVisible(true);

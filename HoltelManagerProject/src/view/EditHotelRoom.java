@@ -7,23 +7,23 @@ package view;
 
 import Bean.HotelRoom;
 import DAO.BranchDAO;
-import DAO.PhongKhachSanDAO;
+import DAO.HotelRoomDAO;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author VIETTHI_PC
  */
-public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
+public class EditHotelRoom extends javax.swing.JFrame {
 
     /**
      * Creates new form ThongTin
      */
-    private HotelRoom pks;
+    private HotelRoom hotelRoom;
     private QuanLyPhongKhachSan ql;
 
-    public ChinhSuaPhongKhachSan(HotelRoom pks, QuanLyPhongKhachSan ql) {
-        this.pks = pks;
+    public EditHotelRoom(HotelRoom hotelRoom, QuanLyPhongKhachSan ql) {
+        this.hotelRoom = hotelRoom;
         this.ql = ql;
         initComponents();
         setUI();
@@ -40,12 +40,12 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
     }
      */
     private void setUI() {
-        txtChiNhanh.setText(BranchDAO.getBranch(pks.getBranchCode()).getBranchName());
-        txtMaPhong.setText(String.valueOf(pks.getRoomCode()));
+        txtChiNhanh.setText(BranchDAO.getBranch(hotelRoom.getBranchCode()).getBranchName());
+        txtMaPhong.setText(String.valueOf(hotelRoom.getRoomCode()));
         txtChiNhanh.setEnabled(false);
         txtMaPhong.setEnabled(false);
-        txtGiaThue.setText(String.valueOf(pks.getPrice()));
-        txtMoTa.setText(pks.getDescription());
+        txtGiaThue.setText(String.valueOf(hotelRoom.getPrice()));
+        txtMoTa.setText(hotelRoom.getDescription());
         
 
     }
@@ -257,9 +257,9 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
 
     private void txtLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtLuuMouseClicked
         // TODO add your handling code here:
-        pks.setPrice(Integer.parseInt(txtGiaThue.getText()));
-        pks.setDescription(txtMoTa.getText());
-        if(PhongKhachSanDAO.ChinhSua(pks)){
+        hotelRoom.setPrice(Integer.parseInt(txtGiaThue.getText()));
+        hotelRoom.setDescription(txtMoTa.getText());
+        if(HotelRoomDAO.editRoom(hotelRoom)){
             JOptionPane.showMessageDialog(this, "Đã lưu", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             ql.showList();
         } else{
@@ -325,13 +325,13 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChinhSuaPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditHotelRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChinhSuaPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditHotelRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChinhSuaPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditHotelRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChinhSuaPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditHotelRoom.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

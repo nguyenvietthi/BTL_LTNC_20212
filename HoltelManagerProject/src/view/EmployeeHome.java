@@ -12,7 +12,7 @@ import DAO.BranchDAO;
 import DAO.AttendanceDAO;
 import DAO.BillDAO;
 import DAO.EmployeeDAO;
-import DAO.PhongKhachSanDAO;
+import DAO.HotelRoomDAO;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,10 +30,10 @@ public class EmployeeHome extends javax.swing.JFrame {
      * Creates new form HomeF
      */
     private List<JPanel> list;
-    private Employee nhanVien;
+    private Employee employee;
     private Branch branch;
     private List<HotelRoom> listR;
-    private int[] ListMaHoaDon = new int[12];
+    private int[] listBillCode = new int[12];
 
     public EmployeeHome(int EmployeeNumber) {
         initComponents();
@@ -46,12 +46,12 @@ public class EmployeeHome extends javax.swing.JFrame {
     }
 
     private void setInit(int EmployeeNumber) {
-        nhanVien = EmployeeDAO.getEmployee(EmployeeNumber);
-        branch = BranchDAO.getBranch(nhanVien.getBranchCode());
+        employee = EmployeeDAO.getEmployee(EmployeeNumber);
+        branch = BranchDAO.getBranch(employee.getBranchCode());
     }
 
     private void ShowRoom() {
-        int soPhong = PhongKhachSanDAO.SoPhongChiNhanh(nhanVien.getBranchCode());
+        int soPhong = HotelRoomDAO.getRoomNumber(employee.getBranchCode());
         for (int i = 11; i >= soPhong; i--) {
             list.get(i).removeAll();
             list.get(i).setOpaque(false);
@@ -72,22 +72,22 @@ public class EmployeeHome extends javax.swing.JFrame {
         list.add(Room10);
         list.add(Room11);
         list.add(Room12);
-        listR = PhongKhachSanDAO.getListPhongKhachSan(nhanVien.getBranchCode());
+        listR = HotelRoomDAO.getListHotelRoom(employee.getBranchCode());
     }
 
     private void setUI() {
         for (int i = 0; i < listR.size(); i++) {
             if (listR.get(i).isStatus()) {
                 list.get(i).setBackground(new java.awt.Color(255, 153, 102));
-                ListMaHoaDon[i] = BillDAO.getBill(i + 1, nhanVien.getBranchCode()).getBillCode();
+                listBillCode[i] = BillDAO.getBill(i + 1, employee.getBranchCode()).getBillCode();
             } else {
                 list.get(i).setBackground(new java.awt.Color(247, 247, 247));
             }
         }
         for (int i = 0; i < 12; i++) {
-            System.out.println(ListMaHoaDon[i]);
+            System.out.println(listBillCode[i]);
         }
-        EmployeeName.setText("NHÂN VIÊN: " + nhanVien.getName().toUpperCase());
+        EmployeeName.setText("NHÂN VIÊN: " + employee.getName().toUpperCase());
         txtChiNhanh.setText("Chi Nhánh " + branch.getBranchName());
     }
 
@@ -665,9 +665,9 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void btnDiemDanhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDiemDanhMouseClicked
         // TODO add your handling code here:
-        //System.out.println(AttendanceDAO.Check(nhanVien.getEmployeeNumber()));
-        if (!AttendanceDAO.check(nhanVien.getEmployeeCode())) {
-            if (AttendanceDAO.attendant(nhanVien)) {
+        //System.out.println(AttendanceDAO.Check(employee.getEmployeeNumber()));
+        if (!AttendanceDAO.check(employee.getEmployeeCode())) {
+            if (AttendanceDAO.attendant(employee)) {
                 JOptionPane.showMessageDialog(this, "Điểm danh thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
@@ -698,7 +698,7 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void EmployeeNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmployeeNameMouseClicked
         // TODO add your handling code here:
-        new ThongTin(nhanVien, "NV").setVisible(true);
+        new ThongTin(employee, "NV").setVisible(true);
 
     }//GEN-LAST:event_EmployeeNameMouseClicked
 
@@ -768,21 +768,21 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
-        new Kho(nhanVien).setVisible(true);
+        new Kho(employee).setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void checkTrangThaiNhanPhong(int MaPhong) {
         if (!listR.get(MaPhong - 1).isStatus()) {
             new NhapThongTinKhachHang(MaPhong, this).setVisible(true);
         } else {
-            new ThanhToan(MaPhong, ListMaHoaDon[MaPhong - 1], branch.getBranchCode() , this).setVisible(true);
+            new ThanhToan(MaPhong, listBillCode[MaPhong - 1], branch.getBranchCode() , this).setVisible(true);
         }
     }
 
     protected void traPhong(int MaPhong) {
         listR.get(MaPhong - 1).setStatus(false);
-        if (PhongKhachSanDAO.setPhong(listR.get(MaPhong - 1))) {
-            ListMaHoaDon[MaPhong - 1] = 0;
+        if (HotelRoomDAO.setRoomStatus(listR.get(MaPhong - 1))) {
+            listBillCode[MaPhong - 1] = 0;
             setUI();
         }
     }
@@ -790,10 +790,10 @@ public class EmployeeHome extends javax.swing.JFrame {
     protected void nhanPhong(int MaPhong, int MaKhachHang) {
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận nhận phòng!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            if (BillDAO.addBill(nhanVien, listR.get(MaPhong - 1).getRoomCode(), MaKhachHang, 0.1)) {
+            if (BillDAO.addBill(employee, listR.get(MaPhong - 1).getRoomCode(), MaKhachHang, 0.1)) {
                 listR.get(MaPhong - 1).setStatus(true);
-                if (PhongKhachSanDAO.setPhong(listR.get(MaPhong - 1))) {
-                    ListMaHoaDon[MaPhong - 1] = BillDAO.getBill(MaPhong, nhanVien.getBranchCode()).getBillCode();
+                if (HotelRoomDAO.setRoomStatus(listR.get(MaPhong - 1))) {
+                    listBillCode[MaPhong - 1] = BillDAO.getBill(MaPhong, employee.getBranchCode()).getBillCode();
                     setUI();
                 }
             }

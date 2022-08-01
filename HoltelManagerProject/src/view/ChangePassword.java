@@ -14,15 +14,16 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class DoiMatKhau extends javax.swing.JFrame {
+public class ChangePassword extends javax.swing.JFrame {
 
     /**
-     * Creates new form DoiMatKhau
+     * Creates new form ChangePassword
      */
-    private Employee nv;
+    private Employee employee;
     private ThongTin tt;
-    public DoiMatKhau(Employee nv, ThongTin tt) {
-        this.nv = nv;
+    
+    public ChangePassword(Employee employee, ThongTin tt) {
+        this.employee = employee;
         this.tt = tt;
         initComponents();
     }
@@ -147,13 +148,13 @@ public class DoiMatKhau extends javax.swing.JFrame {
     }
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
 
-        Account acc = AccountDAO.findAccount(nv.getEmployeeCode());
+        Account acc = AccountDAO.findAccount(employee.getEmployeeCode());
         String pass = String.valueOf(txtCu.getPassword());
         String moi = String.valueOf(txtMoi.getPassword());
         String moi2 = String.valueOf(txtMoi2.getPassword());
         if(pass.equals(acc.getPassWord())) {
         if(moi.equals(moi2)) {
-            if (AccountDAO.changePass(nv.getEmployeeCode(), moi))
+            if (AccountDAO.changePass(employee.getEmployeeCode(), moi))
             JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         } else JOptionPane.showMessageDialog(this, "Sai mật khẩu hoặc mật khẩu mới không trùng khớp", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -221,20 +222,20 @@ public class DoiMatKhau extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DoiMatKhau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DoiMatKhau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DoiMatKhau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DoiMatKhau.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               // new DoiMatKhau().setVisible(true);
+               // new ChangePassword().setVisible(true);
             }
         });
     }

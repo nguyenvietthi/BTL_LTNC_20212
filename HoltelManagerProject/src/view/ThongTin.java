@@ -486,7 +486,7 @@ public class ThongTin extends javax.swing.JFrame {
     private void btnSubmit1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmit1MouseClicked
         // TODO add your handling code here:
         this.setEnabled(false);
-        new DoiMatKhau(nv, this).setVisible(true);
+        new ChangePassword(nv, this).setVisible(true);
     }//GEN-LAST:event_btnSubmit1MouseClicked
 
     private void rdbGioiTinh_NuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbGioiTinh_NuActionPerformed

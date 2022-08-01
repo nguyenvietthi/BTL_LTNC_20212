@@ -12,17 +12,17 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class DieuChinhGia extends javax.swing.JFrame {
+public class AdjustPrice extends javax.swing.JFrame {
 
     /**
      * Creates new form DoiMatKhau
      */
     private Kho k;
-    private int MaSanPham;
+    private int productCode;
 
-    public DieuChinhGia(Kho k, int MaSanPham) {
+    public AdjustPrice(Kho k, int productCode) {
         this.k = k;
-        this.MaSanPham = MaSanPham;
+        this.productCode = productCode;
 
         initComponents();
         k.setEnabled(false);
@@ -117,8 +117,8 @@ public class DieuChinhGia extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        int Gia = Integer.parseInt(txtGia.getText());
-        if (WarehouseDAO.adjustPrice(MaSanPham, Gia)) {
+        int price = Integer.parseInt(txtGia.getText());
+        if (WarehouseDAO.adjustPrice(productCode, price)) {
             JOptionPane.showMessageDialog(this, "Thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
             k.setEnabled(true);
@@ -162,13 +162,13 @@ public class DieuChinhGia extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DieuChinhGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DieuChinhGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DieuChinhGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DieuChinhGia.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
