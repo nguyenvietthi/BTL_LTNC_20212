@@ -5,11 +5,11 @@
  */
 package DAO;
 
-import Bean.ChiTietSanPhamTrongHoaDon;
-import Bean.GiamGia;
-import Bean.HoaDon;
-import Bean.NhanVien;
-import Bean.SanPham;
+import Bean.ProductInBill;
+import Bean.Discount;
+import Bean.Bill;
+import Bean.Employee;
+import Bean.Product;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  */
 public class HoaDonDAO {
 
-    public static boolean themHoaDon(NhanVien nv, int MaPhong, int MaKhachHang, double VAT) {
+    public static boolean themHoaDon(Employee nv, int MaPhong, int MaKhachHang, double VAT) {
         int GiaThue = PhongKhachSanDAO.getGiaThue(nv.getBranchCode(), MaPhong);
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -37,7 +37,7 @@ public class HoaDonDAO {
             ps.setInt(1, MaPhong);
             ps.setInt(2, GiaThue);
             ps.setDouble(3, VAT);
-            ps.setInt(4, nv.getEmployeeNumber());
+            ps.setInt(4, nv.getEmployeeCode());
             ps.setInt(5, MaKhachHang);
             ps.setInt(6, nv.getBranchCode());
             ps.execute();
@@ -63,8 +63,8 @@ public class HoaDonDAO {
         return false;
     }
 
-    public static HoaDon getHoaDon(int MaPhong, int MaChiNhanh) {
-        HoaDon hd = null;
+    public static Bill getHoaDon(int MaPhong, int MaChiNhanh) {
+        Bill hd = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -76,7 +76,7 @@ public class HoaDonDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                hd = new HoaDon(rs.getInt("MaHoaDon"), rs.getInt("MaPhong"), rs.getTimestamp("GioVao"),
+                hd = new Bill(rs.getInt("MaHoaDon"), rs.getInt("MaPhong"), rs.getTimestamp("GioVao"),
                         rs.getTimestamp("GioRa"), rs.getInt("GiaThue"), rs.getFloat("ThueVAT"),
                         rs.getInt("MaNhanVien"), rs.getInt("MaKhachHang"), rs.getInt("MaChiNhanh"));
             }
@@ -101,8 +101,8 @@ public class HoaDonDAO {
         return hd;
     }
 
-    public static HoaDon getHoaDon(int MaHoaDon) {
-        HoaDon hd = null;
+    public static Bill getHoaDon(int MaHoaDon) {
+        Bill hd = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -113,7 +113,7 @@ public class HoaDonDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                hd = new HoaDon(rs.getInt("MaHoaDon"), rs.getInt("MaPhong"), rs.getTimestamp("GioVao"),
+                hd = new Bill(rs.getInt("MaHoaDon"), rs.getInt("MaPhong"), rs.getTimestamp("GioVao"),
                         rs.getTimestamp("GioRa"), rs.getInt("GiaThue"), rs.getFloat("ThueVAT"),
                         rs.getInt("MaNhanVien"), rs.getInt("MaKhachHang"), rs.getInt("MaChiNhanh"));
             }
@@ -254,8 +254,8 @@ public class HoaDonDAO {
         return Tong;
     }
 
-    public static GiamGia giamGia(int MaHoaDon) {
-        GiamGia Tong = null;
+    public static Discount giamGia(int MaHoaDon) {
+        Discount Tong = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -271,7 +271,7 @@ public class HoaDonDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                Tong = new GiamGia(rs.getString("MaGiamGia"), rs.getDouble("SoPhanTram"));
+                Tong = new Discount(rs.getString("MaGiamGia"), rs.getDouble("SoPhanTram"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(HoaDonDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -408,17 +408,17 @@ public class HoaDonDAO {
         return check;
     }
 
-    public static boolean themSanPhamVaoHoaDon(SanPham sp, int MaHoaDon, int SoLuong) {
+    public static boolean themSanPhamVaoHoaDon(Product sp, int MaHoaDon, int SoLuong) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "INSERT INTO qlks.chitiethoadon VALUES(?, ?, ?, ?)";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, sp.getMaSanPham());
+            ps.setInt(1, sp.getProductCode());
             ps.setInt(2, MaHoaDon);
             ps.setInt(3, SoLuong);
-            ps.setInt(4, sp.getGia());
+            ps.setInt(4, sp.getPrice());
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -473,7 +473,7 @@ public class HoaDonDAO {
         return false;
     }
 
-    public static boolean themSoLuongSanPham(SanPham sp, int MaHoaDon, int SoLuong) {
+    public static boolean themSoLuongSanPham(Product sp, int MaHoaDon, int SoLuong) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -481,7 +481,7 @@ public class HoaDonDAO {
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, SoLuong);
-            ps.setInt(2, sp.getMaSanPham());
+            ps.setInt(2, sp.getProductCode());
             ps.setInt(3, MaHoaDon);
             ps.execute();
             return true;
@@ -506,8 +506,8 @@ public class HoaDonDAO {
         return false;
     }
 
-    public static List<ChiTietSanPhamTrongHoaDon> DanhSachSanPhamTrongHoaDon(int MaHoaDon) {
-        List<ChiTietSanPhamTrongHoaDon> list = new ArrayList<>();
+    public static List<ProductInBill> listProductsInBill(int billCode) {
+        List<ProductInBill> list = new ArrayList<>();
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -517,11 +517,11 @@ public class HoaDonDAO {
                 + "sanpham.MaSanPham WHERE chitiethoadon.MaHoaDon = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MaHoaDon);
+            ps.setInt(1, billCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                ChiTietSanPhamTrongHoaDon tmp = new ChiTietSanPhamTrongHoaDon(rs.getInt("MaSanPham"),
+                ProductInBill tmp = new ProductInBill(rs.getInt("MaSanPham"),
                         rs.getString("Ten"), rs.getInt("SoLuong"), rs.getInt("GiaSanPham"), rs.getInt("TongTien"));
                 list.add(tmp);
             }

@@ -5,8 +5,8 @@
  */
 package view;
 
-import Bean.ChiNhanh;
-import Bean.NhanVien;
+import Bean.Branch;
+import Bean.Employee;
 import DAO.ChiNhanhDAO;
 import DAO.KhoDAO;
 import java.awt.Font;
@@ -30,8 +30,8 @@ public class Kho extends javax.swing.JFrame {
      */
     DefaultComboBoxModel cityName;
     private DefaultTableModel model;
-    private List<ChiNhanh> cn;
-    private NhanVien nv;
+    private List<Branch> cn;
+    private Employee nv;
 
     public Kho() {
         initComponents();
@@ -40,7 +40,7 @@ public class Kho extends javax.swing.JFrame {
         showList();
     }
 
-    public Kho(NhanVien nv) {
+    public Kho(Employee nv) {
         this.nv = nv;
         initComponents();
 
@@ -231,7 +231,7 @@ public class Kho extends javax.swing.JFrame {
             cbbChiNhanh.setEnabled(false);
             int index;
             for (int i = 0; i < cn.size(); i++) {
-                if (cn.get(i).getMaChiNhanh() == nv.getBranchCode()) {
+                if (cn.get(i).getBranchCode() == nv.getBranchCode()) {
                     index = i;
                     cbbChiNhanh.setSelectedIndex(index);
                 }
@@ -258,7 +258,7 @@ public class Kho extends javax.swing.JFrame {
 
     public void showList() {
         model.setRowCount(0);
-        List< Object> list = KhoDAO.SanPham(nv.getBranchCode());
+        List< Object> list = KhoDAO.listProduct(nv.getBranchCode());
         for (Object b : list) {
             model.addRow((Object[]) b);
         }
@@ -300,8 +300,8 @@ public class Kho extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         if (txtTim.getText() != "") {
-            ChiNhanh a = (ChiNhanh) cbbChiNhanh.getSelectedItem();
-            List<Object> list = KhoDAO.TimGanDung(a.getMaChiNhanh(), txtTim.getText());
+            Branch a = (Branch) cbbChiNhanh.getSelectedItem();
+            List<Object> list = KhoDAO.TimGanDung(a.getBranchCode(), txtTim.getText());
             model.setRowCount(0);
             for (Object b : list) {
                 model.addRow((Object[]) b);
@@ -321,8 +321,8 @@ public class Kho extends javax.swing.JFrame {
     private void cbbChiNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChiNhanhActionPerformed
         // TODO add your handling code here:
         model.setRowCount(0);
-        ChiNhanh a = (ChiNhanh) cbbChiNhanh.getSelectedItem();
-        List< Object> list = KhoDAO.SanPham(a.getMaChiNhanh());
+        Branch a = (Branch) cbbChiNhanh.getSelectedItem();
+        List< Object> list = KhoDAO.listProduct(a.getBranchCode());
         for (Object b : list) {
             model.addRow((Object[]) b);
         }

@@ -5,10 +5,10 @@
  */
 package view;
 
-import Bean.ChiTietSanPhamTrongHoaDon;
-import Bean.GiamGia;
-import Bean.HoaDon;
-import Bean.SanPham;
+import Bean.ProductInBill;
+import Bean.Discount;
+import Bean.Bill;
+import Bean.Product;
 import DAO.HoaDonDAO;
 import DAO.KhoDAO;
 import DAO.SanPhamDAO;
@@ -35,12 +35,13 @@ public class ThanhToan extends javax.swing.JFrame {
      */
     private DecimalFormat df;
     private int MaPhong, MaHoaDon;
-    DefaultListModel<SanPham> ListModel;
+    DefaultListModel<Product> ListModel;
     private DefaultTableModel model;
     private int soLuong = 0;
-    private List<ChiTietSanPhamTrongHoaDon> sp;
-    private HoaDon hoaDon;
+    private List<ProductInBill> sp;
+    private Bill hoaDon;
     private EmployeeHome ep;
+    private int branchCode;
 
     public ThanhToan() {
         initComponents();
@@ -49,10 +50,11 @@ public class ThanhToan extends javax.swing.JFrame {
         HienThiTongTienSanPham();
     }
 
-    public ThanhToan(int MaPhong, int MaHoaDon, EmployeeHome ep) {
+    public ThanhToan(int MaPhong, int MaHoaDon, int branchCode, EmployeeHome ep) {
         this.MaPhong = MaPhong;
         this.MaHoaDon = MaHoaDon;
         this.ep = ep;
+        this.branchCode = branchCode;
         initComponents();
         setUI();
         hienThiGioVaoRa();
@@ -83,9 +85,9 @@ public class ThanhToan extends javax.swing.JFrame {
     private void hienThiGioVaoRa() {
         hoaDon = HoaDonDAO.getHoaDon(MaHoaDon);
         SimpleDateFormat sf = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        txtVao.setText(sf.format(hoaDon.getGioVao()));
-        if (hoaDon.getGioRa() != null) {
-            txtRa.setText(sf.format(hoaDon.getGioRa()));
+        txtVao.setText(sf.format(hoaDon.getCheckIn()));
+        if (hoaDon.getCheckOut()!= null) {
+            txtRa.setText(sf.format(hoaDon.getCheckOut()));
         } else {
             txtRa.setText("chưa thanh toán");
             txtSoGio.setText("chưa thanh toán");
@@ -107,9 +109,9 @@ public class ThanhToan extends javax.swing.JFrame {
     }
 
     private void HienThiTienGiam() {
-        GiamGia gg = HoaDonDAO.giamGia(MaHoaDon);
-        txtGiamGia.setText("(" + gg.getMaGiamGia() + ":" + String.valueOf(gg.getSoPhanTram()) + "%) "
-                + String.valueOf(df.format(gg.getSoPhanTram() * (HoaDonDAO.TongCong(MaHoaDon)
+        Discount gg = HoaDonDAO.giamGia(MaHoaDon);
+        txtGiamGia.setText("(" + gg.getDiscountCode()+ ":" + String.valueOf(gg.getPercent()) + "%) "
+                + String.valueOf(df.format(gg.getPercent() * (HoaDonDAO.TongCong(MaHoaDon)
                         - HoaDonDAO.TienVAT(MaHoaDon)))) + " VND");
     }
 
@@ -133,8 +135,8 @@ public class ThanhToan extends javax.swing.JFrame {
 
     private void showListSanPham() {
         ListModel = new DefaultListModel();
-        List<SanPham> list = SanPhamDAO.getList();
-        for (SanPham a : list) {
+        List<Product> list = KhoDAO.listProductInBranch(branchCode);
+        for (Product a : list) {
             ListModel.addElement(a);
             System.out.println(a.toString());
         }
@@ -281,7 +283,6 @@ public class ThanhToan extends javax.swing.JFrame {
         ));
         TbSanPham.setFocusable(false);
         TbSanPham.setGridColor(new java.awt.Color(54, 54, 54));
-        TbSanPham.setIntercellSpacing(new java.awt.Dimension(0, 0));
         TbSanPham.setName(""); // NOI18N
         TbSanPham.setRowHeight(35);
         TbSanPham.getTableHeader().setReorderingAllowed(false);
@@ -475,16 +476,16 @@ public class ThanhToan extends javax.swing.JFrame {
 
     private void btnAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAddMouseClicked
         // TODO add your handling code here:
-        List<SanPham> sanPham = ListSP.getSelectedValuesList();
+        List<Product> sanPham = ListSP.getSelectedValuesList();
         if (Integer.parseInt(soLuongtxt.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Số lượng sản phẩm phải lớn hơn 0!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int MaChiNhanh = HoaDonDAO.getHoaDon(MaHoaDon).getMaChiNhanh();
-            if (KhoDAO.SoLuongSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getMaSanPham())
+            int MaChiNhanh = HoaDonDAO.getHoaDon(MaHoaDon).getBranchCode();
+            if (KhoDAO.SoLuongSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode())
                     > Integer.parseInt(soLuongtxt.getText())) {
-                if (!HoaDonDAO.kiemTraSanPhamDaCoTrongHoaDon(MaHoaDon, sanPham.get(0).getMaSanPham())) {
+                if (!HoaDonDAO.kiemTraSanPhamDaCoTrongHoaDon(MaHoaDon, sanPham.get(0).getProductCode())) {
                     if (HoaDonDAO.themSanPhamVaoHoaDon(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
-                        KhoDAO.TruSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getMaSanPham(), Integer.parseInt(soLuongtxt.getText()));
+                        KhoDAO.TruSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
                         soLuong = 0;
                         soLuongtxt.setText(Integer.toString(soLuong));
                         showListSanPham();
@@ -492,7 +493,7 @@ public class ThanhToan extends javax.swing.JFrame {
                     }
                 } else {
                     if (HoaDonDAO.themSoLuongSanPham(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
-                        KhoDAO.TruSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getMaSanPham(), Integer.parseInt(soLuongtxt.getText()));
+                        KhoDAO.TruSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
                         soLuong = 0;
                         soLuongtxt.setText(Integer.toString(soLuong));
                         showListSanPham();
@@ -500,7 +501,7 @@ public class ThanhToan extends javax.swing.JFrame {
                     }
                 }
             }else{
-                String ThongBao = "Trong kho đã hết hàng! Hiện trong kho có " + KhoDAO.SoLuongSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getMaSanPham()) + " tồn kho!"; 
+                String ThongBao = "Trong kho đã hết hàng! Hiện trong kho có " + KhoDAO.SoLuongSanPhamTrongKho(MaChiNhanh, sanPham.get(0).getProductCode()) + " tồn kho!"; 
                 JOptionPane.showMessageDialog(this, ThongBao, 
                         "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -551,9 +552,9 @@ public class ThanhToan extends javax.swing.JFrame {
         // TODO add your handling code here:
         HoaDonDAO.XoaSanPhamTrongHoaDon(MaHoaDon, getMaSanPhamSelected());
         int row = TbSanPham.getSelectedRow();
-        ChiTietSanPhamTrongHoaDon msp = sp.get(row);
-        int MaChiNhanh = HoaDonDAO.getHoaDon(MaHoaDon).getMaChiNhanh();
-        KhoDAO.themSanPhamVaoKho(MaChiNhanh, msp.getMaSanPham(), msp.getSoLuong());
+        ProductInBill msp = sp.get(row);
+        int MaChiNhanh = HoaDonDAO.getHoaDon(MaHoaDon).getBranchCode();
+        KhoDAO.themSanPhamVaoKho(MaChiNhanh, msp.getProductCode(), msp.getAmount());
         showList();
     }//GEN-LAST:event_btnXoaMouseClicked
 
@@ -588,9 +589,9 @@ public class ThanhToan extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (txtTim.getText() != "") {
             ListModel = new DefaultListModel();
-            List<SanPham> list = SanPhamDAO.timGanDung(txtTim.getText());
+            List<Product> list = SanPhamDAO.timGanDung(txtTim.getText());
             System.out.println(txtTim.getText());
-            for (SanPham a : list) {
+            for (Product a : list) {
                 ListModel.addElement(a);
                 System.out.println(a.toString());
             }
@@ -645,7 +646,7 @@ public class ThanhToan extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<SanPham> ListSP;
+    private javax.swing.JList<Product> ListSP;
     private javax.swing.JTable TbSanPham;
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnOK;
@@ -686,17 +687,17 @@ public class ThanhToan extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void showList() {
-        sp = HoaDonDAO.DanhSachSanPhamTrongHoaDon(MaHoaDon);
+        sp = HoaDonDAO.listProductsInBill(MaHoaDon);
         model.setRowCount(0);
-        for (ChiTietSanPhamTrongHoaDon sv : sp) {
-            model.addRow(new Object[]{sv.getTen(), sv.getSoLuong(), sv.getGia(), sv.getTongTien()});
+        for (ProductInBill sv : sp) {
+            model.addRow(new Object[]{sv.getProductName(), sv.getAmount(), sv.getPrice(), sv.getTotalPrice()});
         }
         model.setRowCount(sp.size() + 13);
     }
 
     private int getMaSanPhamSelected() {
         int row = TbSanPham.getSelectedRow();
-        int msp = sp.get(row).getMaSanPham();
+        int msp = sp.get(row).getProductCode();
         //a();
         return msp;
     }

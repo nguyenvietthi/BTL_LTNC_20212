@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import Bean.KhachHang;
+import Bean.Customer;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
@@ -19,17 +19,17 @@ import java.util.logging.Logger;
  * @author VIETTHI_PC
  */
 public class KhachHangDAO {
-    public static boolean themKhachHang(KhachHang kh) {
+    public static boolean themKhachHang(Customer kh) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String sql = "INSERT INTO qlks.khachhang (HoVaTen, SoDienThoai, LoaiKhach, SoCMT, DiaChi, Email) VALUES (?,?,?,?,?,?);";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
-            ps.setString(1, kh.getHoVaTen());
-            ps.setString(2, kh.getSoDienThoi());
-            ps.setString(3, kh.getLoaiKhach());
-            ps.setString(4, kh.getSoCMT());
-            ps.setString(5, kh.getDiaChi());
+            ps.setString(1, kh.getFullName());
+            ps.setString(2, kh.getPhoneNumber());
+            ps.setString(3, kh.getCustomerType());
+            ps.setString(4, kh.getPhoneNumber());
+            ps.setString(5, kh.getAddress());
             ps.setString(6, kh.getEmail());
             ps.execute();
             return true;
@@ -53,8 +53,8 @@ public class KhachHangDAO {
         }
         return false;
     }
-    public static KhachHang getKhachHang(String SDT) {
-        KhachHang kh = null;
+    public static Customer getKhachHang(String SDT) {
+        Customer kh = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -65,7 +65,7 @@ public class KhachHangDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                kh = new KhachHang(rs.getInt("MaKhachHang"), rs.getString("HoVaTen"), 
+                kh = new Customer(rs.getInt("MaKhachHang"), rs.getString("HoVaTen"), 
                         rs.getString("SoDienThoai"), rs.getString("LoaiKhach"), rs.getString("SoCMT"),
                         rs.getString("DiaChi"),rs.getString("Email") );
             }

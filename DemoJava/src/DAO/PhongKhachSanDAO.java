@@ -5,10 +5,9 @@
  */
 package DAO;
 
-import Bean.PhongKhachSan;
+import Bean.HotelRoom;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
-import com.sun.accessibility.internal.resources.accessibility;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -23,8 +22,8 @@ import java.util.logging.Logger;
  */
 public class PhongKhachSanDAO {
 
-    /* public static List<PhongKhachSan> getListPhongKhachSan(int MaChiNhanh){
-         List<PhongKhachSan> list = new ArrayList<>();
+    /* public static List<HotelRoom> getListPhongKhachSan(int MaChiNhanh){
+         List<HotelRoom> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -34,7 +33,7 @@ public class PhongKhachSanDAO {
             st = conn.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
-                PhongKhachSan tmp = new PhongKhachSan(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"), rs.getBoolean("TrangThai"));
+                HotelRoom tmp = new HotelRoom(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"), rs.getBoolean("TrangThai"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -50,8 +49,8 @@ public class PhongKhachSanDAO {
         }
         return list;
     }*/
-    public static List<PhongKhachSan> getListPhongKhachSan(int MaChiNhanh) {
-        List<PhongKhachSan> list = new ArrayList<>();
+    public static List<HotelRoom> getListPhongKhachSan(int MaChiNhanh) {
+        List<HotelRoom> list = new ArrayList<>();
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -62,7 +61,7 @@ public class PhongKhachSanDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                PhongKhachSan tmp = new PhongKhachSan(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"),
+                HotelRoom tmp = new HotelRoom(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"),
                         rs.getBoolean("TrangThai"), rs.getInt("GiaThue"), rs.getString("MoTa"));
                 list.add(tmp);
             }
@@ -123,8 +122,8 @@ public class PhongKhachSanDAO {
         return giaThue;
     }
 
-    public static PhongKhachSan Phong(int MaChiNhanh, int MaPhong) {
-        PhongKhachSan a = null;
+    public static HotelRoom Phong(int MaChiNhanh, int MaPhong) {
+        HotelRoom a = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -136,7 +135,7 @@ public class PhongKhachSanDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                a = new PhongKhachSan(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"),
+                a = new HotelRoom(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"),
                         rs.getBoolean("TrangThai"), rs.getInt("GiaThue"), rs.getString("MoTa"));
             }
         } catch (SQLException ex) {
@@ -160,7 +159,7 @@ public class PhongKhachSanDAO {
         return a;
     }
 
-    public static boolean ChinhSua(PhongKhachSan pks) {
+    public static boolean ChinhSua(HotelRoom pks) {
         int giaThue = 0;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -168,10 +167,10 @@ public class PhongKhachSanDAO {
         String SQL = "UPDATE qlks.phongkhachsan SET GiaThue = ?, MoTa = ? WHERE MaChiNhanh = ? AND MaPhong = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, pks.getGiaThue());
-            ps.setString(2, pks.getMoTa());
-            ps.setInt(3, pks.getMaChiNhanh());
-            ps.setInt(4, pks.getMaPhong());
+            ps.setInt(1, pks.getPrice());
+            ps.setString(2, pks.getDescription());
+            ps.setInt(3, pks.getBranchCode());
+            ps.setInt(4, pks.getRoomCode());
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -195,15 +194,15 @@ public class PhongKhachSanDAO {
         return false;
     }
 
-    public static boolean setPhong(PhongKhachSan phong) {
+    public static boolean setPhong(HotelRoom phong) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String SQL = "UPDATE qlks.phongkhachsan SET TrangThai = ? WHERE MaChiNhanh = ? AND MaPhong = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setBoolean(1, phong.isTrangThai());
-            ps.setInt(2, phong.getMaChiNhanh());
-            ps.setInt(3, phong.getMaPhong());
+            ps.setBoolean(1, phong.isStatus());
+            ps.setInt(2, phong.getBranchCode());
+            ps.setInt(3, phong.getRoomCode());
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -232,7 +231,7 @@ public class PhongKhachSanDAO {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT COUNT(*) AS 'SoPhong' FROM qlks.PhongKhachSan WHERE MaChiNhanh = ?";
+        String SQL = "SELECT COUNT(*) AS 'SoPhong' FROM qlks.phongkhachsan WHERE MaChiNhanh = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, MaChiNhanh);

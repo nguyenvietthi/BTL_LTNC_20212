@@ -5,7 +5,7 @@
  */
 package view;
 
-import Bean.KhachHang;
+import Bean.Customer;
 import DAO.KhachHangDAO;
 import java.awt.event.KeyEvent;
 
@@ -20,7 +20,7 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
      */
     private EmployeeHome eh;
     private int MaPhong;
-    KhachHang kh;
+    Customer kh;
 
     public NhapThongTinKhachHang() {
         initComponents();
@@ -270,19 +270,19 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
         // TODO add your handling code here:
         if (kh == null) {
-            kh = new KhachHang();
-            kh.setHoVaTen(txtHoTen.getText());
-            kh.setSoCMT(txtCMT.getText());
-            kh.setSoDienThoi(txtSoDienThoai.getText());
+            kh = new Customer();
+            kh.setFullName(txtHoTen.getText());
+            kh.setCMTNumber(txtCMT.getText());
+            kh.setPhoneNumber(txtSoDienThoai.getText());
             kh.setEmail(txtEmail.getText());
-            kh.setDiaChi(txtaDiaChi.getText());
-            kh.setLoaiKhach("THU");
+            kh.setAddress(txtaDiaChi.getText());
+            kh.setCustomerType("THU");
             KhachHangDAO.themKhachHang(kh);
-            kh.setMaKhachHang(KhachHangDAO.getKhachHang(kh.getSoDienThoi()).getMaKhachHang());
+            kh.setCustomerCode(KhachHangDAO.getKhachHang(kh.getPhoneNumber()).getCustomerCode());
         } else {
-            kh.setMaKhachHang(KhachHangDAO.getKhachHang(kh.getSoDienThoi()).getMaKhachHang());
+            kh.setCustomerCode(KhachHangDAO.getKhachHang(kh.getPhoneNumber()).getCustomerCode());
         }
-        eh.nhanPhong(MaPhong, kh.getMaKhachHang());
+        eh.nhanPhong(MaPhong, kh.getCustomerCode());
         this.dispose();
     }//GEN-LAST:event_btnSubmitMouseClicked
 
@@ -305,10 +305,10 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
             kh = KhachHangDAO.getKhachHang(txtSoDienThoai.getText());
             System.out.println(kh);
             if (kh != null) {
-                txtHoTen.setText(kh.getHoVaTen());
-                txtCMT.setText(kh.getSoCMT());
+                txtHoTen.setText(kh.getFullName());
+                txtCMT.setText(kh.getCMTNumber());
                 txtEmail.setText(kh.getEmail());
-                txtaDiaChi.setText(kh.getDiaChi());
+                txtaDiaChi.setText(kh.getAddress());
             }
         }
     }//GEN-LAST:event_txtSoDienThoaiKeyPressed

@@ -5,9 +5,9 @@
  */
 package view;
 
-import Bean.ChiNhanh;
-import Bean.ChucVu;
-import Bean.NhanVien;
+import Bean.Branch;
+import Bean.Position;
+import Bean.Employee;
 import DAO.AccountDAO;
 import DAO.ChiNhanhDAO;
 import DAO.NhanVienDAO;
@@ -24,11 +24,11 @@ public class ThemNhanVien extends javax.swing.JFrame {
     /**
      * Creates new form ThongTin
      */
-    private NhanVien nv;
+    private Employee nv;
     DefaultComboBoxModel cityName;
     DefaultComboBoxModel chucVu;
-    List<ChiNhanh> cn;
-    List<ChucVu> cv;
+    List<Branch> cn;
+    List<Position> cv;
     QuanLyNhanVien qlnv;
 
     public ThemNhanVien(QuanLyNhanVien qlnv) {
@@ -39,9 +39,9 @@ public class ThemNhanVien extends javax.swing.JFrame {
 
     }
 
-    /*  public ThemNhanVien(NhanVien nv, String ChucVu) {
+    /*  public ThemNhanVien(Employee nv, String Position) {
         this.nv = nv;
-        this.ChucVu = ChucVu;
+        this.Position = Position;
         initComponents();
         setInfo();
         setListChiNhanh();
@@ -53,8 +53,8 @@ public class ThemNhanVien extends javax.swing.JFrame {
         for (int i = 0; i < cn.size(); i++) {
             cityName.addElement(cn.get(i));
         }
-        /*for (ChiNhanh a : cn) {
-            if (cn.get(index).getMaChiNhanh() != a.getMaChiNhanh()) {
+        /*for (Branch a : cn) {
+            if (cn.get(index).getBranchCode() != a.getBranchCode()) {
                 cityName.addElement(a);
             }
         }*/
@@ -69,8 +69,8 @@ public class ThemNhanVien extends javax.swing.JFrame {
         for (int i = 0; i < cv.size(); i++) {
             chucVu.addElement(cv.get(i));
         }
-        /*for (ChiNhanh a : cn) {
-            if (cn.get(index).getMaChiNhanh() != a.getMaChiNhanh()) {
+        /*for (Branch a : cn) {
+            if (cn.get(index).getBranchCode() != a.getBranchCode()) {
                 cityName.addElement(a);
             }
         }*/
@@ -103,7 +103,7 @@ public class ThemNhanVien extends javax.swing.JFrame {
             chkTrangThai.setSelected(false);
         }
         txtMaNhanVien.setEnabled(false);
-        if (ChucVu.equals("NV")) {
+        if (Position.equals("NV")) {
             chkTrangThai.setEnabled(false);
             txtHoTen.setEnabled(false);
             cbbChiNhanh.setEnabled(false);
@@ -430,23 +430,23 @@ public class ThemNhanVien extends javax.swing.JFrame {
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
         // TODO add your handling code here:
-        ChiNhanh CN = (ChiNhanh) cbbChiNhanh.getSelectedItem();
-        ChucVu CV = (ChucVu) cbbChucVu.getSelectedItem();
+        Branch CN = (Branch) cbbChiNhanh.getSelectedItem();
+        Position CV = (Position) cbbChucVu.getSelectedItem();
         System.out.println(dcNgaySinh.getDate());
-        nv = new NhanVien(0, txtHoTen.getText(),
+        nv = new Employee(0, txtHoTen.getText(),
                 dcNgaySinh.getDate(), txtaDiaChi.getText(), txtSoDienThoai.getText(),
-                txtCMT.getText(), CV.getMaChucVu(), txtEmail.getText(),
-                rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getMaChiNhanh());
+                txtCMT.getText(), CV.getPositionCode(), txtEmail.getText(),
+                rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getBranchCode());
         System.out.println(nv);
         if (NhanVienDAO.addNhanVien(nv)) {
-            List<NhanVien> tmp = NhanVienDAO.getList();
+            List<Employee> tmp = NhanVienDAO.getList();
             int size = tmp.size();
-            nv.setEmployeeNumber(tmp.get(size - 1).getEmployeeNumber());
-            if (AccountDAO.addUserName(txtTenDangNhap.getText(), nv.getEmployeeNumber())) {
+            nv.setEmployeeCode(tmp.get(size - 1).getEmployeeCode());
+            if (AccountDAO.addUserName(txtTenDangNhap.getText(), nv.getEmployeeCode())) {
                 JOptionPane.showMessageDialog(this, "Đã thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } else{
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                NhanVienDAO.delNhanVien(nv.getEmployeeNumber());
+                NhanVienDAO.delNhanVien(nv.getEmployeeCode());
             }
         } else {
             JOptionPane.showMessageDialog(this, "Kiểm tra lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -518,8 +518,8 @@ public class ThemNhanVien extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
-    private javax.swing.JComboBox<ChiNhanh> cbbChiNhanh;
-    private javax.swing.JComboBox<ChucVu> cbbChucVu;
+    private javax.swing.JComboBox<Employee> cbbChiNhanh;
+    private javax.swing.JComboBox<Position> cbbChucVu;
     private javax.swing.JCheckBox chkTrangThai;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel1;

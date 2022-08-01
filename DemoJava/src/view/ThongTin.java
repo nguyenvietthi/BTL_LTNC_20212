@@ -5,9 +5,9 @@
  */
 package view;
 
-import Bean.ChiNhanh;
-import Bean.ChucVu;
-import Bean.NhanVien;
+import Bean.Branch;
+import Bean.Position;
+import Bean.Employee;
 import DAO.ChiNhanhDAO;
 import DAO.NhanVienDAO;
 import java.util.List;
@@ -23,12 +23,12 @@ public class ThongTin extends javax.swing.JFrame {
     /**
      * Creates new form ThongTin
      */
-    private NhanVien nv;
+    private Employee nv;
     private String CV;
     DefaultComboBoxModel cityName;
-    List<ChiNhanh> cn;
+    List<Branch> cn;
     DefaultComboBoxModel chucVu;
-    List<ChucVu> cv;
+    List<Position> cv;
     QuanLyNhanVien qlnv;
 
     public ThongTin() {
@@ -36,7 +36,7 @@ public class ThongTin extends javax.swing.JFrame {
         setListChiNhanh();
     }
 
-    public ThongTin(NhanVien nv, String CV) {
+    public ThongTin(Employee nv, String CV) {
         this.nv = nv;
         this.CV = CV;
         initComponents();
@@ -45,7 +45,7 @@ public class ThongTin extends javax.swing.JFrame {
         setListChucVu();
     }
 
-    public ThongTin(QuanLyNhanVien qlnv, NhanVien nv, String CV) {
+    public ThongTin(QuanLyNhanVien qlnv, Employee nv, String CV) {
         this.nv = nv;
         this.CV = CV;
         this.qlnv = qlnv;
@@ -63,12 +63,12 @@ public class ThongTin extends javax.swing.JFrame {
         int index = 0;
         for (int i = 0; i < cn.size(); i++) {
             cityName.addElement(cn.get(i));
-            if (nv.getBranchCode() == cn.get(i).getMaChiNhanh()) {
+            if (nv.getBranchCode() == cn.get(i).getBranchCode()) {
                 index = i;
             }
         }
-        /*for (ChiNhanh a : cn) {
-            if (cn.get(index).getMaChiNhanh() != a.getMaChiNhanh()) {
+        /*for (Branch a : cn) {
+            if (cn.get(index).getBranchCode() != a.getBranchCode()) {
                 cityName.addElement(a);
             }
         }*/
@@ -77,10 +77,10 @@ public class ThongTin extends javax.swing.JFrame {
     }
 
     private void setInfo() {
-        nv = NhanVienDAO.getEmployee(nv.getEmployeeNumber());
+        nv = NhanVienDAO.getEmployee(nv.getEmployeeCode());
         txtHoTen.setText(nv.getName());
         // txtChiNhanh.setText(ChiNhanhDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
-        txtMaNhanVien.setText(String.valueOf(nv.getEmployeeNumber()));
+        txtMaNhanVien.setText(String.valueOf(nv.getEmployeeCode()));
 
         dcNgaySinh.setDate(nv.getDateOfBirth());
         txtCMT.setText(String.valueOf(nv.getCMTNumber()));
@@ -118,7 +118,7 @@ public class ThongTin extends javax.swing.JFrame {
             chucVu.addElement(cv.get(i));
         }
         for (int i = 0; i < cv.size(); i++) {
-            if (cv.get(i).getMaChucVu().equals(nv.getPositionNumBer())) {
+            if (cv.get(i).getPositionCode().equals(nv.getPositionNumBer())) {
                 index = i;
             }
         }
@@ -319,7 +319,6 @@ public class ThongTin extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(chkTrangThai)))
                         .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -450,13 +449,13 @@ public class ThongTin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     private void btnLuu() {
-        ChiNhanh CN = (ChiNhanh) cbbChiNhanh.getSelectedItem();
-        ChucVu cv = (ChucVu) cbbChucVu.getSelectedItem();
+        Branch CN = (Branch) cbbChiNhanh.getSelectedItem();
+        Position cv = (Position) cbbChucVu.getSelectedItem();
         System.out.println(dcNgaySinh.getDate());
-        nv = new NhanVien(Integer.parseInt(txtMaNhanVien.getText()), txtHoTen.getText(),
+        nv = new Employee(Integer.parseInt(txtMaNhanVien.getText()), txtHoTen.getText(),
                 dcNgaySinh.getDate(), txtaDiaChi.getText(), txtSoDienThoai.getText(),
-                txtCMT.getText(), cv.getMaChucVu(), txtEmail.getText(),
-                rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getMaChiNhanh());
+                txtCMT.getText(), cv.getPositionCode(), txtEmail.getText(),
+                rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getBranchCode());
         System.out.println(nv);
         if (NhanVienDAO.updateStudent(nv)) {
             JOptionPane.showMessageDialog(this, "Đã lưu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -541,8 +540,8 @@ public class ThongTin extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSubmit;
     private javax.swing.JButton btnSubmit1;
-    private javax.swing.JComboBox<ChiNhanh> cbbChiNhanh;
-    private javax.swing.JComboBox<ChucVu> cbbChucVu;
+    private javax.swing.JComboBox<Branch> cbbChiNhanh;
+    private javax.swing.JComboBox<Position> cbbChucVu;
     private javax.swing.JCheckBox chkTrangThai;
     private com.toedter.calendar.JDateChooser dcNgaySinh;
     private javax.swing.JLabel jLabel1;

@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import Bean.SanPham;
+import Bean.Product;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
@@ -22,8 +22,8 @@ import java.util.logging.Logger;
  * @author VIETTHI_PC
  */
 public class SanPhamDAO {
-    public static List<SanPham> getList() {
-        List<SanPham> list = new ArrayList<>();
+    public static List<Product> getList() {
+        List<Product> list = new ArrayList<>();
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -33,7 +33,7 @@ public class SanPhamDAO {
             st = conn.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
-                SanPham tmp = new SanPham(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
+                Product tmp = new Product(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -54,8 +54,8 @@ public class SanPhamDAO {
         }
         return list;
     }
-     public static List<SanPham> timGanDung(String keyWord) {
-        List<SanPham> list = new ArrayList<>();
+     public static List<Product> timGanDung(String keyWord) {
+        List<Product> list = new ArrayList<>();
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -66,7 +66,7 @@ public class SanPhamDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                SanPham tmp = new SanPham(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
+                Product tmp = new Product(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -87,8 +87,8 @@ public class SanPhamDAO {
         }
         return list;
     }
-     public static SanPham getSanPham(int MaSanPham) {
-        SanPham sp = null;
+     public static Product getSanPham(int MaSanPham) {
+        Product sp = null;
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -99,7 +99,7 @@ public class SanPhamDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                sp = new SanPham(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
+                sp = new Product(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
          
             }
         } catch (SQLException ex) {

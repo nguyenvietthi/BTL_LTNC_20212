@@ -5,9 +5,9 @@
  */
 package view;
 
-import Bean.ChiNhanh;
-import Bean.NhanVien;
-import Bean.PhongKhachSan;
+import Bean.Branch;
+import Bean.Employee;
+import Bean.HotelRoom;
 import DAO.ChiNhanhDAO;
 import DAO.DiemDanhDAO;
 import DAO.HoaDonDAO;
@@ -32,12 +32,12 @@ public class GiamDocHome extends javax.swing.JFrame {
      * Creates new form HomeF
      */
     private List<JPanel> list;
-    private NhanVien nhanVien;
-    private ChiNhanh chiNhanh;
-    private List<PhongKhachSan> listR;
+    private Employee nhanVien;
+    private Branch branch;
+    private List<HotelRoom> listR;
     private int[] ListMaHoaDon = new int[12];
     DefaultComboBoxModel cityName;
-    private ChiNhanh chonCBB;
+    private Branch chonCBB;
 
     public GiamDocHome(int EmployeeNumber) {
         initComponents();
@@ -54,7 +54,7 @@ public class GiamDocHome extends javax.swing.JFrame {
     }
 
     private void setCBBChiNhanh() {
-        List<ChiNhanh> cn = ChiNhanhDAO.getList();
+        List<Branch> cn = ChiNhanhDAO.getList();
         cityName = new DefaultComboBoxModel();
         for (int i = 0; i < cn.size(); i++) {
             cityName.addElement(cn.get(i));
@@ -64,12 +64,12 @@ public class GiamDocHome extends javax.swing.JFrame {
 
     public void setInit(int EmployeeNumber) {
         nhanVien = NhanVienDAO.getEmployee(EmployeeNumber);
-        chiNhanh = ChiNhanhDAO.getChiNhanh(nhanVien.getBranchCode());
+        branch = ChiNhanhDAO.getBranch(nhanVien.getBranchCode());
         chonCBB = ChiNhanhDAO.getList().get(0);
     }
 
     public void ShowRoom() {
-        int soPhong = PhongKhachSanDAO.SoPhongChiNhanh(chonCBB.getMaChiNhanh());
+        int soPhong = PhongKhachSanDAO.SoPhongChiNhanh(chonCBB.getBranchCode());
         for(int i = 0; i < 12; i++){
             list.get(i).show();
             list.get(i).setOpaque(true);
@@ -94,15 +94,15 @@ public class GiamDocHome extends javax.swing.JFrame {
         list.add(Room10);
         list.add(Room11);
         list.add(Room12);
-        System.out.println("Ma chi nhanh là:" + chonCBB.getMaChiNhanh());
-        listR = PhongKhachSanDAO.getListPhongKhachSan(chonCBB.getMaChiNhanh());
+        System.out.println("Ma chi nhanh là:" + chonCBB.getBranchCode());
+        listR = PhongKhachSanDAO.getListPhongKhachSan(chonCBB.getBranchCode());
     }
 
     public void setUI() {
         for (int i = 0; i < listR.size(); i++) {
-            if (listR.get(i).isTrangThai()) {
+            if (listR.get(i).isStatus()) {
                 list.get(i).setBackground(new java.awt.Color(255, 153, 102));
-                ListMaHoaDon[i] = HoaDonDAO.getHoaDon(i + 1, chonCBB.getMaChiNhanh()).getMaHoaDon();
+                ListMaHoaDon[i] = HoaDonDAO.getHoaDon(i + 1, chonCBB.getBranchCode()).getBillCode();
             } else {
                 list.get(i).setBackground(new java.awt.Color(247, 247, 247));
             }
@@ -111,7 +111,7 @@ public class GiamDocHome extends javax.swing.JFrame {
             System.out.println(ListMaHoaDon[i]);
         }*/
 
-        // txtChiNhanh.setText("Chi Nhánh " + chiNhanh.getTenChiNhanh());
+        // txtChiNhanh.setText("Chi Nhánh " + branch.getTenChiNhanh());
     }
 
     /**
@@ -789,7 +789,7 @@ public class GiamDocHome extends javax.swing.JFrame {
     private void btnDiemDanhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDiemDanhMouseClicked
         // TODO add your handling code here:
         //System.out.println(DiemDanhDAO.Check(nhanVien.getEmployeeNumber()));
-        if (!DiemDanhDAO.Check(nhanVien.getEmployeeNumber())) {
+        if (!DiemDanhDAO.Check(nhanVien.getEmployeeCode())) {
             if (DiemDanhDAO.DiemDanh(nhanVien)) {
                 JOptionPane.showMessageDialog(this, "Điểm danh thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -916,8 +916,8 @@ public class GiamDocHome extends javax.swing.JFrame {
 
     private void cbbChiNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChiNhanhActionPerformed
         // TODO add your handling code here:
-        chonCBB = (ChiNhanh) cbbChiNhanh.getSelectedItem();
-        System.out.println(chonCBB.getMaChiNhanh());
+        chonCBB = (Branch) cbbChiNhanh.getSelectedItem();
+        System.out.println(chonCBB.getBranchCode());
     }//GEN-LAST:event_cbbChiNhanhActionPerformed
 
     private void jLabel31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseClicked

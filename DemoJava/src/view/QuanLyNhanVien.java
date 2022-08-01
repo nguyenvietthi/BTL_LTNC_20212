@@ -5,7 +5,7 @@
  */
 package view;
 
-import Bean.NhanVien;
+import Bean.Employee;
 import DAO.AccountDAO;
 import DAO.ChiNhanhDAO;
 import DAO.NhanVienDAO;
@@ -27,7 +27,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     /**
      * Creates new form QuanLyNhanVien
      */
-    private List<NhanVien> nv;
+    private List<Employee> nv;
     private DefaultTableModel model;
 
     public QuanLyNhanVien() {
@@ -76,9 +76,9 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     public void showList() {
         nv = NhanVienDAO.getList();
         model.setRowCount(0);
-        for (NhanVien a : nv) {
-            model.addRow(new Object[]{a.getEmployeeNumber(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getTen(),
-                ChiNhanhDAO.getChiNhanh(a.getBranchCode()).getTenChiNhanh(), TrangThai(a.isStatus()), a.getEmail(),
+        for (Employee a : nv) {
+            model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getName(),
+                ChiNhanhDAO.getBranch(a.getBranchCode()).getBranchCode(), TrangThai(a.isStatus()), a.getEmail(),
                 a.getAddress(), GioiTinh(a.isSex())});
         }
         model.setRowCount(nv.size() + 13);
@@ -215,9 +215,9 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         if (txtTim.getText() != "") {
             nv = NhanVienDAO.timGanDung(txtTim.getText());
             model.setRowCount(0);
-            for (NhanVien a : nv) {
-                model.addRow(new Object[]{a.getEmployeeNumber(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getTen(),
-                    ChiNhanhDAO.getChiNhanh(a.getBranchCode()).getTenChiNhanh(), TrangThai(a.isStatus()), a.getEmail(),
+            for (Employee a : nv) {
+                model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getName(),
+                    ChiNhanhDAO.getBranch(a.getBranchCode()).getBranchName(), TrangThai(a.isStatus()), a.getEmail(),
                     a.getAddress(), GioiTinh(a.isSex())});
             }
             model.setRowCount(nv.size() + 13);
@@ -248,7 +248,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         int y = tblNhanVien.getSelectedRow();
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận xóa!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            if(NhanVienDAO.delNhanVien(nv.get(y).getEmployeeNumber()) && AccountDAO.delAccount(nv.get(y).getEmployeeNumber())){
+            if(NhanVienDAO.delNhanVien(nv.get(y).getEmployeeCode()) && AccountDAO.delAccount(nv.get(y).getEmployeeCode())){
                 nv = NhanVienDAO.getList();
                 showList();
             }

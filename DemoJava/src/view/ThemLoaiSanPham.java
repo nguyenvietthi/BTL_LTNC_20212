@@ -5,11 +5,8 @@
  */
 package view;
 
-import Bean.KhachHang;
-import Bean.SanPham;
-import DAO.KhachHangDAO;
+import Bean.Product;
 import DAO.KhoDAO;
-import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**
@@ -216,10 +213,10 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
 
     private void btnThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMouseClicked
         // TODO add your handling code here:
-        SanPham sp = new SanPham();
-        sp.setGia(Integer.parseInt(txtGiaSP.getText()));
-        sp.setMoTa(txtMoTa.getText());
-        sp.setTen(txtTenSP.getText());
+        Product sp = new Product();
+        sp.setPrice(Integer.parseInt(txtGiaSP.getText()));
+        sp.setDescription(txtMoTa.getText());
+        sp.setName(txtTenSP.getText());
         if (KhoDAO.ThemSapPham(sp)) {
             JOptionPane.showMessageDialog(this, "Đã thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             nk.showList();

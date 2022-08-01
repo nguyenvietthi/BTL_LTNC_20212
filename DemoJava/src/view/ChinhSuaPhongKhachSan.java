@@ -5,7 +5,7 @@
  */
 package view;
 
-import Bean.PhongKhachSan;
+import Bean.HotelRoom;
 import DAO.ChiNhanhDAO;
 import DAO.PhongKhachSanDAO;
 import javax.swing.JOptionPane;
@@ -19,10 +19,10 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
     /**
      * Creates new form ThongTin
      */
-    private PhongKhachSan pks;
+    private HotelRoom pks;
     private QuanLyPhongKhachSan ql;
 
-    public ChinhSuaPhongKhachSan(PhongKhachSan pks, QuanLyPhongKhachSan ql) {
+    public ChinhSuaPhongKhachSan(HotelRoom pks, QuanLyPhongKhachSan ql) {
         this.pks = pks;
         this.ql = ql;
         initComponents();
@@ -40,12 +40,12 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
     }
      */
     private void setUI() {
-        txtChiNhanh.setText(ChiNhanhDAO.getChiNhanh(pks.getMaChiNhanh()).getTenChiNhanh());
-        txtMaPhong.setText(String.valueOf(pks.getMaPhong()));
+        txtChiNhanh.setText(ChiNhanhDAO.getBranch(pks.getBranchCode()).getBranchName());
+        txtMaPhong.setText(String.valueOf(pks.getRoomCode()));
         txtChiNhanh.setEnabled(false);
         txtMaPhong.setEnabled(false);
-        txtGiaThue.setText(String.valueOf(pks.getGiaThue()));
-        txtMoTa.setText(pks.getMoTa());
+        txtGiaThue.setText(String.valueOf(pks.getPrice()));
+        txtMoTa.setText(pks.getDescription());
         
 
     }
@@ -257,8 +257,8 @@ public class ChinhSuaPhongKhachSan extends javax.swing.JFrame {
 
     private void txtLuuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtLuuMouseClicked
         // TODO add your handling code here:
-        pks.setGiaThue(Integer.parseInt(txtGiaThue.getText()));
-        pks.setMoTa(txtMoTa.getText());
+        pks.setPrice(Integer.parseInt(txtGiaThue.getText()));
+        pks.setDescription(txtMoTa.getText());
         if(PhongKhachSanDAO.ChinhSua(pks)){
             JOptionPane.showMessageDialog(this, "Đã lưu", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             ql.showList();

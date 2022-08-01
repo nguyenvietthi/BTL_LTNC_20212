@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import Bean.ChiNhanh;
+import Bean.Branch;
 import DB.DBConnection;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -22,20 +22,20 @@ import java.util.logging.Logger;
  */
 public class ChiNhanhDAO {
 
-    public static ChiNhanh getChiNhanh(int maChiNhanh) {
-        ChiNhanh cn = null;
+    public static Branch getBranch(int branchCode) {
+        Branch cn = null;
         com.mysql.jdbc.Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         java.sql.PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT * FROM qlks.chinhanh WHERE chinhanh.BranchCode = ?;";
         try {
             ps = conn.prepareStatement(SQL);
-            ps.setInt(1, maChiNhanh);
+            ps.setInt(1, branchCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                cn = new ChiNhanh(rs.getInt("BranchCode"), rs.getString("BranchName"),
-                        rs.getString("Address"), rs.getInt("PhoneNumber"), rs.getString("Email"));;
+                cn = new Branch(rs.getInt("BranchCode"), rs.getString("BranchName"),
+                        rs.getString("Address"), rs.getInt("PhoneNumber"), rs.getString("Email"));
             }
         } catch (SQLException ex) {
             System.out.println("catch");
@@ -60,8 +60,8 @@ public class ChiNhanhDAO {
         return cn;
     }
 
-    public static List<ChiNhanh> getChiNhanh() {
-        List<ChiNhanh> cn = new ArrayList<ChiNhanh>();
+    public static List<Branch> getChiNhanh() {
+        List<Branch> cn = new ArrayList<Branch>();
         com.mysql.jdbc.Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         java.sql.PreparedStatement ps = null;
         ResultSet rs = null;
@@ -70,7 +70,7 @@ public class ChiNhanhDAO {
             ps = conn.prepareStatement(SQL);
             rs = ps.executeQuery();
             while (rs.next()) {
-                ChiNhanh tmp = new ChiNhanh(rs.getInt("BranchCode"), rs.getString("BranchName"),
+                Branch tmp = new Branch(rs.getInt("BranchCode"), rs.getString("BranchName"),
                         rs.getString("Address"), rs.getInt("PhoneNumber"), rs.getString("Email"));;
                 cn.add(tmp);
             }
@@ -97,8 +97,8 @@ public class ChiNhanhDAO {
         return cn;
     }
 
-    public static List<ChiNhanh> getList() {
-        List<ChiNhanh> list = new ArrayList<>();
+    public static List<Branch> getList() {
+        List<Branch> list = new ArrayList<>();
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -108,7 +108,7 @@ public class ChiNhanhDAO {
             st = conn.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
-                ChiNhanh cn = new ChiNhanh(rs.getInt("BranchCode"), rs.getString("BranchName"),
+                Branch cn = new Branch(rs.getInt("BranchCode"), rs.getString("BranchName"),
                         rs.getString("Address"), rs.getInt("PhoneNumber"), rs.getString("Email"));
                 list.add(cn);
             }

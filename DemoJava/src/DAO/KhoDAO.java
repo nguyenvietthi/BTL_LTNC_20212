@@ -6,15 +6,13 @@
 package DAO;
 
 import Bean.HoaDonNhapKho;
-import Bean.NhanVien;
-import Bean.SanPham;
+import Bean.Product;
 import Bean.SanPhamNhapKho;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,8 +23,44 @@ import java.util.logging.Logger;
  * @author VIETTHI_PC
  */
 public class KhoDAO {
-
-    public static List<Object> SanPham(int MaChiNhanh) {
+    
+    public static List<Product> listProductInBranch(int branchCode) {
+        List<Product> list = new ArrayList<>();
+        Connection conn = DBConnection.createConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String SQL = "SELECT * FROM qlks.sanpham INNER JOIN qlks.chitietkho ON "
+                + "chitietkho.MaSanPham = sanpham.MaSanPham WHERE chitietkho.MaChiNhanh = ?";
+        try {
+            ps = (PreparedStatement) conn.prepareCall(SQL);
+            ps.setInt(1, branchCode);
+            ps.execute();
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Product tmp = new Product(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
+                list.add(tmp);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(HoaDonDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(HoaDonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(HoaDonDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return list;
+    }
+    public static List<Object> listProduct(int MaChiNhanh) {
         List<Object> list = new ArrayList<>();
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -426,18 +460,18 @@ public class KhoDAO {
         }
         return list;
     }
-    public static boolean ThemSapPham(SanPham sp) {
+    public static boolean ThemSapPham(Product sp) {
 
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String sql = "INSERT INTO qlks.sanpham(Ten, Gia, MoTa) VALUES(?, ?, ?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
-            ps.setString(1, sp.getTen());
-            ps.setInt(2, sp.getGia());
+            ps.setString(1, sp.getName());
+            ps.setInt(2, sp.getPrice());
             
         
-            ps.setString(3, sp.getMoTa());
+            ps.setString(3, sp.getDescription());
 
             ps.execute();
             return true;

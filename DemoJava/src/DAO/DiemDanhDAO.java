@@ -5,7 +5,7 @@
  */
 package DAO;
 
-import Bean.NhanVien;
+import Bean.Employee;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
@@ -20,14 +20,14 @@ import java.util.logging.Logger;
  */
 public class DiemDanhDAO {
     
-      public static boolean DiemDanh(NhanVien nv) {
+      public static boolean DiemDanh(Employee nv) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String sql = "INSERT INTO qlks.chamcong(MaChiNhanh, MaNhanVien, NgayGio) VALUES(?,?,localtime())";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, nv.getBranchCode());
-            ps.setInt(2, nv.getEmployeeNumber());
+            ps.setInt(2, nv.getEmployeeCode());
             ps.execute();
             return true;
         } catch (SQLException ex) {

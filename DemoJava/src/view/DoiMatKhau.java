@@ -6,7 +6,7 @@
 package view;
 
 import Bean.Account;
-import Bean.NhanVien;
+import Bean.Employee;
 import DAO.AccountDAO;
 import javax.swing.JOptionPane;
 
@@ -19,9 +19,9 @@ public class DoiMatKhau extends javax.swing.JFrame {
     /**
      * Creates new form DoiMatKhau
      */
-    private NhanVien nv;
+    private Employee nv;
     private ThongTin tt;
-    public DoiMatKhau(NhanVien nv, ThongTin tt) {
+    public DoiMatKhau(Employee nv, ThongTin tt) {
         this.nv = nv;
         this.tt = tt;
         initComponents();
@@ -147,13 +147,13 @@ public class DoiMatKhau extends javax.swing.JFrame {
     }
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
 
-        Account acc = AccountDAO.findAccount(nv.getEmployeeNumber());
+        Account acc = AccountDAO.findAccount(nv.getEmployeeCode());
         String pass = String.valueOf(txtCu.getPassword());
         String moi = String.valueOf(txtMoi.getPassword());
         String moi2 = String.valueOf(txtMoi2.getPassword());
         if(pass.equals(acc.getPassWord())) {
         if(moi.equals(moi2)) {
-            if (AccountDAO.changePass(nv.getEmployeeNumber(), moi))
+            if (AccountDAO.changePass(nv.getEmployeeCode(), moi))
             JOptionPane.showMessageDialog(this, "Đổi mật khẩu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
         } else JOptionPane.showMessageDialog(this, "Sai mật khẩu hoặc mật khẩu mới không trùng khớp", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

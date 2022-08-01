@@ -5,9 +5,9 @@
  */
 package view;
 
-import Bean.ChiNhanh;
-import Bean.NhanVien;
-import Bean.PhongKhachSan;
+import Bean.Branch;
+import Bean.Employee;
+import Bean.HotelRoom;
 import DAO.ChiNhanhDAO;
 import DAO.DiemDanhDAO;
 import DAO.HoaDonDAO;
@@ -30,9 +30,9 @@ public class EmployeeHome extends javax.swing.JFrame {
      * Creates new form HomeF
      */
     private List<JPanel> list;
-    private NhanVien nhanVien;
-    private ChiNhanh chiNhanh;
-    private List<PhongKhachSan> listR;
+    private Employee nhanVien;
+    private Branch branch;
+    private List<HotelRoom> listR;
     private int[] ListMaHoaDon = new int[12];
 
     public EmployeeHome(int EmployeeNumber) {
@@ -47,7 +47,7 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void setInit(int EmployeeNumber) {
         nhanVien = NhanVienDAO.getEmployee(EmployeeNumber);
-        chiNhanh = ChiNhanhDAO.getChiNhanh(nhanVien.getBranchCode());
+        branch = ChiNhanhDAO.getBranch(nhanVien.getBranchCode());
     }
 
     private void ShowRoom() {
@@ -77,9 +77,9 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void setUI() {
         for (int i = 0; i < listR.size(); i++) {
-            if (listR.get(i).isTrangThai()) {
+            if (listR.get(i).isStatus()) {
                 list.get(i).setBackground(new java.awt.Color(255, 153, 102));
-                ListMaHoaDon[i] = HoaDonDAO.getHoaDon(i + 1, nhanVien.getBranchCode()).getMaHoaDon();
+                ListMaHoaDon[i] = HoaDonDAO.getHoaDon(i + 1, nhanVien.getBranchCode()).getBillCode();
             } else {
                 list.get(i).setBackground(new java.awt.Color(247, 247, 247));
             }
@@ -88,7 +88,7 @@ public class EmployeeHome extends javax.swing.JFrame {
             System.out.println(ListMaHoaDon[i]);
         }
         EmployeeName.setText("NHÂN VIÊN: " + nhanVien.getName().toUpperCase());
-        txtChiNhanh.setText("Chi Nhánh " + chiNhanh.getTenChiNhanh());
+        txtChiNhanh.setText("Chi Nhánh " + branch.getBranchName());
     }
 
     /**
@@ -666,7 +666,7 @@ public class EmployeeHome extends javax.swing.JFrame {
     private void btnDiemDanhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDiemDanhMouseClicked
         // TODO add your handling code here:
         //System.out.println(DiemDanhDAO.Check(nhanVien.getEmployeeNumber()));
-        if (!DiemDanhDAO.Check(nhanVien.getEmployeeNumber())) {
+        if (!DiemDanhDAO.Check(nhanVien.getEmployeeCode())) {
             if (DiemDanhDAO.DiemDanh(nhanVien)) {
                 JOptionPane.showMessageDialog(this, "Điểm danh thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
@@ -772,15 +772,15 @@ public class EmployeeHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel4MouseClicked
 
     private void checkTrangThaiNhanPhong(int MaPhong) {
-        if (!listR.get(MaPhong - 1).isTrangThai()) {
+        if (!listR.get(MaPhong - 1).isStatus()) {
             new NhapThongTinKhachHang(MaPhong, this).setVisible(true);
         } else {
-            new ThanhToan(MaPhong, ListMaHoaDon[MaPhong - 1], this).setVisible(true);
+            new ThanhToan(MaPhong, ListMaHoaDon[MaPhong - 1], branch.getBranchCode() , this).setVisible(true);
         }
     }
 
     protected void traPhong(int MaPhong) {
-        listR.get(MaPhong - 1).setTrangThai(false);
+        listR.get(MaPhong - 1).setStatus(false);
         if (PhongKhachSanDAO.setPhong(listR.get(MaPhong - 1))) {
             ListMaHoaDon[MaPhong - 1] = 0;
             setUI();
@@ -790,10 +790,10 @@ public class EmployeeHome extends javax.swing.JFrame {
     protected void nhanPhong(int MaPhong, int MaKhachHang) {
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận nhận phòng!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            if (HoaDonDAO.themHoaDon(nhanVien, listR.get(MaPhong - 1).getMaPhong(), MaKhachHang, 0.1)) {
-                listR.get(MaPhong - 1).setTrangThai(true);
+            if (HoaDonDAO.themHoaDon(nhanVien, listR.get(MaPhong - 1).getRoomCode(), MaKhachHang, 0.1)) {
+                listR.get(MaPhong - 1).setStatus(true);
                 if (PhongKhachSanDAO.setPhong(listR.get(MaPhong - 1))) {
-                    ListMaHoaDon[MaPhong - 1] = HoaDonDAO.getHoaDon(MaPhong, nhanVien.getBranchCode()).getMaHoaDon();
+                    ListMaHoaDon[MaPhong - 1] = HoaDonDAO.getHoaDon(MaPhong, nhanVien.getBranchCode()).getBillCode();
                     setUI();
                 }
             }

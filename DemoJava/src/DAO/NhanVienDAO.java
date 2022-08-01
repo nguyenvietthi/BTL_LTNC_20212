@@ -5,8 +5,8 @@
  */
 package DAO;
 
-import Bean.ChucVu;
-import Bean.NhanVien;
+import Bean.Position;
+import Bean.Employee;
 import DB.DBConnection;
 import com.mysql.jdbc.PreparedStatement;
 import java.sql.Connection;
@@ -26,8 +26,8 @@ import java.util.logging.Logger;
  */
 public class NhanVienDAO {
 
-    public static List<NhanVien> getList() {
-        List<NhanVien> list = new ArrayList<>();
+    public static List<Employee> getList() {
+        List<Employee> list = new ArrayList<>();
         Connection conn = null;
         Statement st = null;
         ResultSet rs = null;
@@ -37,7 +37,7 @@ public class NhanVienDAO {
             st = conn.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
-                NhanVien tmp = new NhanVien(rs.getInt("EmployeeNumber"), rs.getString("Name"), rs.getDate("DateOfBirth"), rs.getString("Address"), rs.getString("NumberPhone"), rs.getString("CMTNumber"), rs.getString("PositionNumBer"), rs.getString("Email"), rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
+                Employee tmp = new Employee(rs.getInt("EmployeeNumber"), rs.getString("Name"), rs.getDate("DateOfBirth"), rs.getString("Address"), rs.getString("NumberPhone"), rs.getString("CMTNumber"), rs.getString("PositionNumBer"), rs.getString("Email"), rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
                 list.add(tmp);
                 System.out.println("ok");
             }
@@ -62,7 +62,7 @@ public class NhanVienDAO {
         return list;
     }
 
-    public static boolean addNhanVien(NhanVien nv) {
+    public static boolean addNhanVien(Employee nv) {
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -73,7 +73,7 @@ public class NhanVienDAO {
             ps.setString(1, nv.getName());
             try {
                 ps.setString(2, fm.format(nv.getDateOfBirth()));
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 return false;
             }
             ps.setString(3, nv.getAddress());
@@ -108,8 +108,8 @@ public class NhanVienDAO {
         return false;
     }
 
-    public static NhanVien getEmployee(int EmployeeNumber) {
-        NhanVien nv = null;
+    public static Employee getEmployee(int EmployeeNumber) {
+        Employee nv = null;
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -120,7 +120,7 @@ public class NhanVienDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                nv = new NhanVien(rs.getInt("EmployeeNumber"), rs.getString("Name"), rs.getDate("DateOfBirth"),
+                nv = new Employee(rs.getInt("EmployeeNumber"), rs.getString("Name"), rs.getDate("DateOfBirth"),
                         rs.getString("Address"), rs.getString("NumberPhone"), rs.getString("CMTNumber"), rs.getString("PositionNumBer"),
                         rs.getString("Email"), rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
             }
@@ -147,8 +147,8 @@ public class NhanVienDAO {
         return nv;
     }
 
-    public static List<NhanVien> timGanDung(String keyWord) {
-        List<NhanVien> list = new ArrayList<>();
+    public static List<Employee> timGanDung(String keyWord) {
+        List<Employee> list = new ArrayList<>();
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -159,7 +159,7 @@ public class NhanVienDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                NhanVien nv = new NhanVien(rs.getInt("EmployeeNumber"), rs.getString("Name"),
+                Employee nv = new Employee(rs.getInt("EmployeeNumber"), rs.getString("Name"),
                         rs.getDate("DateOfBirth"), rs.getString("Address"), rs.getString("NumberPhone"),
                         rs.getString("CMTNumber"), rs.getString("PositionNumBer"), rs.getString("Email"),
                         rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
@@ -188,8 +188,8 @@ public class NhanVienDAO {
         return list;
     }
 
-    public static ChucVu getChucVu(String MaChucVu) {
-        ChucVu cv = null;
+    public static Position getChucVu(String MaChucVu) {
+        Position cv = null;
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -200,7 +200,7 @@ public class NhanVienDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                cv = new ChucVu(rs.getString("MaChucVu"), rs.getString("ChucVu"), rs.getInt("LuongCoBan"));
+                cv = new Position(rs.getString("MaChucVu"), rs.getString("MaChucVu"), rs.getInt("LuongCoBan"));
             }
         } catch (SQLException ex) {
             System.out.println("catch");
@@ -225,8 +225,8 @@ public class NhanVienDAO {
         return cv;
     }
 
-    public static List<ChucVu> getListChucVu() {
-        List<ChucVu> list = new ArrayList<>();
+    public static List<Position> getListChucVu() {
+        List<Position> list = new ArrayList<>();
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -236,7 +236,7 @@ public class NhanVienDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                ChucVu cv = new ChucVu(rs.getString("MaChucVu"), rs.getString("ChucVu"), rs.getInt("LuongCoBan"));
+                Position cv = new Position(rs.getString("MaChucVu"), rs.getString("ChucVu"), rs.getInt("LuongCoBan"));
                 list.add(cv);
             }
         } catch (SQLException ex) {
@@ -293,7 +293,7 @@ public class NhanVienDAO {
         return false;
     }
 
-    public static boolean updateStudent(NhanVien nv) {
+    public static boolean updateStudent(Employee nv) {
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -310,7 +310,7 @@ public class NhanVienDAO {
             ps.setBoolean(7, nv.isSex());
             ps.setBoolean(8, nv.isStatus());
             ps.setInt(9, nv.getBranchCode());
-            ps.setInt(10, nv.getEmployeeNumber());
+            ps.setInt(10, nv.getEmployeeCode());
             ps.execute();
             return true;
         } catch (SQLException ex) {
@@ -371,14 +371,14 @@ public class NhanVienDAO {
     
     public static void main(String[] args) throws ParseException {
         //if(addSinhVien(new SinhVien(20182798, "Nguyễn Việt Thi", 20, "Điện Tử 10"))) System.out.println("OK");
-        List<NhanVien> list = getList();
-        for (NhanVien tmp : list) {
+        List<Employee> list = getList();
+        for (Employee tmp : list) {
             System.out.println(tmp.toString());
         }
         /* SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
         java.util.Date da = fm.parse("20/03/1999");
         System.out.println(da);
-        NhanVien nv = new NhanVien(9, "a", da , "a", 123, 456, "PGD", "adasda" );*/
+        Employee nv = new Employee(9, "a", da , "a", 123, 456, "PGD", "adasda" );*/
 
         // System.out.println(addSinhVien(nv));
     }

@@ -5,8 +5,8 @@
  */
 package view;
 
-import Bean.ChiNhanh;
-import Bean.PhongKhachSan;
+import Bean.Branch;
+import Bean.HotelRoom;
 import DAO.ChiNhanhDAO;
 import DAO.PhongKhachSanDAO;
 import java.awt.Font;
@@ -27,7 +27,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
      * Creates new form QuanLyNhanVien
      */
     DefaultComboBoxModel TenChiNhanh;
-    private List<ChiNhanh> chiNhanh;
+    private List<Branch> chiNhanh;
     private DefaultTableModel model;
 
     public QuanLyPhongKhachSan() {
@@ -53,7 +53,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
 
     }
     private void setComboBox(){
-        List<ChiNhanh> cn = ChiNhanhDAO.getList();
+        List<Branch> cn = ChiNhanhDAO.getList();
         TenChiNhanh = new DefaultComboBoxModel();
         TenChiNhanh.addElement("Tất cả");
         for (int i = 0; i < cn.size(); i++) {
@@ -80,20 +80,20 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
     public void showList() {
         chiNhanh = ChiNhanhDAO.getChiNhanh();
         model.setRowCount(0);
-        for (ChiNhanh a : chiNhanh) {
-             List<PhongKhachSan> pks = PhongKhachSanDAO.getListPhongKhachSan(a.getMaChiNhanh());
-            for(PhongKhachSan b : pks){
-                model.addRow(new Object[]{a.getMaChiNhanh(), a.getTenChiNhanh(),
-                    b.getMaPhong(), b.getGiaThue(), b.getMoTa(),TrangThai(b.isTrangThai())});
+        for (Branch a : chiNhanh) {
+             List<HotelRoom> pks = PhongKhachSanDAO.getListPhongKhachSan(a.getBranchCode());
+            for(HotelRoom b : pks){
+                model.addRow(new Object[]{a.getBranchCode(), a.getBranchName(),
+                    b.getRoomCode(), b.getPrice(), b.getDescription(),TrangThai(b.isStatus())});
             }  
         }
     }
-     public void showList(ChiNhanh cn) {
+     public void showList(Branch cn) {
         model.setRowCount(0);
-             List<PhongKhachSan> pks = PhongKhachSanDAO.getListPhongKhachSan(cn.getMaChiNhanh());
-            for(PhongKhachSan b : pks){
-                model.addRow(new Object[]{cn.getMaChiNhanh(), cn.getTenChiNhanh(),
-                    b.getMaPhong(), b.getGiaThue(), b.getMoTa(),TrangThai(b.isTrangThai())});
+             List<HotelRoom> pks = PhongKhachSanDAO.getListPhongKhachSan(cn.getBranchCode());
+            for(HotelRoom b : pks){
+                model.addRow(new Object[]{cn.getBranchCode(), cn.getBranchName(),
+                    b.getRoomCode(), b.getPrice(), b.getDescription(),TrangThai(b.isStatus())});
             }  
             model.setRowCount(pks.size() + 13);
         }
@@ -196,7 +196,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         int y =tblchiNhanh.getSelectedRow();
         int MaPhong = (int) tblchiNhanh.getValueAt(y, 2);
         int MaChiNhanh = (int) tblchiNhanh.getValueAt(y, 0);
-        PhongKhachSan a = PhongKhachSanDAO.Phong(MaChiNhanh, MaPhong);
+        HotelRoom a = PhongKhachSanDAO.Phong(MaChiNhanh, MaPhong);
         new ChinhSuaPhongKhachSan(a, this).setVisible(true);
         this.setEnabled(false);
         /*int y = tblchiNhanh.getSelectedRow();
@@ -207,7 +207,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
     private void cbbChiNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChiNhanhActionPerformed
         // TODO add your handling code here:
         try {
-            ChiNhanh chiNhanh = (ChiNhanh)cbbChiNhanh.getSelectedItem();
+            Branch chiNhanh = (Branch)cbbChiNhanh.getSelectedItem();
             showList(chiNhanh);
         } catch (Exception e) {
             showList();

@@ -6,8 +6,8 @@
 package view;
 
 import Bean.HoaDonNhapKho;
-import Bean.NhanVien;
-import Bean.SanPham;
+import Bean.Employee;
+import Bean.Product;
 import Bean.SanPhamNhapKho;
 import DAO.KhoDAO;
 import DAO.NhanVienDAO;
@@ -33,7 +33,7 @@ public class NhapKho extends javax.swing.JFrame {
      */
     private DefaultTableModel model1;
     private DefaultTableModel model2;
-    private NhanVien nv;
+    private Employee nv;
     private List<SanPhamNhapKho> listSPNK;
     private Kho kho;
 
@@ -44,7 +44,7 @@ public class NhapKho extends javax.swing.JFrame {
         showList();
     }
 
-    public NhapKho(NhanVien nv, Kho kho) {
+    public NhapKho(Employee nv, Kho kho) {
         this.nv = nv;
         this.kho = kho;
         initComponents();
@@ -226,10 +226,10 @@ public class NhapKho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void showList() {
-        List<SanPham> list = SanPhamDAO.getList();
+        List<Product> list = SanPhamDAO.getList();
         model1.setRowCount(0);
-        for (SanPham a : list) {
-            model1.addRow(new Object[]{a.getMaSanPham(), a.getTen()});
+        for (Product a : list) {
+            model1.addRow(new Object[]{a.getProductCode(), a.getName()});
         }
         model1.setRowCount(list.size() + 15);
     }
@@ -238,7 +238,7 @@ public class NhapKho extends javax.swing.JFrame {
         model2.setRowCount(0);
         for (SanPhamNhapKho a : listSPNK) {
             model2.addRow(new Object[]{a.getMaSanPham(),
-                SanPhamDAO.getSanPham(a.getMaSanPham()).getTen(),
+                SanPhamDAO.getSanPham(a.getMaSanPham()).getName(),
                 a.getSoLuong(),
                 a.getGia()});
         }
@@ -304,11 +304,11 @@ public class NhapKho extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         if (txtTim.getText() != "") {
-            List<SanPham> list = SanPhamDAO.timGanDung(txtTim.getText());
+            List<Product> list = SanPhamDAO.timGanDung(txtTim.getText());
             model1.setRowCount(0);
-            for (SanPham a : list) {
+            for (Product a : list) {
                 model1.addRow(new Object[]{
-                    a.getMaSanPham(), a.getTen()
+                    a.getProductCode(), a.getName()
                 });
                 System.out.println(a.toString());
             }
@@ -330,7 +330,7 @@ public class NhapKho extends javax.swing.JFrame {
         // TODO add your handling code here:
         Date now = new Date();
         try {
-            HoaDonNhapKho hd = new HoaDonNhapKho(0, nv.getBranchCode(), nv.getEmployeeNumber(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
+            HoaDonNhapKho hd = new HoaDonNhapKho(0, nv.getBranchCode(), nv.getEmployeeCode(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
             System.out.println(hd);
             if (KhoDAO.themHoaDonNhap(hd)) {
                 int MHD = KhoDAO.MaHoaDonMoiThem();
