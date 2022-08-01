@@ -8,7 +8,7 @@ package view;
 import Bean.Employee;
 import DAO.AccountDAO;
 import DAO.BranchDAO;
-import DAO.NhanVienDAO;
+import DAO.EmployeeDAO;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.util.List;
@@ -74,10 +74,10 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
 
     public void showList() {
-        nv = NhanVienDAO.getList();
+        nv = EmployeeDAO.getListEmployee();
         model.setRowCount(0);
         for (Employee a : nv) {
-            model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getName(),
+            model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionNumBer()).getName(),
                 BranchDAO.getBranch(a.getBranchCode()).getBranchCode(), TrangThai(a.isStatus()), a.getEmail(),
                 a.getAddress(), GioiTinh(a.isSex())});
         }
@@ -212,11 +212,11 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private void txtTimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKeyPressed
         // TODO add your handling code here:
         // TODO add your handling code here:
-        if (txtTim.getText() != "") {
-            nv = NhanVienDAO.timGanDung(txtTim.getText());
+        if (!"".equals(txtTim.getText())) {
+            nv = EmployeeDAO.findEmployee(txtTim.getText());
             model.setRowCount(0);
             for (Employee a : nv) {
-                model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), NhanVienDAO.getChucVu(a.getPositionNumBer()).getName(),
+                model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionNumBer()).getName(),
                     BranchDAO.getBranch(a.getBranchCode()).getBranchName(), TrangThai(a.isStatus()), a.getEmail(),
                     a.getAddress(), GioiTinh(a.isSex())});
             }
@@ -248,8 +248,8 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         int y = tblNhanVien.getSelectedRow();
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận xóa!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            if(NhanVienDAO.delNhanVien(nv.get(y).getEmployeeCode()) && AccountDAO.delAccount(nv.get(y).getEmployeeCode())){
-                nv = NhanVienDAO.getList();
+            if(EmployeeDAO.delEmployee(nv.get(y).getEmployeeCode()) && AccountDAO.delAccount(nv.get(y).getEmployeeCode())){
+                nv = EmployeeDAO.getListEmployee();
                 showList();
             }
         }

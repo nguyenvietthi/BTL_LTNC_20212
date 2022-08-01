@@ -11,7 +11,7 @@ import Bean.HotelRoom;
 import DAO.BranchDAO;
 import DAO.AttendanceDAO;
 import DAO.BillDAO;
-import DAO.NhanVienDAO;
+import DAO.EmployeeDAO;
 import DAO.PhongKhachSanDAO;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import thread.Clock;
-import thread.TrangThaiPhong;
+import thread.RoomStatus;
 
 /**
  *
@@ -46,7 +46,7 @@ public class GiamDocHome extends javax.swing.JFrame {
         setInit(EmployeeNumber);
         setCBBChiNhanh();
         EmployeeName.setText("NHÂN VIÊN: " + nhanVien.getName().toUpperCase());
-        TrangThaiPhong tp = new TrangThaiPhong(this);
+        RoomStatus tp = new RoomStatus(this);
         tp.start();
         //setList();
         // ShowRoom();
@@ -63,7 +63,7 @@ public class GiamDocHome extends javax.swing.JFrame {
     }
 
     public void setInit(int EmployeeNumber) {
-        nhanVien = NhanVienDAO.getEmployee(EmployeeNumber);
+        nhanVien = EmployeeDAO.getEmployee(EmployeeNumber);
         branch = BranchDAO.getBranch(nhanVien.getBranchCode());
         chonCBB = BranchDAO.getListBranch().get(0);
     }

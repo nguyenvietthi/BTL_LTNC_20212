@@ -15,11 +15,11 @@ import view.GiamDocHome;
  *
  * @author VIETTHI_PC
  */
-public class TrangThaiPhong extends Thread {
+public class RoomStatus extends Thread {
 
     private GiamDocHome gd;
 
-    public TrangThaiPhong(GiamDocHome gd) {
+    public RoomStatus(GiamDocHome gd) {
         this.gd = gd;
     }
 
@@ -30,9 +30,9 @@ public class TrangThaiPhong extends Thread {
             gd.ShowRoom();
             gd.setUI();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException ex) {
-                Logger.getLogger(TrangThaiPhong.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(RoomStatus.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -40,9 +40,5 @@ public class TrangThaiPhong extends Thread {
     @Override
     public void start() {
         super.start();
-    }
-
-    public static void main(String[] args) {
-        List<String> list = new ArrayList<>(); // ở đây cũng không được
     }
 }

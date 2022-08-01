@@ -38,7 +38,4 @@ public class Clock extends Thread{
     public void start(){
         super.start();
     }
-    public static void main(String[] args) {
-        List<String> list = new ArrayList <>(); // ở đây cũng không được
-    }
 }

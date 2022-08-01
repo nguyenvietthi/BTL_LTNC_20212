@@ -24,9 +24,9 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class NhanVienDAO {
+public class EmployeeDAO {
 
-    public static List<Employee> getList() {
+    public static List<Employee> getListEmployee() {
         List<Employee> list = new ArrayList<>();
         Connection conn = null;
         Statement st = null;
@@ -42,27 +42,27 @@ public class NhanVienDAO {
                 System.out.println("ok");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (st != null) {
                 try {
                     st.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return list;
     }
 
-    public static boolean addNhanVien(Employee nv) {
+    public static boolean addEmpolyee(Employee nv) {
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -87,21 +87,21 @@ public class NhanVienDAO {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
 
         } finally {
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -126,28 +126,28 @@ public class NhanVienDAO {
             }
         } catch (SQLException ex) {
             System.out.println("catch");
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
                     System.out.println("finally");
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return nv;
     }
 
-    public static List<Employee> timGanDung(String keyWord) {
+    public static List<Employee> findEmployee(String keyWord) {
         List<Employee> list = new ArrayList<>();
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -167,28 +167,28 @@ public class NhanVienDAO {
             }
         } catch (SQLException ex) {
             System.out.println("catch");
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
                     System.out.println("finally");
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return list;
     }
 
-    public static Position getChucVu(String MaChucVu) {
+    public static Position getPosition(String positionCode) {
         Position cv = null;
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -196,7 +196,7 @@ public class NhanVienDAO {
         String SQL = "SELECT * FROM qlks.chucvu WHERE MaChucVu = ?;";
         try {
             ps = (PreparedStatement) conn.prepareStatement(SQL);
-            ps.setString(1, MaChucVu);
+            ps.setString(1, positionCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
@@ -204,28 +204,28 @@ public class NhanVienDAO {
             }
         } catch (SQLException ex) {
             System.out.println("catch");
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
                     System.out.println("finally");
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return cv;
     }
 
-    public static List<Position> getListChucVu() {
+    public static List<Position> getListPosition() {
         List<Position> list = new ArrayList<>();
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -241,59 +241,59 @@ public class NhanVienDAO {
             }
         } catch (SQLException ex) {
             System.out.println("catch");
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
                     System.out.println("finally");
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (rs != null) {
                 try {
                     rs.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return list;
     }
 
-    public static boolean delNhanVien(int MaNhanVien) {
+    public static boolean delEmployee(int employeeCode) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
 
         try {
             String sql = "DELETE FROM qlks.nhanvien WHERE EmployeeNumber = ?";
             ps = (PreparedStatement) conn.prepareStatement(sql);
-            ps.setInt(1, MaNhanVien);
+            ps.setInt(1, employeeCode);
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return false;
     }
 
-    public static boolean updateStudent(Employee nv) {
+    public static boolean updateEmployee(Employee nv) {
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
@@ -314,73 +314,23 @@ public class NhanVienDAO {
             ps.execute();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (conn != null) {
                 try {
                     conn.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
             if (ps != null) {
                 try {
                     ps.close();
                 } catch (SQLException ex) {
-                    Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EmployeeDAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
         return false;
     }
-
-    /*public static SinhVien getSinhVien(int MSSV) {
-        SinhVien sv = new SinhVien();
-        Connection conn = DBConnection.createConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String SQL = "SELECT * FROM sinhvien WHERE MSSV = ?";
-        try {
-            ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MSSV);
-            ps.execute();
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                sv = new SinhVien(rs.getInt("MSSV"), rs.getString("Name"), rs.getInt("Age"), rs.getString("NameClass"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(SinhVienDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(SinhVienDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(SinhVienDAO.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        return sv;
-    }*/
-    
-    public static void main(String[] args) throws ParseException {
-        //if(addSinhVien(new SinhVien(20182798, "Nguyễn Việt Thi", 20, "Điện Tử 10"))) System.out.println("OK");
-        List<Employee> list = getList();
-        for (Employee tmp : list) {
-            System.out.println(tmp.toString());
-        }
-        /* SimpleDateFormat fm = new SimpleDateFormat("dd/MM/yyyy");
-        java.util.Date da = fm.parse("20/03/1999");
-        System.out.println(da);
-        Employee nv = new Employee(9, "a", da , "a", 123, 456, "PGD", "adasda" );*/
-
-        // System.out.println(addSinhVien(nv));
-    }
-
 }

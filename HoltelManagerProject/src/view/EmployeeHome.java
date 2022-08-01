@@ -11,7 +11,7 @@ import Bean.HotelRoom;
 import DAO.BranchDAO;
 import DAO.AttendanceDAO;
 import DAO.BillDAO;
-import DAO.NhanVienDAO;
+import DAO.EmployeeDAO;
 import DAO.PhongKhachSanDAO;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class EmployeeHome extends javax.swing.JFrame {
     }
 
     private void setInit(int EmployeeNumber) {
-        nhanVien = NhanVienDAO.getEmployee(EmployeeNumber);
+        nhanVien = EmployeeDAO.getEmployee(EmployeeNumber);
         branch = BranchDAO.getBranch(nhanVien.getBranchCode());
     }
 

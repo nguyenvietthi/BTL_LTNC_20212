@@ -12,7 +12,7 @@ import Bean.Product;
 import DAO.BillDAO;
 import DAO.CustomerDAO;
 import DAO.WarehouseDAO;
-import DAO.SanPhamDAO;
+import DAO.ProductDAO;
 import java.awt.Font;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
@@ -597,7 +597,7 @@ public class ThanhToan extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (txtTim.getText() != "") {
             ListModel = new DefaultListModel();
-            List<Product> list = SanPhamDAO.timGanDung(txtTim.getText());
+            List<Product> list = ProductDAO.findProductInBranch(txtTim.getText(), branchCode);
             System.out.println(txtTim.getText());
             for (Product a : list) {
                 ListModel.addElement(a);

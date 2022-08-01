@@ -10,8 +10,8 @@ import Bean.Employee;
 import Bean.Product;
 import Bean.ProductInWarehouseReceipt;
 import DAO.WarehouseDAO;
-import DAO.NhanVienDAO;
-import DAO.SanPhamDAO;
+import DAO.EmployeeDAO;
+import DAO.ProductDAO;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +38,7 @@ public class NhapKho extends javax.swing.JFrame {
     private Kho kho;
 
     public NhapKho() {
-        nv = NhanVienDAO.getEmployee(5);
+        nv = EmployeeDAO.getEmployee(5);
         initComponents();
         setUI();
         showList();
@@ -226,7 +226,7 @@ public class NhapKho extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     public void showList() {
-        List<Product> list = SanPhamDAO.getList();
+        List<Product> list = WarehouseDAO.listProductInBranch(nv.getBranchCode());
         model1.setRowCount(0);
         for (Product a : list) {
             model1.addRow(new Object[]{a.getProductCode(), a.getName()});
@@ -238,7 +238,7 @@ public class NhapKho extends javax.swing.JFrame {
         model2.setRowCount(0);
         for (ProductInWarehouseReceipt a : listSPNK) {
             model2.addRow(new Object[]{a.getProductCode(),
-                SanPhamDAO.getSanPham(a.getProductCode()).getName(),
+                ProductDAO.getProduct(a.getProductCode()).getName(),
                 a.getAmount(),
                 a.getPrice()});
         }
@@ -304,7 +304,7 @@ public class NhapKho extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         if (txtTim.getText() != "") {
-            List<Product> list = SanPhamDAO.timGanDung(txtTim.getText());
+            List<Product> list = ProductDAO.findProductInBranch(txtTim.getText(), nv.getBranchCode());
             model1.setRowCount(0);
             for (Product a : list) {
                 model1.addRow(new Object[]{

@@ -10,7 +10,7 @@ import Bean.Position;
 import Bean.Employee;
 import DAO.AccountDAO;
 import DAO.BranchDAO;
-import DAO.NhanVienDAO;
+import DAO.EmployeeDAO;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -63,7 +63,7 @@ public class ThemNhanVien extends javax.swing.JFrame {
     }
 
     private void setListChucVu() {
-        cv = NhanVienDAO.getListChucVu();
+        cv = EmployeeDAO.getListPosition();
         System.out.println(cv.size());
         chucVu = new DefaultComboBoxModel();
         for (int i = 0; i < cv.size(); i++) {
@@ -79,7 +79,7 @@ public class ThemNhanVien extends javax.swing.JFrame {
     }
 
     /*private void setInfo() {
-        nv = NhanVienDAO.getEmployee(nv.getEmployeeNumber());
+        nv = EmployeeDAO.getEmployee(nv.getEmployeeNumber());
         txtHoTen.setText(nv.getName());
        // txtChiNhanh.setText(BranchDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
         txtMaNhanVien.setText(String.valueOf(nv.getEmployeeNumber()));
@@ -438,15 +438,15 @@ public class ThemNhanVien extends javax.swing.JFrame {
                 txtCMT.getText(), CV.getPositionCode(), txtEmail.getText(),
                 rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getBranchCode());
         System.out.println(nv);
-        if (NhanVienDAO.addNhanVien(nv)) {
-            List<Employee> tmp = NhanVienDAO.getList();
+        if (EmployeeDAO.addEmpolyee(nv)) {
+            List<Employee> tmp = EmployeeDAO.getListEmployee();
             int size = tmp.size();
             nv.setEmployeeCode(tmp.get(size - 1).getEmployeeCode());
             if (AccountDAO.addUserName(txtTenDangNhap.getText(), nv.getEmployeeCode())) {
                 JOptionPane.showMessageDialog(this, "Đã thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } else{
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                NhanVienDAO.delNhanVien(nv.getEmployeeCode());
+                EmployeeDAO.delEmployee(nv.getEmployeeCode());
             }
         } else {
             JOptionPane.showMessageDialog(this, "Kiểm tra lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

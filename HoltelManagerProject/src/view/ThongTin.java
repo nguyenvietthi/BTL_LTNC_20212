@@ -9,7 +9,7 @@ import Bean.Branch;
 import Bean.Position;
 import Bean.Employee;
 import DAO.BranchDAO;
-import DAO.NhanVienDAO;
+import DAO.EmployeeDAO;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -77,7 +77,7 @@ public class ThongTin extends javax.swing.JFrame {
     }
 
     private void setInfo() {
-        nv = NhanVienDAO.getEmployee(nv.getEmployeeCode());
+        nv = EmployeeDAO.getEmployee(nv.getEmployeeCode());
         txtHoTen.setText(nv.getName());
         // txtChiNhanh.setText(BranchDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
         txtMaNhanVien.setText(String.valueOf(nv.getEmployeeCode()));
@@ -110,7 +110,7 @@ public class ThongTin extends javax.swing.JFrame {
     }
 
     private void setListChucVu() {
-        cv = NhanVienDAO.getListChucVu();
+        cv = EmployeeDAO.getListPosition();
         System.out.println(cv.size());
         chucVu = new DefaultComboBoxModel();
         int index = 0;
@@ -457,7 +457,7 @@ public class ThongTin extends javax.swing.JFrame {
                 txtCMT.getText(), cv.getPositionCode(), txtEmail.getText(),
                 rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getBranchCode());
         System.out.println(nv);
-        if (NhanVienDAO.updateStudent(nv)) {
+        if (EmployeeDAO.updateEmployee(nv)) {
             JOptionPane.showMessageDialog(this, "Đã lưu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
