@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class AccountDAO {
+public class AccountDAO{
     public static Account findAccount(String UserName) {
         Account acc = new Account();
         Connection conn = (Connection) DBConnection.createConnection();

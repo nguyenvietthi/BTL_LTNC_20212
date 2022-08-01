@@ -24,10 +24,9 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class BillDAO {
-
+public class BillDAO{
     public static boolean addBill(Employee nv, int roomCode, int customerCode, double VAT) {
-        int GiaThue = PhongKhachSanDAO.getGiaThue(nv.getBranchCode(), roomCode);
+        int GiaThue = HotelRoomDAO.getPrice(nv.getBranchCode(), roomCode);
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String sql = "INSERT INTO qlks.hoadon(MaPhong, GioVao, GiaThue, ThueVAT, MaNhanVien, "

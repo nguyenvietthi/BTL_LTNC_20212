@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class CustomerDAO {
+public class CustomerDAO{
     public static boolean addCustomer(Customer kh) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;

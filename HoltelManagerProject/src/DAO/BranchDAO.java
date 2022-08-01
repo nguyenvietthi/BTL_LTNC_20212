@@ -7,6 +7,7 @@ package DAO;
 
 import Bean.Branch;
 import DB.DBConnection;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,11 +19,11 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class BranchDAO {
+public class BranchDAO{
 
     public static Branch getBranch(int branchCode) {
         Branch cn = null;
-        com.mysql.jdbc.Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
+        Connection conn = DBConnection.createConnection();
         java.sql.PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT * FROM qlks.chinhanh WHERE chinhanh.BranchCode = ?;";
@@ -60,7 +61,7 @@ public class BranchDAO {
 
     public static List<Branch> getListBranch() {
         List<Branch> cn = new ArrayList<>();
-        com.mysql.jdbc.Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
+        Connection conn = DBConnection.createConnection();
         java.sql.PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT * FROM qlks.chinhanh";

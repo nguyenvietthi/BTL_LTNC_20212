@@ -56,7 +56,7 @@ public class ProductDAO {
     }
      public static List<Product> findProduct(String keyWord) {
         List<Product> list = new ArrayList<>();
-        Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
+        Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT * FROM qlks.sanpham WHERE Ten LIKE CONCAT('%', ?, '%');";
@@ -89,7 +89,7 @@ public class ProductDAO {
     }
     public static List<Product> findProductInBranch(String keyWord, int branchCode) {
         List<Product> list = new ArrayList<>();
-        Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
+        Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT chitietkho.MaChiNhanh, chitietkho.MaSanPham, chitietkho.SoLuong, sanpham.Ten,"
@@ -126,7 +126,7 @@ public class ProductDAO {
     }
     public static Product getProduct(int productCode) {
         Product sp = null;
-        Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
+        Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
         String SQL = "SELECT * FROM qlks.sanpham WHERE MaSanPham = ?;";

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class EmployeeDAO {
+public class EmployeeDAO{
 
     public static List<Employee> getListEmployee() {
         List<Employee> list = new ArrayList<>();

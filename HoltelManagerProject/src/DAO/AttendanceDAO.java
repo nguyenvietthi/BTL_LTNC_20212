@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class AttendanceDAO {
+public class AttendanceDAO{
     
       public static boolean attendant(Employee nv) {
         Connection conn = DBConnection.createConnection();

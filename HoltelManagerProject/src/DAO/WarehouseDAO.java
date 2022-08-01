@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author VIETTHI_PC
  */
-public class WarehouseDAO {
+public class WarehouseDAO{
     
     public static List<Product> listProductInBranch(int branchCode) {
         List<Product> list = new ArrayList<>();
