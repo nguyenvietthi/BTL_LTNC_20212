@@ -818,7 +818,7 @@ public class ManagerHomeView extends javax.swing.JFrame {
 
     private void EmployeeNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmployeeNameMouseClicked
         // TODO add your handling code here:
-        new ThongTin(employee, "GD").setVisible(true);
+        new InfoView(employee, "GD").setVisible(true);
 
     }//GEN-LAST:event_EmployeeNameMouseClicked
 

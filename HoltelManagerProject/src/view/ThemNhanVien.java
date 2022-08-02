@@ -29,9 +29,9 @@ public class ThemNhanVien extends javax.swing.JFrame {
     DefaultComboBoxModel chucVu;
     List<Branch> cn;
     List<Position> cv;
-    QuanLyNhanVien qlnv;
+    EmployeeManagerView qlnv;
 
-    public ThemNhanVien(QuanLyNhanVien qlnv) {
+    public ThemNhanVien(EmployeeManagerView qlnv) {
         this.qlnv = qlnv;
         initComponents();
         setListChiNhanh();

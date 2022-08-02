@@ -18,9 +18,9 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
     /**
      * Creates new form ThongTin
      */
-    private NhapKho nk;
+    private ImportWarehouseView nk;
 
-    public ThemLoaiSanPham(NhapKho nk) {
+    public ThemLoaiSanPham(ImportWarehouseView nk) {
         this.nk = nk;
         nk.setEnabled(false);
         initComponents();

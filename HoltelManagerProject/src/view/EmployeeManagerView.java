@@ -239,7 +239,7 @@ public class EmployeeManagerView extends javax.swing.JFrame {
     private void txtChinhSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtChinhSuaMouseClicked
         // TODO add your handling code here:
         int y = tblNhanVien.getSelectedRow();
-        new ThongTin(this, employee.get(y), "GD").setVisible(true);
+        new InfoView(this, employee.get(y), "GD").setVisible(true);
        // this.dispose();
     }//GEN-LAST:event_txtChinhSuaMouseClicked
 

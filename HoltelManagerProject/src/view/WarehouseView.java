@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 public class WarehouseView extends javax.swing.JFrame {
 
     /**
-     * Creates new form NhapKho
+     * Creates new form ImportWarehouseView
      */
     DefaultComboBoxModel branchName;
     private DefaultTableModel model;
@@ -330,7 +330,7 @@ public class WarehouseView extends javax.swing.JFrame {
 
     private void btnNhapKhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNhapKhoMouseClicked
         // TODO add your handling code here:
-        new NhapKho(employee, this).setVisible(true);
+        new ImportWarehouseView(employee, this).setVisible(true);
     }//GEN-LAST:event_btnNhapKhoMouseClicked
 
     private void btnDieuChinhGiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDieuChinhGiaMouseClicked
