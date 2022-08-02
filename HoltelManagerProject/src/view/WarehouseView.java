@@ -64,13 +64,13 @@ public class WarehouseView extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         TbSanPham = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         cbbChiNhanh = new javax.swing.JComboBox<>();
         btnDieuChinhGia = new javax.swing.JButton();
         btnNhapKho = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chi tiết kho");
+        setLocation(new java.awt.Point(522, 181));
 
         jPanel1.setBackground(new java.awt.Color(179, 205, 224));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -87,10 +87,10 @@ public class WarehouseView extends javax.swing.JFrame {
                 txtTimKeyPressed(evt);
             }
         });
-        jPanel1.add(txtTim, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 360, -1));
+        jPanel1.add(txtTim, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 360, -1));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_search_24px.png"))); // NOI18N
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -123,7 +123,6 @@ public class WarehouseView extends javax.swing.JFrame {
         ));
         TbSanPham.setFocusable(false);
         TbSanPham.setGridColor(new java.awt.Color(54, 54, 54));
-        TbSanPham.setIntercellSpacing(new java.awt.Dimension(0, 0));
         TbSanPham.setName(""); // NOI18N
         TbSanPham.setRowHeight(35);
         TbSanPham.getTableHeader().setReorderingAllowed(false);
@@ -145,29 +144,20 @@ public class WarehouseView extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(TbSanPham);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 820, 516));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 840, 520));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 410, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 400, 40));
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_delete_52px.png"))); // NOI18N
-        jLabel1.setToolTipText("");
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(810, 0, -1, -1));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 410, 40));
 
         cbbChiNhanh.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         cbbChiNhanh.addActionListener(new java.awt.event.ActionListener() {
@@ -175,7 +165,7 @@ public class WarehouseView extends javax.swing.JFrame {
                 cbbChiNhanhActionPerformed(evt);
             }
         });
-        jPanel1.add(cbbChiNhanh, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 210, 40));
+        jPanel1.add(cbbChiNhanh, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 210, 40));
 
         btnDieuChinhGia.setBackground(new java.awt.Color(46, 204, 113));
         btnDieuChinhGia.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
@@ -187,7 +177,7 @@ public class WarehouseView extends javax.swing.JFrame {
                 btnDieuChinhGiaMouseClicked(evt);
             }
         });
-        jPanel1.add(btnDieuChinhGia, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 660, 120, 40));
+        jPanel1.add(btnDieuChinhGia, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 610, 120, 40));
 
         btnNhapKho.setBackground(new java.awt.Color(46, 204, 113));
         btnNhapKho.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
@@ -199,7 +189,7 @@ public class WarehouseView extends javax.swing.JFrame {
                 btnNhapKhoMouseClicked(evt);
             }
         });
-        jPanel1.add(btnNhapKho, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 660, 120, 40));
+        jPanel1.add(btnNhapKho, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 610, 120, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -209,9 +199,7 @@ public class WarehouseView extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -313,11 +301,6 @@ public class WarehouseView extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtTimKeyPressed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        // TODO add your handling code here:
-        this.dispose();
-    }//GEN-LAST:event_jLabel1MouseClicked
-
     private void cbbChiNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChiNhanhActionPerformed
         // TODO add your handling code here:
         model.setRowCount(0);
@@ -386,7 +369,6 @@ public class WarehouseView extends javax.swing.JFrame {
     private javax.swing.JButton btnDieuChinhGia;
     private javax.swing.JButton btnNhapKho;
     private javax.swing.JComboBox<String> cbbChiNhanh;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

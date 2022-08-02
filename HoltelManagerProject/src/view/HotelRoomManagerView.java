@@ -21,16 +21,16 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author VIETTHI_PC
  */
-public class QuanLyPhongKhachSan extends javax.swing.JFrame {
+public class HotelRoomManagerView extends javax.swing.JFrame {
 
     /**
      * Creates new form QuanLyNhanVien
      */
-    DefaultComboBoxModel TenChiNhanh;
-    private List<Branch> chiNhanh;
+    DefaultComboBoxModel branchCBB;
+    private List<Branch> listBranch;
     private DefaultTableModel model;
 
-    public QuanLyPhongKhachSan() {
+    public HotelRoomManagerView() {
         initComponents();
         setUI();
         setComboBox();
@@ -54,14 +54,14 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
     }
     private void setComboBox(){
         List<Branch> cn = BranchDAO.getListBranch();
-        TenChiNhanh = new DefaultComboBoxModel();
-        TenChiNhanh.addElement("Tất cả");
+        branchCBB = new DefaultComboBoxModel();
+        branchCBB.addElement("Tất cả");
         for (int i = 0; i < cn.size(); i++) {
-            TenChiNhanh.addElement(cn.get(i));
+            branchCBB.addElement(cn.get(i));
         }
-        cbbChiNhanh.setModel(TenChiNhanh);
+        cbbChiNhanh.setModel(branchCBB);
     }
-    private String TrangThai(boolean bl) {
+    private String status(boolean bl) {
         if (bl) {
             return "Đang thuê";
         } else {
@@ -69,22 +69,15 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         }
     }
 
-    private String GioiTinh(boolean bl) {
-        if (bl) {
-            return "Nam";
-        } else {
-            return "Nữ";
-        }
-    }
 
     public void showList() {
-        chiNhanh = BranchDAO.getListBranch();
+        listBranch = BranchDAO.getListBranch();
         model.setRowCount(0);
-        for (Branch a : chiNhanh) {
+        for (Branch a : listBranch) {
              List<HotelRoom> pks = HotelRoomDAO.getListHotelRoom(a.getBranchCode());
             for(HotelRoom b : pks){
                 model.addRow(new Object[]{a.getBranchCode(), a.getBranchName(),
-                    b.getRoomCode(), b.getPrice(), b.getDescription(),TrangThai(b.isStatus())});
+                    b.getRoomCode(), b.getPrice(), b.getDescription(),status(b.isStatus())});
             }  
         }
     }
@@ -93,7 +86,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
              List<HotelRoom> pks = HotelRoomDAO.getListHotelRoom(cn.getBranchCode());
             for(HotelRoom b : pks){
                 model.addRow(new Object[]{cn.getBranchCode(), cn.getBranchName(),
-                    b.getRoomCode(), b.getPrice(), b.getDescription(),TrangThai(b.isStatus())});
+                    b.getRoomCode(), b.getPrice(), b.getDescription(),status(b.isStatus())});
             }  
             model.setRowCount(pks.size() + 13);
         }
@@ -116,7 +109,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         cbbChiNhanh = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Thông tin nhân viên");
+        setTitle("Thông tin phòng khách sạn");
         setLocation(new java.awt.Point(495, 190));
         setMinimumSize(new java.awt.Dimension(930, 700));
         setPreferredSize(new java.awt.Dimension(930, 590));
@@ -134,7 +127,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
                 txtChinhSuaMouseClicked(evt);
             }
         });
-        jPanel1.add(txtChinhSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 540, 130, 40));
+        jPanel1.add(txtChinhSua, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 600, 130, 40));
 
         tblchiNhanh.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tblchiNhanh.setModel(new javax.swing.table.DefaultTableModel(
@@ -158,7 +151,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         tblchiNhanh.setRowHeight(35);
         jScrollPane1.setViewportView(tblchiNhanh);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 920, 420));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 920, 510));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -175,7 +168,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         });
         jPanel3.add(cbbChiNhanh, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 260, 30));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 320, 50));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 10, 320, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,7 +178,9 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 638, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 647, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -207,14 +202,14 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
     private void cbbChiNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChiNhanhActionPerformed
         // TODO add your handling code here:
         try {
-            Branch chiNhanh = (Branch)cbbChiNhanh.getSelectedItem();
-            showList(chiNhanh);
+            Branch listBranch = (Branch)cbbChiNhanh.getSelectedItem();
+            showList(listBranch);
         } catch (Exception e) {
             showList();
         }
         
         
-        System.out.println(chiNhanh);
+        System.out.println(listBranch);
     }//GEN-LAST:event_cbbChiNhanhActionPerformed
 
     /**
@@ -234,13 +229,13 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLyPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HotelRoomManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLyPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HotelRoomManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLyPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HotelRoomManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLyPhongKhachSan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(HotelRoomManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -250,7 +245,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyPhongKhachSan().setVisible(true);
+                new HotelRoomManagerView().setVisible(true);
             }
         });
     }

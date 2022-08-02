@@ -11,19 +11,19 @@ import Bean.ProductInWarehouseReceipt;
  *
  * @author VIETTHI_PC
  */
-public class ThemSanPham extends javax.swing.JFrame {
+public class AddProductView extends javax.swing.JFrame {
 
     /**
      * Creates new form DoiMatKhau
      */
-    private ImportWarehouseView nk;
-    private int MSP;
+    private ImportWarehouseView importWarehouseView;
+    private int productCode;
 
-    public ThemSanPham(ImportWarehouseView nk, int MSP) {
-        this.nk = nk;
-        this.MSP = MSP;
+    public AddProductView(ImportWarehouseView importWarehouseView, int productCode) {
+        this.importWarehouseView = importWarehouseView;
+        this.productCode = productCode;
         initComponents();
-        nk.setEnabled(false);
+        importWarehouseView.setEnabled(false);
     }
 
     /**
@@ -122,12 +122,12 @@ public class ThemSanPham extends javax.swing.JFrame {
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
 
-        ProductInWarehouseReceipt spnk = new ProductInWarehouseReceipt(MSP, Integer.parseInt(txtSoLuong.getText()),
+        ProductInWarehouseReceipt spnk = new ProductInWarehouseReceipt(productCode, Integer.parseInt(txtSoLuong.getText()),
                 Integer.parseInt(txtGia.getText()));
-        nk.setProductInWarehouseReceiptList(spnk);
+        importWarehouseView.setProductInWarehouseReceiptList(spnk);
         this.dispose();
-        nk.setEnabled(true);
-        nk.setVisible(true);
+        importWarehouseView.setEnabled(true);
+        importWarehouseView.setVisible(true);
     }//GEN-LAST:event_btnSubmitMouseClicked
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
@@ -137,13 +137,13 @@ public class ThemSanPham extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         this.dispose();
-        nk.setEnabled(true);
-        nk.setVisible(true);
+        importWarehouseView.setEnabled(true);
+        importWarehouseView.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        nk.setVisible(true);
+        importWarehouseView.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
@@ -167,13 +167,13 @@ public class ThemSanPham extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThemSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThemSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThemSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThemSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddProductView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

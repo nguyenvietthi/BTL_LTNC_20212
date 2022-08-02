@@ -19,28 +19,28 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class ThemNhanVien extends javax.swing.JFrame {
+public class AddEmployeeView extends javax.swing.JFrame {
 
     /**
      * Creates new form ThongTin
      */
-    private Employee nv;
-    DefaultComboBoxModel cityName;
-    DefaultComboBoxModel chucVu;
-    List<Branch> cn;
-    List<Position> cv;
-    EmployeeManagerView qlnv;
+    private Employee employee;
+    DefaultComboBoxModel branchCBB;
+    DefaultComboBoxModel positionCBB;
+    List<Branch> branchList;
+    List<Position> postionList;
+    EmployeeManagerView employeeManagerView;
 
-    public ThemNhanVien(EmployeeManagerView qlnv) {
-        this.qlnv = qlnv;
+    public AddEmployeeView(EmployeeManagerView employeeManagerView) {
+        this.employeeManagerView = employeeManagerView;
         initComponents();
         setListChiNhanh();
         setListChucVu();
 
     }
 
-    /*  public ThemNhanVien(Employee nv, String Position) {
-        this.nv = nv;
+    /*  public AddEmployeeView(Employee employee, String Position) {
+        this.employee = employee;
         this.Position = Position;
         initComponents();
         setInfo();
@@ -48,48 +48,48 @@ public class ThemNhanVien extends javax.swing.JFrame {
     }
      */
     private void setListChiNhanh() {
-        cn = BranchDAO.getListBranch();
-        cityName = new DefaultComboBoxModel();
-        for (int i = 0; i < cn.size(); i++) {
-            cityName.addElement(cn.get(i));
+        branchList = BranchDAO.getListBranch();
+        branchCBB = new DefaultComboBoxModel();
+        for (int i = 0; i < branchList.size(); i++) {
+            branchCBB.addElement(branchList.get(i));
         }
-        /*for (Branch a : cn) {
-            if (cn.get(index).getBranchCode() != a.getBranchCode()) {
-                cityName.addElement(a);
+        /*for (Branch a : branchList) {
+            if (branchList.get(index).getBranchCode() != a.getBranchCode()) {
+                branchCBB.addElement(a);
             }
         }*/
-        cbbChiNhanh.setModel(cityName);
+        cbbChiNhanh.setModel(branchCBB);
         // cbbChiNhanh.setSelectedIndex(index);
     }
 
     private void setListChucVu() {
-        cv = EmployeeDAO.getListPosition();
-        System.out.println(cv.size());
-        chucVu = new DefaultComboBoxModel();
-        for (int i = 0; i < cv.size(); i++) {
-            chucVu.addElement(cv.get(i));
+        postionList = EmployeeDAO.getListPosition();
+        System.out.println(postionList.size());
+        positionCBB = new DefaultComboBoxModel();
+        for (int i = 0; i < postionList.size(); i++) {
+            positionCBB.addElement(postionList.get(i));
         }
-        /*for (Branch a : cn) {
-            if (cn.get(index).getBranchCode() != a.getBranchCode()) {
-                cityName.addElement(a);
+        /*for (Branch a : branchList) {
+            if (branchList.get(index).getBranchCode() != a.getBranchCode()) {
+                branchCBB.addElement(a);
             }
         }*/
-        cbbChucVu.setModel(chucVu);
+        cbbChucVu.setModel(positionCBB);
         // cbbChiNhanh.setSelectedIndex(index);
     }
 
     /*private void setInfo() {
-        nv = EmployeeDAO.getEmployee(nv.getEmployeeNumber());
-        txtHoTen.setText(nv.getName());
-       // txtChiNhanh.setText(BranchDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
-        txtMaNhanVien.setText(String.valueOf(nv.getEmployeeNumber()));
+        employee = EmployeeDAO.getEmployee(employee.getEmployeeNumber());
+        txtHoTen.setText(employee.getName());
+       // txtChiNhanh.setText(BranchDAO.getChiNhanh(employee.getBranchCode()).getTenChiNhanh());
+        txtMaNhanVien.setText(String.valueOf(employee.getEmployeeNumber()));
 
-        dcNgaySinh.setDate(nv.getDateOfBirth());
-        txtCMT.setText(String.valueOf(nv.getCMTNumber()));
-        txtEmail.setText(nv.getEmail());
-        txtSoDienThoai.setText(nv.getNumberPhone());
-        txtaDiaChi.setText(nv.getAddress());
-        if (nv.isSex()) {
+        dcNgaySinh.setDate(employee.getDateOfBirth());
+        txtCMT.setText(String.valueOf(employee.getCMTNumber()));
+        txtEmail.setText(employee.getEmail());
+        txtSoDienThoai.setText(employee.getNumberPhone());
+        txtaDiaChi.setText(employee.getAddress());
+        if (employee.isSex()) {
             rdbGioiTinh_Nam.setSelected(true);
             rdbGioiTinh_Nu.setSelected(false);
         } else {
@@ -97,7 +97,7 @@ public class ThemNhanVien extends javax.swing.JFrame {
             rdbGioiTinh_Nu.setSelected(true);
         }
 
-        if (nv.isStatus()) {
+        if (employee.isStatus()) {
             chkTrangThai.setSelected(true);
         } else {
             chkTrangThai.setSelected(false);
@@ -433,27 +433,27 @@ public class ThemNhanVien extends javax.swing.JFrame {
         Branch CN = (Branch) cbbChiNhanh.getSelectedItem();
         Position CV = (Position) cbbChucVu.getSelectedItem();
         System.out.println(dcNgaySinh.getDate());
-        nv = new Employee(0, txtHoTen.getText(),
+        employee = new Employee(0, txtHoTen.getText(),
                 dcNgaySinh.getDate(), txtaDiaChi.getText(), txtSoDienThoai.getText(),
                 txtCMT.getText(), CV.getPositionCode(), txtEmail.getText(),
                 rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getBranchCode());
-        System.out.println(nv);
-        if (EmployeeDAO.addEmpolyee(nv)) {
+        System.out.println(employee);
+        if (EmployeeDAO.addEmpolyee(employee)) {
             List<Employee> tmp = EmployeeDAO.getListEmployee();
             int size = tmp.size();
-            nv.setEmployeeCode(tmp.get(size - 1).getEmployeeCode());
-            if (AccountDAO.addUserName(txtTenDangNhap.getText(), nv.getEmployeeCode())) {
+            employee.setEmployeeCode(tmp.get(size - 1).getEmployeeCode());
+            if (AccountDAO.addUserName(txtTenDangNhap.getText(), employee.getEmployeeCode())) {
                 JOptionPane.showMessageDialog(this, "Đã thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             } else{
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-                EmployeeDAO.delEmployee(nv.getEmployeeCode());
+                EmployeeDAO.delEmployee(employee.getEmployeeCode());
             }
         } else {
             JOptionPane.showMessageDialog(this, "Kiểm tra lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
-        qlnv.setEnabled(true);
-        qlnv.setVisible(true);
-        qlnv.showList();
+        employeeManagerView.setEnabled(true);
+        employeeManagerView.setVisible(true);
+        employeeManagerView.showList();
     }//GEN-LAST:event_btnSubmitMouseClicked
 
     private void rdbGioiTinh_NamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbGioiTinh_NamActionPerformed
@@ -476,8 +476,8 @@ public class ThemNhanVien extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        qlnv.setEnabled(true);
-        qlnv.setVisible(true);
+        employeeManagerView.setEnabled(true);
+        employeeManagerView.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
     /**
@@ -497,13 +497,13 @@ public class ThemNhanVien extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThemNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThemNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThemNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThemNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddEmployeeView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -511,7 +511,7 @@ public class ThemNhanVien extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                // new ThemNhanVien().setVisible(true);
+                // new AddEmployeeView().setVisible(true);
             }
         });
     }

@@ -257,7 +257,7 @@ public class EmployeeManagerView extends javax.swing.JFrame {
 
     private void btbThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btbThemMouseClicked
         // TODO add your handling code here:
-        new ThemNhanVien(this).setVisible(true);
+        new AddEmployeeView(this).setVisible(true);
         this.setEnabled(false);
         
     }//GEN-LAST:event_btbThemMouseClicked

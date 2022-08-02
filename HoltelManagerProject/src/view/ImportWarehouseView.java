@@ -78,7 +78,10 @@ public class ImportWarehouseView extends javax.swing.JFrame {
         TbNhapKho = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nhập kho");
+        setLocation(new java.awt.Point(450, 215));
         setMinimumSize(new java.awt.Dimension(1000, 650));
+        setPreferredSize(new java.awt.Dimension(1010, 500));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -94,11 +97,11 @@ public class ImportWarehouseView extends javax.swing.JFrame {
                 txtCongTyGiaoKeyPressed(evt);
             }
         });
-        jPanel1.add(txtCongTyGiao, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, 240, 30));
+        jPanel1.add(txtCongTyGiao, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 60, 240, 30));
 
         jLabel6.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel6.setText("Công ty giao");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 70, -1, -1));
 
         txtNhanVienGiao.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtNhanVienGiao.addActionListener(new java.awt.event.ActionListener() {
@@ -111,11 +114,11 @@ public class ImportWarehouseView extends javax.swing.JFrame {
                 txtNhanVienGiaoKeyPressed(evt);
             }
         });
-        jPanel1.add(txtNhanVienGiao, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 80, 240, 30));
+        jPanel1.add(txtNhanVienGiao, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 100, 240, 30));
 
         jLabel7.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel7.setText("Nhân viên giao");
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 110, -1, -1));
 
         btnThemSP.setBackground(new java.awt.Color(46, 204, 113));
         btnThemSP.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
@@ -144,7 +147,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
                 btnOKActionPerformed(evt);
             }
         });
-        jPanel1.add(btnOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 560, 120, 40));
+        jPanel1.add(btnOK, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 530, 120, 40));
 
         btnXoa.setBackground(new java.awt.Color(46, 204, 113));
         btnXoa.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
@@ -156,7 +159,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
                 btnXoaMouseClicked(evt);
             }
         });
-        jPanel1.add(btnXoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 180, 110, 30));
+        jPanel1.add(btnXoa, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, 110, 30));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -178,7 +181,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
         });
         jPanel3.add(txtTim, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 300, -1));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, 350, 40));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 350, 40));
 
         TbSanPham.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         TbSanPham.setModel(new javax.swing.table.DefaultTableModel(
@@ -198,7 +201,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
             TbSanPham.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 340, 430));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 340, 460));
 
         TbNhapKho.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         TbNhapKho.setModel(new javax.swing.table.DefaultTableModel(
@@ -219,9 +222,9 @@ public class ImportWarehouseView extends javax.swing.JFrame {
             TbNhapKho.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 170, 490, 470));
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 140, 490, 460));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1020, 650));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, -50, 1000, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -265,7 +268,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
         TbNhapKho.getColumnModel().getColumn(0).setPreferredWidth(120);
         TbNhapKho.getColumnModel().getColumn(1).setPreferredWidth(150);
         TbNhapKho.getColumnModel().getColumn(2).setPreferredWidth(100);
-        TbNhapKho.getColumnModel().getColumn(3).setPreferredWidth(80);
+        TbNhapKho.getColumnModel().getColumn(3).setPreferredWidth(100);
     }
     private void txtCongTyGiaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCongTyGiaoActionPerformed
         // TODO add your handling code here:
@@ -323,7 +326,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
         this.setEnabled(false);
         int x = TbSanPham.getSelectedRow();
         int MaSanPham = (int) TbSanPham.getValueAt(x, 0);
-        new ThemSanPham(this, MaSanPham).setVisible(true);
+        new AddProductView(this, MaSanPham).setVisible(true);
     }//GEN-LAST:event_btnXoaMouseClicked
 
     private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
@@ -368,7 +371,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
 
     private void btnThemSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemSPMouseClicked
         // TODO add your handling code here:
-        new ThemLoaiSanPham(this).setVisible(true);
+        new AddNewProduct(this).setVisible(true);
         
         
     }//GEN-LAST:event_btnThemSPMouseClicked

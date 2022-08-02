@@ -13,22 +13,22 @@ import java.awt.event.KeyEvent;
  *
  * @author VIETTHI_PC
  */
-public class NhapThongTinKhachHang extends javax.swing.JFrame {
+public class ImportCustomerInfoView extends javax.swing.JFrame {
 
     /**
      * Creates new form ThongTin
      */
     private EmployeeHomeView eh;
-    private int MaPhong;
-    Customer kh;
+    private int roomCode;
+    Customer customer;
 
-    public NhapThongTinKhachHang() {
+    public ImportCustomerInfoView() {
         initComponents();
     }
 
-    public NhapThongTinKhachHang(int MaPhong, EmployeeHomeView eh) {
+    public ImportCustomerInfoView(int roomCode, EmployeeHomeView eh) {
         this.eh = eh;
-        this.MaPhong = MaPhong;
+        this.roomCode = roomCode;
         initComponents();
     }
 
@@ -269,20 +269,20 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
         // TODO add your handling code here:
-        if (kh == null) {
-            kh = new Customer();
-            kh.setFullName(txtHoTen.getText());
-            kh.setCMTNumber(txtCMT.getText());
-            kh.setPhoneNumber(txtSoDienThoai.getText());
-            kh.setEmail(txtEmail.getText());
-            kh.setAddress(txtaDiaChi.getText());
-            kh.setCustomerType("THU");
-            CustomerDAO.addCustomer(kh);
-            kh.setCustomerCode(CustomerDAO.getCustomer(kh.getPhoneNumber()).getCustomerCode());
+        if (customer == null) {
+            customer = new Customer();
+            customer.setFullName(txtHoTen.getText());
+            customer.setCMTNumber(txtCMT.getText());
+            customer.setPhoneNumber(txtSoDienThoai.getText());
+            customer.setEmail(txtEmail.getText());
+            customer.setAddress(txtaDiaChi.getText());
+            customer.setCustomerType("THU");
+            CustomerDAO.addCustomer(customer);
+            customer.setCustomerCode(CustomerDAO.getCustomer(customer.getPhoneNumber()).getCustomerCode());
         } else {
-            kh.setCustomerCode(CustomerDAO.getCustomer(kh.getPhoneNumber()).getCustomerCode());
+            customer.setCustomerCode(CustomerDAO.getCustomer(customer.getPhoneNumber()).getCustomerCode());
         }
-        eh.checkIn(MaPhong, kh.getCustomerCode());
+        eh.checkIn(roomCode, customer.getCustomerCode());
         this.dispose();
     }//GEN-LAST:event_btnSubmitMouseClicked
 
@@ -302,13 +302,13 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
     private void txtSoDienThoaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSoDienThoaiKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            kh = CustomerDAO.getCustomer(txtSoDienThoai.getText());
-            System.out.println(kh);
-            if (kh != null) {
-                txtHoTen.setText(kh.getFullName());
-                txtCMT.setText(kh.getCMTNumber());
-                txtEmail.setText(kh.getEmail());
-                txtaDiaChi.setText(kh.getAddress());
+            customer = CustomerDAO.getCustomer(txtSoDienThoai.getText());
+            System.out.println(customer);
+            if (customer != null) {
+                txtHoTen.setText(customer.getFullName());
+                txtCMT.setText(customer.getCMTNumber());
+                txtEmail.setText(customer.getEmail());
+                txtaDiaChi.setText(customer.getAddress());
             }
         }
     }//GEN-LAST:event_txtSoDienThoaiKeyPressed
@@ -330,13 +330,13 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NhapThongTinKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportCustomerInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NhapThongTinKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportCustomerInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NhapThongTinKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportCustomerInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NhapThongTinKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportCustomerInfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -344,7 +344,7 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NhapThongTinKhachHang().setVisible(true);
+                new ImportCustomerInfoView().setVisible(true);
             }
         });
     }

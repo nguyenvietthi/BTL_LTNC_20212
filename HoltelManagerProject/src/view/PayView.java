@@ -29,37 +29,37 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author VIETTHI_PC
  */
-public class ThanhToan extends javax.swing.JFrame {
+public class PayView extends javax.swing.JFrame {
 
     /**
-     * Creates new form ThanhToan
+     * Creates new form PayView
      */
     private DecimalFormat df;
-    private int MaPhong, MaHoaDon;
+    private int roomCode, billCode;
     DefaultListModel<Product> ListModel;
     private DefaultTableModel model;
-    private int soLuong = 0;
-    private List<ProductInBill> sp;
-    private Bill hoaDon;
+    private int amount = 0;
+    private List<ProductInBill> productList;
+    private Bill bill;
     private EmployeeHomeView ep;
     private int branchCode;
 
-    public ThanhToan() {
+    public PayView() {
         initComponents();
         setUI();
-        // hienThiGioVaoRa();
-        HienThiTongTienSanPham();
+        // viewDateCheckInCheckOut();
+        getTotalProductPrice();
     }
 
-    public ThanhToan(int MaPhong, int MaHoaDon, int branchCode, EmployeeHomeView ep) {
-        this.MaPhong = MaPhong;
-        this.MaHoaDon = MaHoaDon;
+    public PayView(int roomCode, int billCode, int branchCode, EmployeeHomeView ep) {
+        this.roomCode = roomCode;
+        this.billCode = billCode;
         this.ep = ep;
         this.branchCode = branchCode;
         initComponents();
         setUI();
-        hienThiGioVaoRa();
-        HienThiTongTienSanPham();
+        viewDateCheckInCheckOut();
+        getTotalProductPrice();
     }
 
     private void setUI() {
@@ -67,11 +67,11 @@ public class ThanhToan extends javax.swing.JFrame {
         df.setGroupingUsed(true);
         df.setGroupingSize(3);// định dạng số
         model = (DefaultTableModel) TbSanPham.getModel();
-        soLuongtxt.setText(Integer.toString(soLuong));
-        txtBillCode.setText("Mã hóa đơn: " + MaHoaDon);
-//        System.out.println(CustomerDAO.getCustomer(MaHoaDon).getFullName());
-        txtCustomerName.setText("Tên khách hàng: " + CustomerDAO.getCustomer(MaHoaDon).getFullName());
-        txtPhong.setText("Phòng: " + MaPhong);
+        soLuongtxt.setText(Integer.toString(amount));
+        txtBillCode.setText("Mã hóa đơn: " + billCode);
+//        System.out.println(CustomerDAO.getCustomer(billCode).getFullName());
+        txtCustomerName.setText("Tên khách hàng: " + CustomerDAO.getCustomer(billCode).getFullName());
+        txtPhong.setText("Phòng: " + roomCode);
         TbSanPham.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
         DefaultTableCellRenderer renderer = (DefaultTableCellRenderer) TbSanPham.getTableHeader().getDefaultRenderer();
         renderer.setHorizontalAlignment(JLabel.CENTER);
@@ -81,16 +81,16 @@ public class ThanhToan extends javax.swing.JFrame {
         TbSanPham.getColumnModel().getColumn(1).setPreferredWidth(80);
         TbSanPham.getColumnModel().getColumn(2).setPreferredWidth(130);
         TbSanPham.getColumnModel().getColumn(3).setPreferredWidth(168);
-        showListSanPham();
+        showListProduct();
         showList();
     }
 
-    private void hienThiGioVaoRa() {
-        hoaDon = BillDAO.getBill(MaHoaDon);
+    private void viewDateCheckInCheckOut() {
+        bill = BillDAO.getBill(billCode);
         SimpleDateFormat sf = new SimpleDateFormat("hh:mm:ss dd/MM/yyyy");
-        txtVao.setText(sf.format(hoaDon.getCheckIn()));
-        if (hoaDon.getCheckOut()!= null) {
-            txtRa.setText(sf.format(hoaDon.getCheckOut()));
+        txtVao.setText(sf.format(bill.getCheckIn()));
+        if (bill.getCheckOut()!= null) {
+            txtRa.setText(sf.format(bill.getCheckOut()));
         } else {
             txtRa.setText("chưa thanh toán");
             txtSoGio.setText("chưa thanh toán");
@@ -103,40 +103,40 @@ public class ThanhToan extends javax.swing.JFrame {
 
     }
 
-    private void HienThiTongTienSanPham() {
-        txtTongTienSanPham.setText(String.valueOf(df.format(BillDAO.getTotalProductPrice(MaHoaDon))) + " VND");
+    private void getTotalProductPrice() {
+        txtTongTienSanPham.setText(String.valueOf(df.format(BillDAO.getTotalProductPrice(billCode))) + " VND");
     }
 
-    private double TienVAT(double phantram) {
-        return phantram * (BillDAO.getTotal(MaHoaDon) - BillDAO.getVATTax(MaHoaDon));
+    private double getVATTax(double per) {
+        return per * (BillDAO.getTotal(billCode) - BillDAO.getVATTax(billCode));
     }
 
     private void HienThiTienGiam() {
-        Discount gg = BillDAO.giamGia(MaHoaDon);
+        Discount gg = BillDAO.giamGia(billCode);
         txtGiamGia.setText("(" + gg.getDiscountCode()+ ":" + String.valueOf(gg.getPercent()) + "%) "
-                + String.valueOf(df.format(gg.getPercent() * (BillDAO.getTotal(MaHoaDon)
-                        - BillDAO.getVATTax(MaHoaDon)))) + " VND");
+                + String.valueOf(df.format(gg.getPercent() * (BillDAO.getTotal(billCode)
+                        - BillDAO.getVATTax(billCode)))) + " VND");
     }
 
-    private void HienThiThanhToan() {
-        txtTongThanhToan.setText(String.valueOf(df.format(BillDAO.getTotalPrice(MaHoaDon))) + " VND");
+    private void totalPrice() {
+        txtTongThanhToan.setText(String.valueOf(df.format(BillDAO.getTotalPrice(billCode))) + " VND");
     }
 
     private void HienThiTongTienTongCong() {
-        txtTongCong.setText(String.valueOf(df.format(BillDAO.getTotalPrice(MaHoaDon))) + " VND");
+        txtTongCong.setText(String.valueOf(df.format(BillDAO.getTotalPrice(billCode))) + " VND");
 
     }
 
-    private void HienThiVAT() {
-        txtThue.setText(String.valueOf(df.format(BillDAO.getVATTax(MaHoaDon))) + " VND");
+    private void viewVAT() {
+        txtThue.setText(String.valueOf(df.format(BillDAO.getVATTax(billCode))) + " VND");
     }
 
-    private void HienThiTongTienPhong() {
-        txtTongTienPhong.setText(String.valueOf(df.format(BillDAO.getTotalRoomPrice(MaHoaDon))) + " VND");
-        txtSoGio.setText(String.valueOf(BillDAO.getTimes(MaHoaDon)) + " giờ");
+    private void viewTotalRoomPrice() {
+        txtTongTienPhong.setText(String.valueOf(df.format(BillDAO.getTotalRoomPrice(billCode))) + " VND");
+        txtSoGio.setText(String.valueOf(BillDAO.getTimes(billCode)) + " giờ");
     }
 
-    private void showListSanPham() {
+    private void showListProduct() {
         ListModel = new DefaultListModel();
         List<Product> list = WarehouseDAO.listProductInBranch(branchCode);
         for (Product a : list) {
@@ -488,23 +488,23 @@ public class ThanhToan extends javax.swing.JFrame {
         if (Integer.parseInt(soLuongtxt.getText()) <= 0) {
             JOptionPane.showMessageDialog(this, "Số lượng sản phẩm phải lớn hơn 0!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            int MaChiNhanh = BillDAO.getBill(MaHoaDon).getBranchCode();
+            int MaChiNhanh = BillDAO.getBill(billCode).getBranchCode();
             if (WarehouseDAO.getProductAmount(MaChiNhanh, sanPham.get(0).getProductCode())
                     >= Integer.parseInt(soLuongtxt.getText())) {
-                if (!BillDAO.checkProductAlreadyInBill(MaHoaDon, sanPham.get(0).getProductCode())) {
-                    if (BillDAO.addProductToBill(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
+                if (!BillDAO.checkProductAlreadyInBill(billCode, sanPham.get(0).getProductCode())) {
+                    if (BillDAO.addProductToBill(sanPham.get(0), billCode, Integer.parseInt(soLuongtxt.getText()))) {
                         WarehouseDAO.delProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
-                        soLuong = 0;
-                        soLuongtxt.setText(Integer.toString(soLuong));
-                        showListSanPham();
+                        amount = 0;
+                        soLuongtxt.setText(Integer.toString(amount));
+                        showListProduct();
                         txtTim.setText("Tìm sản phẩm");
                     }
                 } else {
-                    if (BillDAO.addProductAmount(sanPham.get(0), MaHoaDon, Integer.parseInt(soLuongtxt.getText()))) {
+                    if (BillDAO.addProductAmount(sanPham.get(0), billCode, Integer.parseInt(soLuongtxt.getText()))) {
                         WarehouseDAO.delProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
-                        soLuong = 0;
-                        soLuongtxt.setText(Integer.toString(soLuong));
-                        showListSanPham();
+                        amount = 0;
+                        soLuongtxt.setText(Integer.toString(amount));
+                        showListProduct();
                         txtTim.setText("Tìm sản phẩm");
                     }
                 }
@@ -513,19 +513,19 @@ public class ThanhToan extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, ThongBao, 
                         "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
-            HienThiTongTienSanPham();
+            getTotalProductPrice();
             showList();
         }
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void lbnCongMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbnCongMouseClicked
         // TODO add your handling code here:
-        soLuongtxt.setText(Integer.toString(soLuong++));
+        soLuongtxt.setText(Integer.toString(amount++));
     }//GEN-LAST:event_lbnCongMouseClicked
 
     private void lbnTruMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbnTruMouseClicked
         // TODO add your handling code here:
-        soLuongtxt.setText(Integer.toString(soLuong--));
+        soLuongtxt.setText(Integer.toString(amount--));
     }//GEN-LAST:event_lbnTruMouseClicked
 
     private void txtTimMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtTimMouseClicked
@@ -539,18 +539,18 @@ public class ThanhToan extends javax.swing.JFrame {
         // TODO add your handling code here:
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận thanh toán!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            hoaDon = BillDAO.getBill(MaHoaDon);
-            if (BillDAO.checkOut(MaHoaDon)) {
-                hienThiGioVaoRa();
-                HienThiTongTienPhong();
+            bill = BillDAO.getBill(billCode);
+            if (BillDAO.checkOut(billCode)) {
+                viewDateCheckInCheckOut();
+                viewTotalRoomPrice();
                 HienThiTongTienTongCong();
-                HienThiVAT();
+                viewVAT();
                 HienThiTienGiam();
-                HienThiThanhToan();
+                totalPrice();
                 btnAdd.setEnabled(false);
                 btnXoa.setEnabled(false);
                 btnThanhToan.hide();
-                ep.checkOut(MaPhong);
+                ep.checkOut(roomCode);
             }
         }
 
@@ -558,10 +558,10 @@ public class ThanhToan extends javax.swing.JFrame {
 
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         // TODO add your handling code here:
-        BillDAO.deleteProductInBill(MaHoaDon, getMaSanPhamSelected());
+        BillDAO.deleteProductInBill(billCode, getSlectedProduct());
         int row = TbSanPham.getSelectedRow();
-        ProductInBill msp = sp.get(row);
-        int MaChiNhanh = BillDAO.getBill(MaHoaDon).getBranchCode();
+        ProductInBill msp = productList.get(row);
+        int MaChiNhanh = BillDAO.getBill(billCode).getBranchCode();
         WarehouseDAO.addProduct(MaChiNhanh, msp.getProductCode(), msp.getAmount());
         showList();
     }//GEN-LAST:event_btnXoaMouseClicked
@@ -595,7 +595,7 @@ public class ThanhToan extends javax.swing.JFrame {
     private void txtTimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKeyPressed
         // TODO add your handling code here:
         // TODO add your handling code here:
-        if (txtTim.getText() != "") {
+        if (!"".equals(txtTim.getText())) {
             ListModel = new DefaultListModel();
             List<Product> list = ProductDAO.findProductInBranch(txtTim.getText(), branchCode);
             System.out.println(txtTim.getText());
@@ -635,20 +635,20 @@ public class ThanhToan extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PayView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PayView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PayView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThanhToan.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PayView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThanhToan().setVisible(true);
+                new PayView().setVisible(true);
             }
         });
     }
@@ -696,25 +696,19 @@ public class ThanhToan extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void showList() {
-        sp = BillDAO.listProductsInBill(MaHoaDon);
+        productList = BillDAO.listProductsInBill(billCode);
         model.setRowCount(0);
-        for (ProductInBill sv : sp) {
+        for (ProductInBill sv : productList) {
             model.addRow(new Object[]{sv.getProductName(), sv.getAmount(), sv.getPrice(), sv.getTotalPrice()});
         }
-        model.setRowCount(sp.size() + 13);
+        model.setRowCount(productList.size() + 13);
     }
 
-    private int getMaSanPhamSelected() {
+    private int getSlectedProduct() {
         int row = TbSanPham.getSelectedRow();
-        int msp = sp.get(row).getProductCode();
+        int msp = productList.get(row).getProductCode();
         //a();
         return msp;
     }
 
-    private void a() {
-        int x = TbSanPham.getSelectedColumn();
-        int y = TbSanPham.getSelectedRow();
-        System.out.println(x);
-        System.out.println(y);
-    }
 }

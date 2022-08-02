@@ -919,7 +919,7 @@ public class ManagerHomeView extends javax.swing.JFrame {
 
     private void jLabel31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseClicked
         // TODO add your handling code here:
-       new QuanLyPhongKhachSan().setVisible(true);
+       new HotelRoomManagerView().setVisible(true);
     }//GEN-LAST:event_jLabel31MouseClicked
 
     private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered

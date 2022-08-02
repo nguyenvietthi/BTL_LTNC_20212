@@ -13,16 +13,16 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class ThemLoaiSanPham extends javax.swing.JFrame {
+public class AddNewProduct extends javax.swing.JFrame {
 
     /**
      * Creates new form ThongTin
      */
-    private ImportWarehouseView nk;
+    private ImportWarehouseView importWarehouseView;
 
-    public ThemLoaiSanPham(ImportWarehouseView nk) {
-        this.nk = nk;
-        nk.setEnabled(false);
+    public AddNewProduct(ImportWarehouseView importWarehouseView) {
+        this.importWarehouseView = importWarehouseView;
+        importWarehouseView.setEnabled(false);
         initComponents();
     }
 
@@ -219,7 +219,7 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
         sp.setName(txtTenSP.getText());
         if (WarehouseDAO.addProduct(sp)) {
             JOptionPane.showMessageDialog(this, "Đã thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            nk.showList();
+            importWarehouseView.showList();
             txtGiaSP.setText("");
             txtMoTa.setText("");
             txtTenSP.setText("");
@@ -254,9 +254,9 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        nk.setEnabled(true);
-        nk.setVisible(true);
-        nk.showList();
+        importWarehouseView.setEnabled(true);
+        importWarehouseView.setVisible(true);
+        importWarehouseView.showList();
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -276,13 +276,13 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThemLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddNewProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThemLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddNewProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThemLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddNewProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThemLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddNewProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -292,7 +292,7 @@ public class ThemLoaiSanPham extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new ThemLoaiSanPham().setVisible(true);
+                //new AddNewProduct().setVisible(true);
             }
         });
     }

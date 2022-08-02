@@ -773,9 +773,9 @@ public class EmployeeHomeView extends javax.swing.JFrame {
 
     private void checkRoomStatus(int roomCode) {
         if (!listR.get(roomCode - 1).isStatus()) {
-            new NhapThongTinKhachHang(roomCode, this).setVisible(true);
+            new ImportCustomerInfoView(roomCode, this).setVisible(true);
         } else {
-            new ThanhToan(roomCode, listBillCode[roomCode - 1], branch.getBranchCode() , this).setVisible(true);
+            new PayView(roomCode, listBillCode[roomCode - 1], branch.getBranchCode() , this).setVisible(true);
         }
     }
 

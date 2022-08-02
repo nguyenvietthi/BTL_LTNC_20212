@@ -20,9 +20,9 @@ public class EditHotelRoomView extends javax.swing.JFrame {
      * Creates new form ThongTin
      */
     private HotelRoom hotelRoom;
-    private QuanLyPhongKhachSan ql;
+    private HotelRoomManagerView ql;
 
-    public EditHotelRoomView(HotelRoom hotelRoom, QuanLyPhongKhachSan ql) {
+    public EditHotelRoomView(HotelRoom hotelRoom, HotelRoomManagerView ql) {
         this.hotelRoom = hotelRoom;
         this.ql = ql;
         initComponents();
@@ -106,7 +106,7 @@ public class EditHotelRoomView extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chỉnh sửa");
-        setLocation(new java.awt.Point(572, 334));
+        setLocation(new java.awt.Point(729, 374));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
