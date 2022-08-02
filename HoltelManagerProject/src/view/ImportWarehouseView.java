@@ -26,26 +26,26 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author VIETTHI_PC
  */
-public class NhapKho extends javax.swing.JFrame {
+public class ImportWarehouseView extends javax.swing.JFrame {
 
     /**
-     * Creates new form NhapKho
+     * Creates new form ImportWarehouseView
      */
     private DefaultTableModel model1;
     private DefaultTableModel model2;
-    private Employee nv;
-    private List<ProductInWarehouseReceipt> listSPNK;
+    private Employee employee;
+    private List<ProductInWarehouseReceipt> productInWarehouseReceiptList;
     private WarehouseView kho;
 
-    public NhapKho() {
-        nv = EmployeeDAO.getEmployee(5);
+    public ImportWarehouseView() {
+        employee = EmployeeDAO.getEmployee(5);
         initComponents();
         setUI();
         showList();
     }
 
-    public NhapKho(Employee nv, WarehouseView kho) {
-        this.nv = nv;
+    public ImportWarehouseView(Employee employee, WarehouseView kho) {
+        this.employee = employee;
         this.kho = kho;
         initComponents();
         setUI();
@@ -234,19 +234,19 @@ public class NhapKho extends javax.swing.JFrame {
         model1.setRowCount(list.size() + 15);
     }
 
-    private void showListSanPhamNhapKho() {
+    private void showProductInWarehouseReceiptList() {
         model2.setRowCount(0);
-        for (ProductInWarehouseReceipt a : listSPNK) {
+        for (ProductInWarehouseReceipt a : productInWarehouseReceiptList) {
             model2.addRow(new Object[]{a.getProductCode(),
                 ProductDAO.getProduct(a.getProductCode()).getName(),
                 a.getAmount(),
                 a.getPrice()});
         }
-        model2.setRowCount(listSPNK.size() + 15);
+        model2.setRowCount(productInWarehouseReceiptList.size() + 15);
     }
 
     private void setUI() {
-        listSPNK = new ArrayList<>();
+        productInWarehouseReceiptList = new ArrayList<>();
         model1 = (DefaultTableModel) TbSanPham.getModel();
         model2 = (DefaultTableModel) TbNhapKho.getModel();
         TbSanPham.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
@@ -330,29 +330,29 @@ public class NhapKho extends javax.swing.JFrame {
         // TODO add your handling code here:
         Date now = new Date();
         try {
-            WarehouseReceipt hd = new WarehouseReceipt(0, nv.getBranchCode(), nv.getEmployeeCode(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
+            WarehouseReceipt hd = new WarehouseReceipt(0, employee.getBranchCode(), employee.getEmployeeCode(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
             System.out.println(hd);
             if (WarehouseDAO.addWarehouseReceipt(hd)) {
                 int MHD = WarehouseDAO.getLatestBillCode();
                 System.out.println(MHD);
                 boolean check = false;
-                for (ProductInWarehouseReceipt a : listSPNK) {
+                for (ProductInWarehouseReceipt a : productInWarehouseReceiptList) {
                     if (WarehouseDAO.addProductInWarehouseReceipt(a, MHD)) {
                         check = true;
-                        if (WarehouseDAO.checkAvailableProduct(nv.getBranchCode(), a.getProductCode()) == 1) {
-                            WarehouseDAO.addProduct(nv.getBranchCode(), a.getProductCode(), a.getAmount());
+                        if (WarehouseDAO.checkAvailableProduct(employee.getBranchCode(), a.getProductCode()) == 1) {
+                            WarehouseDAO.addProduct(employee.getBranchCode(), a.getProductCode(), a.getAmount());
                         } else {
-                            WarehouseDAO.addNotAvailableProductToWarehouseReceipt(nv.getBranchCode(), a.getProductCode(), a.getAmount());
+                            WarehouseDAO.addNotAvailableProductToWarehouseReceipt(employee.getBranchCode(), a.getProductCode(), a.getAmount());
                         }
                     }
                 }
                 if (check) {
                     JOptionPane.showMessageDialog(this, "Đã nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 }
-                listSPNK = new ArrayList<>();
+                productInWarehouseReceiptList = new ArrayList<>();
                 txtCongTyGiao.setText("");
                 txtNhanVienGiao.setText("");
-                showListSanPhamNhapKho();
+                showProductInWarehouseReceiptList();
                 if (kho != null) {
                     kho.showList();
                 }
@@ -372,9 +372,9 @@ public class NhapKho extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btnThemSPMouseClicked
-    public void setListNhapKho(ProductInWarehouseReceipt spnk) {
-        listSPNK.add(spnk);
-        showListSanPhamNhapKho();
+    public void setProductInWarehouseReceiptList(ProductInWarehouseReceipt spnk) {
+        productInWarehouseReceiptList.add(spnk);
+        showProductInWarehouseReceiptList();
     }
 
     /**
@@ -394,20 +394,20 @@ public class NhapKho extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NhapKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportWarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NhapKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportWarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NhapKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportWarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NhapKho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ImportWarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NhapKho().setVisible(true);
+                new ImportWarehouseView().setVisible(true);
             }
         });
     }

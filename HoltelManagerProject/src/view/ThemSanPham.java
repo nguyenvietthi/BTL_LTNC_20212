@@ -16,10 +16,10 @@ public class ThemSanPham extends javax.swing.JFrame {
     /**
      * Creates new form DoiMatKhau
      */
-    private NhapKho nk;
+    private ImportWarehouseView nk;
     private int MSP;
 
-    public ThemSanPham(NhapKho nk, int MSP) {
+    public ThemSanPham(ImportWarehouseView nk, int MSP) {
         this.nk = nk;
         this.MSP = MSP;
         initComponents();
@@ -124,7 +124,7 @@ public class ThemSanPham extends javax.swing.JFrame {
 
         ProductInWarehouseReceipt spnk = new ProductInWarehouseReceipt(MSP, Integer.parseInt(txtSoLuong.getText()),
                 Integer.parseInt(txtGia.getText()));
-        nk.setListNhapKho(spnk);
+        nk.setProductInWarehouseReceiptList(spnk);
         this.dispose();
         nk.setEnabled(true);
         nk.setVisible(true);
