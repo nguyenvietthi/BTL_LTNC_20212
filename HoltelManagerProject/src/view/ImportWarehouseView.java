@@ -82,6 +82,14 @@ public class ImportWarehouseView extends javax.swing.JFrame {
         setLocation(new java.awt.Point(450, 215));
         setMinimumSize(new java.awt.Dimension(1000, 650));
         setPreferredSize(new java.awt.Dimension(1010, 500));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -378,6 +386,20 @@ public class ImportWarehouseView extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnThemSPMouseClicked
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        this.dispose();
+        kho.setEnabled(true);
+        kho.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        this.dispose();
+        kho.setEnabled(true);
+        kho.setVisible(true);
+    }//GEN-LAST:event_formWindowClosing
     public void setProductInWarehouseReceiptList(ProductInWarehouseReceipt spnk) {
         productInWarehouseReceiptList.add(spnk);
         showProductInWarehouseReceiptList();
