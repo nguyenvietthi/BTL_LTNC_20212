@@ -444,16 +444,16 @@ public class AddEmployeeView extends javax.swing.JFrame {
             employee.setEmployeeCode(tmp.get(size - 1).getEmployeeCode());
             if (AccountDAO.addUserName(txtTenDangNhap.getText(), employee.getEmployeeCode())) {
                 JOptionPane.showMessageDialog(this, "Đã thêm thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            } else{
+                employeeManagerView.setEnabled(true);
+                employeeManagerView.setVisible(true);
+                employeeManagerView.showList();
+            } else {
                 JOptionPane.showMessageDialog(this, "Tên đăng nhập đã tồn tại", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 EmployeeDAO.delEmployee(employee.getEmployeeCode());
             }
         } else {
             JOptionPane.showMessageDialog(this, "Kiểm tra lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
-        employeeManagerView.setEnabled(true);
-        employeeManagerView.setVisible(true);
-        employeeManagerView.showList();
     }//GEN-LAST:event_btnSubmitMouseClicked
 
     private void rdbGioiTinh_NamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbGioiTinh_NamActionPerformed

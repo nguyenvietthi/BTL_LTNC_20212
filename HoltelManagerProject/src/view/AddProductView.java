@@ -6,6 +6,7 @@
 package view;
 
 import Bean.ProductInWarehouseReceipt;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -121,13 +122,16 @@ public class AddProductView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
-
-        ProductInWarehouseReceipt spnk = new ProductInWarehouseReceipt(productCode, Integer.parseInt(txtSoLuong.getText()),
-                Integer.parseInt(txtGia.getText()));
-        importWarehouseView.setProductInWarehouseReceiptList(spnk);
-        this.dispose();
-        importWarehouseView.setEnabled(true);
-        importWarehouseView.setVisible(true);
+        try {
+            ProductInWarehouseReceipt spnk = new ProductInWarehouseReceipt(productCode, Integer.parseInt(txtSoLuong.getText()),
+                    Integer.parseInt(txtGia.getText()));
+            importWarehouseView.setProductInWarehouseReceiptList(spnk);
+            this.dispose();
+            importWarehouseView.setEnabled(true);
+            importWarehouseView.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập lại!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnSubmitMouseClicked
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed

@@ -73,7 +73,7 @@ public class EmployeeDAO{
             ps.setString(1, nv.getName());
             try {
                 ps.setString(2, fm.format(nv.getDateOfBirth()));
-            } catch (SQLException ex) {
+            } catch (Exception ex) {
                 return false;
             }
             ps.setString(3, nv.getAddress());

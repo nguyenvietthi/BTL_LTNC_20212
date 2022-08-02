@@ -323,10 +323,13 @@ public class ImportWarehouseView extends javax.swing.JFrame {
 
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         // TODO add your handling code here:
-        this.setEnabled(false);
         int x = TbSanPham.getSelectedRow();
-        int MaSanPham = (int) TbSanPham.getValueAt(x, 0);
-        new AddProductView(this, MaSanPham).setVisible(true);
+        try {
+            int MaSanPham = (int) TbSanPham.getValueAt(x, 0);
+            new AddProductView(this, MaSanPham).setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Chọn sản phẩm trước khi nhập", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        }
     }//GEN-LAST:event_btnXoaMouseClicked
 
     private void btnOKMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOKMouseClicked
@@ -372,8 +375,8 @@ public class ImportWarehouseView extends javax.swing.JFrame {
     private void btnThemSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemSPMouseClicked
         // TODO add your handling code here:
         new AddNewProduct(this).setVisible(true);
-        
-        
+
+
     }//GEN-LAST:event_btnThemSPMouseClicked
     public void setProductInWarehouseReceiptList(ProductInWarehouseReceipt spnk) {
         productInWarehouseReceiptList.add(spnk);

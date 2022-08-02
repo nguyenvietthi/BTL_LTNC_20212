@@ -117,14 +117,22 @@ public class AdjustPriceView extends javax.swing.JFrame {
 
     private void btnSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubmitActionPerformed
         // TODO add your handling code here:
-        int price = Integer.parseInt(txtGia.getText());
-        if (WarehouseDAO.adjustPrice(productCode, price)) {
-            JOptionPane.showMessageDialog(this, "Thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            this.dispose();
-            warehouse.setEnabled(true);
-            warehouse.setVisible(true);
-            warehouse.showList();
+        int price = -1;
+        try {
+            price = Integer.parseInt(txtGia.getText());
+            if (price <= -1) {
+                JOptionPane.showMessageDialog(this, "Nhập lại giá", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } else if (WarehouseDAO.adjustPrice(productCode, price)) {
+                JOptionPane.showMessageDialog(this, "Thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+                warehouse.setEnabled(true);
+                warehouse.setVisible(true);
+                warehouse.showList();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Nhập lại giá", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
+
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -136,7 +144,7 @@ public class AdjustPriceView extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-         this.dispose();
+        this.dispose();
         warehouse.setEnabled(true);
         warehouse.setVisible(true);
     }//GEN-LAST:event_formWindowClosing

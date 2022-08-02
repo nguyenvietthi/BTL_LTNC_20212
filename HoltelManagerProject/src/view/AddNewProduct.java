@@ -214,15 +214,22 @@ public class AddNewProduct extends javax.swing.JFrame {
     private void btnThemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnThemMouseClicked
         // TODO add your handling code here:
         Product sp = new Product();
-        sp.setPrice(Integer.parseInt(txtGiaSP.getText()));
-        sp.setDescription(txtMoTa.getText());
-        sp.setName(txtTenSP.getText());
-        if (WarehouseDAO.addProduct(sp)) {
-            JOptionPane.showMessageDialog(this, "Đã thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            importWarehouseView.showList();
-            txtGiaSP.setText("");
-            txtMoTa.setText("");
-            txtTenSP.setText("");
+        try {
+            sp.setPrice(Integer.parseInt(txtGiaSP.getText()));
+            if (sp.getPrice() <= -1 || txtMoTa.getText().equals("") || txtTenSP.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Nhập lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else if (WarehouseDAO.addProduct(sp)) {
+                sp.setDescription(txtMoTa.getText());
+                sp.setName(txtTenSP.getText());
+                JOptionPane.showMessageDialog(this, "Đã thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                importWarehouseView.showList();
+                txtGiaSP.setText("");
+                txtMoTa.setText("");
+                txtTenSP.setText("");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Nhập lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_btnThemMouseClicked
 
