@@ -197,7 +197,7 @@ public class QuanLyPhongKhachSan extends javax.swing.JFrame {
         int MaPhong = (int) tblchiNhanh.getValueAt(y, 2);
         int MaChiNhanh = (int) tblchiNhanh.getValueAt(y, 0);
         HotelRoom a = HotelRoomDAO.getRoom(MaChiNhanh, MaPhong);
-        new EditHotelRoom(a, this).setVisible(true);
+        new EditHotelRoomView(a, this).setVisible(true);
         this.setEnabled(false);
         /*int y = tblchiNhanh.getSelectedRow();
         new ThongTin(nv.get(y), "GD").setVisible(true);

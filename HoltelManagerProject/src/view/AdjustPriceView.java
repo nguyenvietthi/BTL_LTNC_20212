@@ -12,20 +12,20 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class AdjustPrice extends javax.swing.JFrame {
+public class AdjustPriceView extends javax.swing.JFrame {
 
     /**
      * Creates new form DoiMatKhau
      */
-    private Kho k;
+    private WarehouseView warehouse;
     private int productCode;
 
-    public AdjustPrice(Kho k, int productCode) {
-        this.k = k;
+    public AdjustPriceView(WarehouseView warehouse, int productCode) {
+        this.warehouse = warehouse;
         this.productCode = productCode;
 
         initComponents();
-        k.setEnabled(false);
+        warehouse.setEnabled(false);
     }
 
     /**
@@ -121,24 +121,24 @@ public class AdjustPrice extends javax.swing.JFrame {
         if (WarehouseDAO.adjustPrice(productCode, price)) {
             JOptionPane.showMessageDialog(this, "Thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             this.dispose();
-            k.setEnabled(true);
-            k.setVisible(true);
-            k.showList();
+            warehouse.setEnabled(true);
+            warehouse.setVisible(true);
+            warehouse.showList();
         }
     }//GEN-LAST:event_btnSubmitActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         this.dispose();
-        k.setEnabled(true);
-        k.setVisible(true);
+        warehouse.setEnabled(true);
+        warehouse.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
          this.dispose();
-        k.setEnabled(true);
-        k.setVisible(true);
+        warehouse.setEnabled(true);
+        warehouse.setVisible(true);
     }//GEN-LAST:event_formWindowClosing
 
     private void txtGiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtGiaActionPerformed
@@ -162,13 +162,13 @@ public class AdjustPrice extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPriceView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPriceView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPriceView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AdjustPrice.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AdjustPriceView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>

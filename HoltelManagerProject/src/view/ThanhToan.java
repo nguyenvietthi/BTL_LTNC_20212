@@ -41,7 +41,7 @@ public class ThanhToan extends javax.swing.JFrame {
     private int soLuong = 0;
     private List<ProductInBill> sp;
     private Bill hoaDon;
-    private EmployeeHome ep;
+    private EmployeeHomeView ep;
     private int branchCode;
 
     public ThanhToan() {
@@ -51,7 +51,7 @@ public class ThanhToan extends javax.swing.JFrame {
         HienThiTongTienSanPham();
     }
 
-    public ThanhToan(int MaPhong, int MaHoaDon, int branchCode, EmployeeHome ep) {
+    public ThanhToan(int MaPhong, int MaHoaDon, int branchCode, EmployeeHomeView ep) {
         this.MaPhong = MaPhong;
         this.MaHoaDon = MaHoaDon;
         this.ep = ep;
@@ -550,7 +550,7 @@ public class ThanhToan extends javax.swing.JFrame {
                 btnAdd.setEnabled(false);
                 btnXoa.setEnabled(false);
                 btnThanhToan.hide();
-                ep.traPhong(MaPhong);
+                ep.checkOut(MaPhong);
             }
         }
 

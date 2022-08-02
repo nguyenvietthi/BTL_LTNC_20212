@@ -22,15 +22,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author VIETTHI_PC
  */
-public class QuanLyNhanVien extends javax.swing.JFrame {
+public class EmployeeManagerView extends javax.swing.JFrame {
 
     /**
-     * Creates new form QuanLyNhanVien
+     * Creates new form EmployeeManagerView
      */
-    private List<Employee> nv;
+    private List<Employee> employee;
     private DefaultTableModel model;
 
-    public QuanLyNhanVien() {
+    public EmployeeManagerView() {
         initComponents();
         setUI();
         showList();
@@ -57,7 +57,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
 
     }
 
-    private String TrangThai(boolean bl) {
+    private String status(boolean bl) {
         if (bl) {
             return "Đang làm";
         } else {
@@ -65,7 +65,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         }
     }
 
-    private String GioiTinh(boolean bl) {
+    private String sex(boolean bl) {
         if (bl) {
             return "Nam";
         } else {
@@ -74,14 +74,14 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     }
 
     public void showList() {
-        nv = EmployeeDAO.getListEmployee();
+        employee = EmployeeDAO.getListEmployee();
         model.setRowCount(0);
-        for (Employee a : nv) {
+        for (Employee a : employee) {
             model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionNumBer()).getName(),
-                BranchDAO.getBranch(a.getBranchCode()).getBranchCode(), TrangThai(a.isStatus()), a.getEmail(),
-                a.getAddress(), GioiTinh(a.isSex())});
+                BranchDAO.getBranch(a.getBranchCode()).getBranchCode(), status(a.isStatus()), a.getEmail(),
+                a.getAddress(), sex(a.isSex())});
         }
-        model.setRowCount(nv.size() + 13);
+        model.setRowCount(employee.size() + 13);
     }
 
     /**
@@ -213,14 +213,14 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         if (!"".equals(txtTim.getText())) {
-            nv = EmployeeDAO.findEmployee(txtTim.getText());
+            employee = EmployeeDAO.findEmployee(txtTim.getText());
             model.setRowCount(0);
-            for (Employee a : nv) {
+            for (Employee a : employee) {
                 model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionNumBer()).getName(),
-                    BranchDAO.getBranch(a.getBranchCode()).getBranchName(), TrangThai(a.isStatus()), a.getEmail(),
-                    a.getAddress(), GioiTinh(a.isSex())});
+                    BranchDAO.getBranch(a.getBranchCode()).getBranchName(), status(a.isStatus()), a.getEmail(),
+                    a.getAddress(), sex(a.isSex())});
             }
-            model.setRowCount(nv.size() + 13);
+            model.setRowCount(employee.size() + 13);
         } else {
             showList();
         }
@@ -239,7 +239,7 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
     private void txtChinhSuaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtChinhSuaMouseClicked
         // TODO add your handling code here:
         int y = tblNhanVien.getSelectedRow();
-        new ThongTin(this, nv.get(y), "GD").setVisible(true);
+        new ThongTin(this, employee.get(y), "GD").setVisible(true);
        // this.dispose();
     }//GEN-LAST:event_txtChinhSuaMouseClicked
 
@@ -248,8 +248,8 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
         int y = tblNhanVien.getSelectedRow();
         int click = JOptionPane.showConfirmDialog(this, "Xác nhận xóa!", "Thông báo", JOptionPane.YES_NO_OPTION);
         if (click == 0) {
-            if(EmployeeDAO.delEmployee(nv.get(y).getEmployeeCode()) && AccountDAO.delAccount(nv.get(y).getEmployeeCode())){
-                nv = EmployeeDAO.getListEmployee();
+            if(EmployeeDAO.delEmployee(employee.get(y).getEmployeeCode()) && AccountDAO.delAccount(employee.get(y).getEmployeeCode())){
+                employee = EmployeeDAO.getListEmployee();
                 showList();
             }
         }
@@ -279,20 +279,20 @@ public class QuanLyNhanVien extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(QuanLyNhanVien.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EmployeeManagerView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new QuanLyNhanVien().setVisible(true);
+                new EmployeeManagerView().setVisible(true);
             }
         });
     }

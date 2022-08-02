@@ -18,76 +18,76 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class ThongTin extends javax.swing.JFrame {
+public class InfoView extends javax.swing.JFrame {
 
     /**
-     * Creates new form ThongTin
+     * Creates new form InfoView
      */
-    private Employee nv;
-    private String CV;
-    DefaultComboBoxModel cityName;
-    List<Branch> cn;
-    DefaultComboBoxModel chucVu;
-    List<Position> cv;
-    QuanLyNhanVien qlnv;
+    private Employee employee;
+    private String position;
+    DefaultComboBoxModel branchCBB;
+    List<Branch> listBranch;
+    DefaultComboBoxModel positionCBB;
+    List<Position> listPosition;
+    EmployeeManagerView employeeManagerView;
 
-    public ThongTin() {
+    public InfoView() {
         initComponents();
-        setListChiNhanh();
+        setBranchList();
     }
 
-    public ThongTin(Employee nv, String CV) {
-        this.nv = nv;
-        this.CV = CV;
-        initComponents();
-        setInfo();
-        setListChiNhanh();
-        setListChucVu();
-    }
-
-    public ThongTin(QuanLyNhanVien qlnv, Employee nv, String CV) {
-        this.nv = nv;
-        this.CV = CV;
-        this.qlnv = qlnv;
-        qlnv.setEnabled(false);
+    public InfoView(Employee employee, String position) {
+        this.employee = employee;
+        this.position = position;
         initComponents();
         setInfo();
-        setListChiNhanh();
-        setListChucVu();
+        setBranchList();
+        setPositionList();
+    }
+
+    public InfoView(EmployeeManagerView employeeManagerView, Employee employee, String position) {
+        this.employee = employee;
+        this.position = position;
+        this.employeeManagerView = employeeManagerView;
+        employeeManagerView.setEnabled(false);
+        initComponents();
+        setInfo();
+        setBranchList();
+        setPositionList();
 
     }
 
-    private void setListChiNhanh() {
-        cn = BranchDAO.getListBranch();
-        cityName = new DefaultComboBoxModel();
+    private void setBranchList() {
+        listBranch = BranchDAO.getListBranch();
+        branchCBB = new DefaultComboBoxModel();
         int index = 0;
-        for (int i = 0; i < cn.size(); i++) {
-            cityName.addElement(cn.get(i));
-            if (nv.getBranchCode() == cn.get(i).getBranchCode()) {
+        for (int i = 0; i < listBranch.size(); i++) {
+            branchCBB.addElement(listBranch.get(i));
+            if (employee.getBranchCode() == listBranch.get(i).getBranchCode()) {
                 index = i;
             }
         }
-        /*for (Branch a : cn) {
-            if (cn.get(index).getBranchCode() != a.getBranchCode()) {
-                cityName.addElement(a);
+        /*for (Branch a : listBranch) {
+            if (listBranch.get(index).getBranchCode() != a.getBranchCode()) {
+                branchCBB.addElement(a);
             }
         }*/
-        cbbChiNhanh.setModel(cityName);
+        cbbChiNhanh.setModel(branchCBB);
         cbbChiNhanh.setSelectedIndex(index);
     }
 
     private void setInfo() {
-        nv = EmployeeDAO.getEmployee(nv.getEmployeeCode());
-        txtHoTen.setText(nv.getName());
-        // txtChiNhanh.setText(BranchDAO.getChiNhanh(nv.getBranchCode()).getTenChiNhanh());
-        txtMaNhanVien.setText(String.valueOf(nv.getEmployeeCode()));
+        employee = EmployeeDAO.getEmployee(employee.getEmployeeCode());
+        txtHoTen.setText(employee.getName());
+        // txtChiNhanh.setText(BranchDAO.getChiNhanh(employee.getBranchCode()).getTenChiNhanh());
+        txtMaNhanVien.setText(String.valueOf(employee.getEmployeeCode()));
 
-        dcNgaySinh.setDate(nv.getDateOfBirth());
-        txtCMT.setText(String.valueOf(nv.getCMTNumber()));
-        txtEmail.setText(nv.getEmail());
-        txtSoDienThoai.setText(nv.getNumberPhone());
-        txtaDiaChi.setText(nv.getAddress());
-        if (nv.isSex()) {
+        dcNgaySinh.setDate(employee.getDateOfBirth());
+        txtCMT.setText(String.valueOf(employee.getCMTNumber()));
+        txtEmail.setText(employee.getEmail());
+        txtSoDienThoai.setText(employee.getNumberPhone());
+        txtaDiaChi.setText(employee.getAddress());
+        if (employee.isSex()) {
             rdbGioiTinh_Nam.setSelected(true);
             rdbGioiTinh_Nu.setSelected(false);
         } else {
@@ -95,13 +95,13 @@ public class ThongTin extends javax.swing.JFrame {
             rdbGioiTinh_Nu.setSelected(true);
         }
 
-        if (nv.isStatus()) {
+        if (employee.isStatus()) {
             chkTrangThai.setSelected(true);
         } else {
             chkTrangThai.setSelected(false);
         }
         txtMaNhanVien.setEnabled(false);
-        if (CV.equals("NV")) {
+        if (position.equals("NV")) {
             chkTrangThai.setEnabled(false);
             txtHoTen.setEnabled(false);
             cbbChiNhanh.setEnabled(false);
@@ -109,20 +109,20 @@ public class ThongTin extends javax.swing.JFrame {
         }
     }
 
-    private void setListChucVu() {
-        cv = EmployeeDAO.getListPosition();
-        System.out.println(cv.size());
-        chucVu = new DefaultComboBoxModel();
+    private void setPositionList() {
+        listPosition = EmployeeDAO.getListPosition();
+        System.out.println(listPosition.size());
+        positionCBB = new DefaultComboBoxModel();
         int index = 0;
-        for (int i = 0; i < cv.size(); i++) {
-            chucVu.addElement(cv.get(i));
+        for (int i = 0; i < listPosition.size(); i++) {
+            positionCBB.addElement(listPosition.get(i));
         }
-        for (int i = 0; i < cv.size(); i++) {
-            if (cv.get(i).getPositionCode().equals(nv.getPositionNumBer())) {
+        for (int i = 0; i < listPosition.size(); i++) {
+            if (listPosition.get(i).getPositionCode().equals(employee.getPositionNumBer())) {
                 index = i;
             }
         }
-        cbbChucVu.setModel(chucVu);
+        cbbChucVu.setModel(positionCBB);
         cbbChucVu.setSelectedIndex(index);
     }
 
@@ -448,28 +448,28 @@ public class ThongTin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void btnLuu() {
+    private void saveBtn() {
         Branch CN = (Branch) cbbChiNhanh.getSelectedItem();
-        Position cv = (Position) cbbChucVu.getSelectedItem();
+        Position listPosition = (Position) cbbChucVu.getSelectedItem();
         System.out.println(dcNgaySinh.getDate());
-        nv = new Employee(Integer.parseInt(txtMaNhanVien.getText()), txtHoTen.getText(),
+        employee = new Employee(Integer.parseInt(txtMaNhanVien.getText()), txtHoTen.getText(),
                 dcNgaySinh.getDate(), txtaDiaChi.getText(), txtSoDienThoai.getText(),
-                txtCMT.getText(), cv.getPositionCode(), txtEmail.getText(),
+                txtCMT.getText(), listPosition.getPositionCode(), txtEmail.getText(),
                 rdbGioiTinh_Nam.isSelected(), chkTrangThai.isSelected(), CN.getBranchCode());
-        System.out.println(nv);
-        if (EmployeeDAO.updateEmployee(nv)) {
+        System.out.println(employee);
+        if (EmployeeDAO.updateEmployee(employee)) {
             JOptionPane.showMessageDialog(this, "Đã lưu thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
     private void btnSubmitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmitMouseClicked
         // TODO add your handling code here:
-        if (qlnv == null) {
-            btnLuu();
+        if (employeeManagerView == null) {
+            saveBtn();
         } else {
-            btnLuu();
-            qlnv.showList();
-            // qlnv.setVisible(true);
+            saveBtn();
+            employeeManagerView.showList();
+            // employeeManagerView.setVisible(true);
         }
 
     }//GEN-LAST:event_btnSubmitMouseClicked
@@ -486,7 +486,7 @@ public class ThongTin extends javax.swing.JFrame {
     private void btnSubmit1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSubmit1MouseClicked
         // TODO add your handling code here:
         this.setEnabled(false);
-        new ChangePassword(nv, this).setVisible(true);
+        new ChangePasswordView(employee, this).setVisible(true);
     }//GEN-LAST:event_btnSubmit1MouseClicked
 
     private void rdbGioiTinh_NuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rdbGioiTinh_NuActionPerformed
@@ -496,9 +496,9 @@ public class ThongTin extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        if (qlnv != null) {
-            qlnv.setEnabled(true);
-            qlnv.setVisible(true);
+        if (employeeManagerView != null) {
+            employeeManagerView.setEnabled(true);
+            employeeManagerView.setVisible(true);
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -519,20 +519,20 @@ public class ThongTin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThongTin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThongTin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThongTin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThongTin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InfoView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ThongTin().setVisible(true);
+                new InfoView().setVisible(true);
             }
         });
     }

@@ -18,7 +18,7 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
     /**
      * Creates new form ThongTin
      */
-    private EmployeeHome eh;
+    private EmployeeHomeView eh;
     private int MaPhong;
     Customer kh;
 
@@ -26,7 +26,7 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
         initComponents();
     }
 
-    public NhapThongTinKhachHang(int MaPhong, EmployeeHome eh) {
+    public NhapThongTinKhachHang(int MaPhong, EmployeeHomeView eh) {
         this.eh = eh;
         this.MaPhong = MaPhong;
         initComponents();
@@ -282,7 +282,7 @@ public class NhapThongTinKhachHang extends javax.swing.JFrame {
         } else {
             kh.setCustomerCode(CustomerDAO.getCustomer(kh.getPhoneNumber()).getCustomerCode());
         }
-        eh.nhanPhong(MaPhong, kh.getCustomerCode());
+        eh.checkIn(MaPhong, kh.getCustomerCode());
         this.dispose();
     }//GEN-LAST:event_btnSubmitMouseClicked
 

@@ -7,7 +7,7 @@ package thread;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import view.GiamDocHome;
+import view.ManagerHomeView;
 
 /**
  *
@@ -15,9 +15,9 @@ import view.GiamDocHome;
  */
 public class RoomStatus extends Thread {
 
-    private GiamDocHome gd;
+    private ManagerHomeView gd;
 
-    public RoomStatus(GiamDocHome gd) {
+    public RoomStatus(ManagerHomeView gd) {
         this.gd = gd;
     }
 
@@ -25,7 +25,7 @@ public class RoomStatus extends Thread {
     public void run() {
         while (true) {
             gd.setList();
-            gd.ShowRoom();
+            gd.showRoom();
             gd.setUI();
             try {
                 Thread.sleep(500);

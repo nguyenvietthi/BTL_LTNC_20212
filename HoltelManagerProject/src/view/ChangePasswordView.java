@@ -14,15 +14,15 @@ import javax.swing.JOptionPane;
  *
  * @author VIETTHI_PC
  */
-public class ChangePassword extends javax.swing.JFrame {
+public class ChangePasswordView extends javax.swing.JFrame {
 
     /**
-     * Creates new form ChangePassword
+     * Creates new form ChangePasswordView
      */
     private Employee employee;
-    private ThongTin tt;
+    private InfoView tt;
     
-    public ChangePassword(Employee employee, ThongTin tt) {
+    public ChangePasswordView(Employee employee, InfoView tt) {
         this.employee = employee;
         this.tt = tt;
         initComponents();
@@ -222,20 +222,20 @@ public class ChangePassword extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ChangePassword.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ChangePasswordView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               // new ChangePassword().setVisible(true);
+               // new ChangePasswordView().setVisible(true);
             }
         });
     }

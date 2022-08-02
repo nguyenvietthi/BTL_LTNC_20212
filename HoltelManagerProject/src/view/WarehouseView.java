@@ -23,28 +23,28 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author VIETTHI_PC
  */
-public class Kho extends javax.swing.JFrame {
+public class WarehouseView extends javax.swing.JFrame {
 
     /**
      * Creates new form NhapKho
      */
-    DefaultComboBoxModel cityName;
+    DefaultComboBoxModel branchName;
     private DefaultTableModel model;
-    private List<Branch> cn;
-    private Employee nv;
+    private List<Branch> listBranch;
+    private Employee employee;
 
-    public Kho() {
+    public WarehouseView() {
         initComponents();
         setUI();
-        setCBBChiNhanh();
+        setBranchCBB();
         showList();
     }
 
-    public Kho(Employee nv) {
-        this.nv = nv;
+    public WarehouseView(Employee employee) {
+        this.employee = employee;
         initComponents();
 
-        setCBBChiNhanh();
+        setBranchCBB();
         setUI();
         showList();
     }
@@ -216,29 +216,29 @@ public class Kho extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    private void setCBBChiNhanh() {
-        cn = BranchDAO.getListBranch();
-        cityName = new DefaultComboBoxModel();
-        for (int i = 0; i < cn.size(); i++) {
-            cityName.addElement(cn.get(i));
+    private void setBranchCBB() {
+        listBranch = BranchDAO.getListBranch();
+        branchName = new DefaultComboBoxModel();
+        for (int i = 0; i < listBranch.size(); i++) {
+            branchName.addElement(listBranch.get(i));
         }
-        cbbChiNhanh.setModel(cityName);
+        cbbChiNhanh.setModel(branchName);
     }
 
     void setUI() {
         model = (DefaultTableModel) TbSanPham.getModel();
-        if (nv.getPositionNumBer().equals("NV")) {
+        if (employee.getPositionNumBer().equals("NV")) {
             cbbChiNhanh.setEnabled(false);
             int index;
-            for (int i = 0; i < cn.size(); i++) {
-                if (cn.get(i).getBranchCode() == nv.getBranchCode()) {
+            for (int i = 0; i < listBranch.size(); i++) {
+                if (listBranch.get(i).getBranchCode() == employee.getBranchCode()) {
                     index = i;
                     cbbChiNhanh.setSelectedIndex(index);
                 }
             }
 
         }
-        if (nv.getPositionNumBer().equals("GD")) {
+        if (employee.getPositionNumBer().equals("GD")) {
             btnNhapKho.hide();
         } else{
             btnDieuChinhGia.hide();
@@ -258,7 +258,7 @@ public class Kho extends javax.swing.JFrame {
 
     public void showList() {
         model.setRowCount(0);
-        List< Object> list = WarehouseDAO.listProduct(nv.getBranchCode());
+        List< Object> list = WarehouseDAO.listProduct(employee.getBranchCode());
         for (Object b : list) {
             model.addRow((Object[]) b);
         }
@@ -299,7 +299,7 @@ public class Kho extends javax.swing.JFrame {
     private void txtTimKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtTimKeyPressed
         // TODO add your handling code here:
         // TODO add your handling code here:
-        if (txtTim.getText() != "") {
+        if (!"".equals(txtTim.getText())) {
             Branch a = (Branch) cbbChiNhanh.getSelectedItem();
             List<Object> list = WarehouseDAO.findProduct(a.getBranchCode(), txtTim.getText());
             model.setRowCount(0);
@@ -330,7 +330,7 @@ public class Kho extends javax.swing.JFrame {
 
     private void btnNhapKhoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnNhapKhoMouseClicked
         // TODO add your handling code here:
-        new NhapKho(nv, this).setVisible(true);
+        new NhapKho(employee, this).setVisible(true);
     }//GEN-LAST:event_btnNhapKhoMouseClicked
 
     private void btnDieuChinhGiaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDieuChinhGiaMouseClicked
@@ -338,7 +338,7 @@ public class Kho extends javax.swing.JFrame {
         int x = TbSanPham.getSelectedRow();
         int MSP = (int) TbSanPham.getValueAt(x, 0);
         if(x >= 0){
-             new AdjustPrice(this, MSP).setVisible(true);
+             new AdjustPriceView(this, MSP).setVisible(true);
         } else{
             JOptionPane.showMessageDialog(this, "Chọn sản phẩm trước khi nhấn điều chỉnh!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -362,13 +362,13 @@ public class Kho extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Kho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Kho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Kho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Kho.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(WarehouseView.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -376,7 +376,7 @@ public class Kho extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Kho().setVisible(true);
+                new WarehouseView().setVisible(true);
             }
         });
     }

@@ -16,15 +16,17 @@ import DAO.HotelRoomDAO;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import thread.Clock;
+import thread.RoomStatus;
 
 /**
  *
  * @author VIETTHI_PC
  */
-public class EmployeeHome extends javax.swing.JFrame {
+public class ManagerHomeView extends javax.swing.JFrame {
 
     /**
      * Creates new form HomeF
@@ -34,31 +36,48 @@ public class EmployeeHome extends javax.swing.JFrame {
     private Branch branch;
     private List<HotelRoom> listR;
     private int[] listBillCode = new int[12];
+    DefaultComboBoxModel branchName;
+    private Branch chonCBB;
 
-    public EmployeeHome(int EmployeeNumber) {
+    public ManagerHomeView(int EmployeeNumber) {
         initComponents();
         Clock n = new Clock(clock);
         n.start();
         setInit(EmployeeNumber);
-        setList();
-        ShowRoom();
-        setUI();
+        setBranchCBB();
+        EmployeeName.setText("NHÂN VIÊN: " + employee.getName().toUpperCase());
+        RoomStatus tp = new RoomStatus(this);
+        tp.start();
     }
 
-    private void setInit(int EmployeeNumber) {
+    private void setBranchCBB() {
+        List<Branch> cn = BranchDAO.getListBranch();
+        branchName = new DefaultComboBoxModel();
+        for (int i = 0; i < cn.size(); i++) {
+            branchName.addElement(cn.get(i));
+        }
+        cbbChiNhanh.setModel(branchName);
+    }
+
+    public void setInit(int EmployeeNumber) {
         employee = EmployeeDAO.getEmployee(EmployeeNumber);
         branch = BranchDAO.getBranch(employee.getBranchCode());
+        chonCBB = BranchDAO.getListBranch().get(0);
     }
 
-    private void ShowRoom() {
-        int soPhong = HotelRoomDAO.getRoomNumber(employee.getBranchCode());
+    public void showRoom() {
+        int soPhong = HotelRoomDAO.getRoomNumber(chonCBB.getBranchCode());
+        for(int i = 0; i < 12; i++){
+            list.get(i).show();
+            list.get(i).setOpaque(true);
+        }
         for (int i = 11; i >= soPhong; i--) {
-            list.get(i).removeAll();
+            list.get(i).hide();
             list.get(i).setOpaque(false);
         }
     }
 
-    void setList() {
+    public void setList() {
         list = new ArrayList<>();
         list.add(Room1);
         list.add(Room2);
@@ -72,23 +91,24 @@ public class EmployeeHome extends javax.swing.JFrame {
         list.add(Room10);
         list.add(Room11);
         list.add(Room12);
-        listR = HotelRoomDAO.getListHotelRoom(employee.getBranchCode());
+        System.out.println("Ma chi nhanh là:" + chonCBB.getBranchCode());
+        listR = HotelRoomDAO.getListHotelRoom(chonCBB.getBranchCode());
     }
 
-    private void setUI() {
+    public void setUI() {
         for (int i = 0; i < listR.size(); i++) {
             if (listR.get(i).isStatus()) {
                 list.get(i).setBackground(new java.awt.Color(255, 153, 102));
-                listBillCode[i] = BillDAO.getBill(i + 1, employee.getBranchCode()).getBillCode();
+                listBillCode[i] = BillDAO.getBill(i + 1, chonCBB.getBranchCode()).getBillCode();
             } else {
                 list.get(i).setBackground(new java.awt.Color(247, 247, 247));
             }
         }
-        for (int i = 0; i < 12; i++) {
+        /*for (int i = 0; i < 12; i++) {
             System.out.println(listBillCode[i]);
-        }
-        EmployeeName.setText("NHÂN VIÊN: " + employee.getName().toUpperCase());
-        txtChiNhanh.setText("Chi Nhánh " + branch.getBranchName());
+        }*/
+
+        // txtChiNhanh.setText("Chi Nhánh " + branch.getTenChiNhanh());
     }
 
     /**
@@ -102,6 +122,10 @@ public class EmployeeHome extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
+        pnDoanhThu = new javax.swing.JPanel();
+        jLabel33 = new javax.swing.JLabel();
+        pnQLLuong = new javax.swing.JPanel();
+        jLabel31 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         homejp = new javax.swing.JPanel();
@@ -112,7 +136,8 @@ public class EmployeeHome extends javax.swing.JFrame {
         btnDiemDanh = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel32 = new javax.swing.JLabel();
-        txtChiNhanh = new javax.swing.JLabel();
+        pnDoanhThu1 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         clock = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
@@ -167,6 +192,7 @@ public class EmployeeHome extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         EmployeeName = new javax.swing.JLabel();
+        cbbChiNhanh = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home - Nhan Vien");
@@ -180,6 +206,65 @@ public class EmployeeHome extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 91, 150));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pnDoanhThu.setBackground(new java.awt.Color(100, 151, 177));
+
+        jLabel33.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel33.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel33.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel33.setText("DOANH THU");
+        jLabel33.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel33MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel33MouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnDoanhThuLayout = new javax.swing.GroupLayout(pnDoanhThu);
+        pnDoanhThu.setLayout(pnDoanhThuLayout);
+        pnDoanhThuLayout.setHorizontalGroup(
+            pnDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+        );
+        pnDoanhThuLayout.setVerticalGroup(
+            pnDoanhThuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel33, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(pnDoanhThu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 305, -1));
+
+        pnQLLuong.setBackground(new java.awt.Color(100, 151, 177));
+
+        jLabel31.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel31.setText("QUẢN LÝ PHÒNG");
+        jLabel31.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel31MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel31MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel31MouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnQLLuongLayout = new javax.swing.GroupLayout(pnQLLuong);
+        pnQLLuong.setLayout(pnQLLuongLayout);
+        pnQLLuongLayout.setHorizontalGroup(
+            pnQLLuongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+        );
+        pnQLLuongLayout.setVerticalGroup(
+            pnQLLuongLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel31, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(pnQLLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 305, -1));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_business_girl_hotel_room_120px.png"))); // NOI18N
         jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
@@ -222,7 +307,7 @@ public class EmployeeHome extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("KHO");
+        jLabel4.setText("QUẢN LÝ NHÂN VIÊN");
         jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel4MouseClicked(evt);
@@ -313,11 +398,38 @@ public class EmployeeHome extends javax.swing.JFrame {
 
         jPanel2.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 730, 200, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 800));
+        pnDoanhThu1.setBackground(new java.awt.Color(100, 151, 177));
 
-        txtChiNhanh.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        txtChiNhanh.setText("Chi Nhánh Hai Bà Trưng");
-        jPanel1.add(txtChiNhanh, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, -1, -1));
+        jLabel34.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
+        jLabel34.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel34.setText("KHO");
+        jLabel34.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel34MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel34MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel34MouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnDoanhThu1Layout = new javax.swing.GroupLayout(pnDoanhThu1);
+        pnDoanhThu1.setLayout(pnDoanhThu1Layout);
+        pnDoanhThu1Layout.setHorizontalGroup(
+            pnDoanhThu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, 305, Short.MAX_VALUE)
+        );
+        pnDoanhThu1Layout.setVerticalGroup(
+            pnDoanhThu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel34, javax.swing.GroupLayout.DEFAULT_SIZE, 60, Short.MAX_VALUE)
+        );
+
+        jPanel2.add(pnDoanhThu1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 560, 305, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 800));
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8_delete_52px.png"))); // NOI18N
         jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -614,6 +726,14 @@ public class EmployeeHome extends javax.swing.JFrame {
         });
         jPanel1.add(EmployeeName, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, 70, -1, -1));
 
+        cbbChiNhanh.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cbbChiNhanh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbChiNhanhActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cbbChiNhanh, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 50, 210, 40));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-8, 0, 1190, 790));
 
         pack();
@@ -677,7 +797,7 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void jLabel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel32MouseClicked
         // TODO add your handling code here:
-        new Login().setVisible(true);
+        new LoginView().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel32MouseClicked
 
@@ -698,7 +818,7 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void EmployeeNameMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EmployeeNameMouseClicked
         // TODO add your handling code here:
-        new ThongTin(employee, "NV").setVisible(true);
+        new ThongTin(employee, "GD").setVisible(true);
 
     }//GEN-LAST:event_EmployeeNameMouseClicked
 
@@ -708,97 +828,115 @@ public class EmployeeHome extends javax.swing.JFrame {
 
     private void txtR1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR1MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(1);
+
     }//GEN-LAST:event_txtR1MouseClicked
 
     private void txtR2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR2MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(2);
+
     }//GEN-LAST:event_txtR2MouseClicked
 
     private void txtR3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR3MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(3);
+
     }//GEN-LAST:event_txtR3MouseClicked
 
     private void txtR4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR4MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(4);
+
     }//GEN-LAST:event_txtR4MouseClicked
 
     private void txtR5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR5MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(5);
+
     }//GEN-LAST:event_txtR5MouseClicked
 
     private void txtR6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR6MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(6);
+
     }//GEN-LAST:event_txtR6MouseClicked
 
     private void txtR7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR7MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(7);
+
     }//GEN-LAST:event_txtR7MouseClicked
 
     private void txtR8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR8MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(8);
+
     }//GEN-LAST:event_txtR8MouseClicked
 
     private void txtR9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR9MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(9);
+
     }//GEN-LAST:event_txtR9MouseClicked
 
     private void txtR10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR10MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(10);
+
     }//GEN-LAST:event_txtR10MouseClicked
 
     private void txtR11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR11MouseClicked
         // TODO add your handling code here:
-        checkTrangThaiNhanPhong(11);
+
     }//GEN-LAST:event_txtR11MouseClicked
 
     private void txtR12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtR12MouseClicked
-        // TODO add your handling code here:
-        checkTrangThaiNhanPhong(12);
+
     }//GEN-LAST:event_txtR12MouseClicked
+
+    private void jLabel31MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseEntered
+        // TODO add your handling code here:
+        pnQLLuong.setBackground(new Color(204, 102, 0));
+    }//GEN-LAST:event_jLabel31MouseEntered
+
+    private void jLabel31MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseExited
+        // TODO add your handling code here:
+        pnQLLuong.setBackground(new Color(100, 151, 177));
+        
+    }//GEN-LAST:event_jLabel31MouseExited
+
+    private void jLabel33MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel33MouseEntered
+        // TODO add your handling code here:
+        pnDoanhThu.setBackground(new Color(204, 102, 0));
+    }//GEN-LAST:event_jLabel33MouseEntered
+
+    private void jLabel33MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel33MouseExited
+        // TODO add your handling code here:
+        pnDoanhThu.setBackground(new Color(100, 151, 177));
+    }//GEN-LAST:event_jLabel33MouseExited
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
         // TODO add your handling code here:
-        new Kho(employee).setVisible(true);
+        new EmployeeManagerView().setVisible(true);
     }//GEN-LAST:event_jLabel4MouseClicked
 
-    private void checkTrangThaiNhanPhong(int MaPhong) {
-        if (!listR.get(MaPhong - 1).isStatus()) {
-            new NhapThongTinKhachHang(MaPhong, this).setVisible(true);
-        } else {
-            new ThanhToan(MaPhong, listBillCode[MaPhong - 1], branch.getBranchCode() , this).setVisible(true);
-        }
-    }
+    private void cbbChiNhanhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbChiNhanhActionPerformed
+        // TODO add your handling code here:
+        chonCBB = (Branch) cbbChiNhanh.getSelectedItem();
+        System.out.println(chonCBB.getBranchCode());
+    }//GEN-LAST:event_cbbChiNhanhActionPerformed
 
-    protected void traPhong(int MaPhong) {
-        listR.get(MaPhong - 1).setStatus(false);
-        if (HotelRoomDAO.setRoomStatus(listR.get(MaPhong - 1))) {
-            listBillCode[MaPhong - 1] = 0;
-            setUI();
-        }
-    }
+    private void jLabel31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseClicked
+        // TODO add your handling code here:
+       new QuanLyPhongKhachSan().setVisible(true);
+    }//GEN-LAST:event_jLabel31MouseClicked
 
-    protected void nhanPhong(int MaPhong, int MaKhachHang) {
-        int click = JOptionPane.showConfirmDialog(this, "Xác nhận nhận phòng!", "Thông báo", JOptionPane.YES_NO_OPTION);
-        if (click == 0) {
-            if (BillDAO.addBill(employee, listR.get(MaPhong - 1).getRoomCode(), MaKhachHang, 0.1)) {
-                listR.get(MaPhong - 1).setStatus(true);
-                if (HotelRoomDAO.setRoomStatus(listR.get(MaPhong - 1))) {
-                    listBillCode[MaPhong - 1] = BillDAO.getBill(MaPhong, employee.getBranchCode()).getBillCode();
-                    setUI();
-                }
-            }
-        }
-    }
+    private void jLabel34MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseEntered
+        // TODO add your handling code here:
+        pnDoanhThu1.setBackground(new Color(204, 102, 0));
+    }//GEN-LAST:event_jLabel34MouseEntered
+
+    private void jLabel34MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseExited
+        // TODO add your handling code here:
+        pnDoanhThu1.setBackground(new Color(100, 151, 177));
+    }//GEN-LAST:event_jLabel34MouseExited
+
+    private void jLabel34MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel34MouseClicked
+        // TODO add your handling code here:
+        new WarehouseView(employee).setVisible(true);
+    }//GEN-LAST:event_jLabel34MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -818,6 +956,7 @@ public class EmployeeHome extends javax.swing.JFrame {
     private javax.swing.JPanel Room8;
     private javax.swing.JPanel Room9;
     private javax.swing.JLabel btnDiemDanh;
+    private javax.swing.JComboBox<String> cbbChiNhanh;
     private javax.swing.JLabel clock;
     private javax.swing.JPanel dd;
     private javax.swing.JPanel homejp;
@@ -845,7 +984,10 @@ public class EmployeeHome extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
+    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -857,8 +999,10 @@ public class EmployeeHome extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel pnDoanhThu;
+    private javax.swing.JPanel pnDoanhThu1;
     private javax.swing.JPanel pnNhapKho;
-    private javax.swing.JLabel txtChiNhanh;
+    private javax.swing.JPanel pnQLLuong;
     private javax.swing.JLabel txtR1;
     private javax.swing.JLabel txtR10;
     private javax.swing.JLabel txtR11;

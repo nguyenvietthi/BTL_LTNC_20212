@@ -35,7 +35,7 @@ public class NhapKho extends javax.swing.JFrame {
     private DefaultTableModel model2;
     private Employee nv;
     private List<ProductInWarehouseReceipt> listSPNK;
-    private Kho kho;
+    private WarehouseView kho;
 
     public NhapKho() {
         nv = EmployeeDAO.getEmployee(5);
@@ -44,7 +44,7 @@ public class NhapKho extends javax.swing.JFrame {
         showList();
     }
 
-    public NhapKho(Employee nv, Kho kho) {
+    public NhapKho(Employee nv, WarehouseView kho) {
         this.nv = nv;
         this.kho = kho;
         initComponents();
