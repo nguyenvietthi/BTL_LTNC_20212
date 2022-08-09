@@ -87,7 +87,7 @@ public class EmployeeHomeView extends javax.swing.JFrame {
         for (int i = 0; i < 12; i++) {
             System.out.println(listBillCode[i]);
         }
-        EmployeeName.setText("NHÂN VIÊN: " + employee.getName().toUpperCase());
+        EmployeeName.setText("NHÂN VIÊN: " + employee.getFullName().toUpperCase());
         txtChiNhanh.setText("Chi Nhánh " + branch.getBranchName());
     }
 

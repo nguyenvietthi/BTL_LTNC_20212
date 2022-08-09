@@ -78,14 +78,14 @@ public class InfoView extends javax.swing.JFrame {
 
     private void setInfo() {
         employee = EmployeeDAO.getEmployee(employee.getEmployeeCode());
-        txtHoTen.setText(employee.getName());
+        txtHoTen.setText(employee.getFullName());
         // txtChiNhanh.setText(BranchDAO.getChiNhanh(employee.getBranchCode()).getTenChiNhanh());
         txtMaNhanVien.setText(String.valueOf(employee.getEmployeeCode()));
 
         dcNgaySinh.setDate(employee.getDateOfBirth());
         txtCMT.setText(String.valueOf(employee.getCMTNumber()));
         txtEmail.setText(employee.getEmail());
-        txtSoDienThoai.setText(employee.getNumberPhone());
+        txtSoDienThoai.setText(employee.getPhoneNumber());
         txtaDiaChi.setText(employee.getAddress());
         if (employee.isSex()) {
             rdbGioiTinh_Nam.setSelected(true);
@@ -118,7 +118,7 @@ public class InfoView extends javax.swing.JFrame {
             positionCBB.addElement(listPosition.get(i));
         }
         for (int i = 0; i < listPosition.size(); i++) {
-            if (listPosition.get(i).getPositionCode().equals(employee.getPositionNumBer())) {
+            if (listPosition.get(i).getPositionCode().equals(employee.getPositionCode())) {
                 index = i;
             }
         }

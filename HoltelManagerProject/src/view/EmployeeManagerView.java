@@ -77,7 +77,7 @@ public class EmployeeManagerView extends javax.swing.JFrame {
         employee = EmployeeDAO.getListEmployee();
         model.setRowCount(0);
         for (Employee a : employee) {
-            model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionNumBer()).getName(),
+            model.addRow(new Object[]{a.getEmployeeCode(), a.getFullName(), a.getDateOfBirth(), a.getPhoneNumber(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionCode()).getName(),
                 BranchDAO.getBranch(a.getBranchCode()).getBranchCode(), status(a.isStatus()), a.getEmail(),
                 a.getAddress(), sex(a.isSex())});
         }
@@ -216,7 +216,7 @@ public class EmployeeManagerView extends javax.swing.JFrame {
             employee = EmployeeDAO.findEmployee(txtTim.getText());
             model.setRowCount(0);
             for (Employee a : employee) {
-                model.addRow(new Object[]{a.getEmployeeCode(), a.getName(), a.getDateOfBirth(), a.getNumberPhone(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionNumBer()).getName(),
+                model.addRow(new Object[]{a.getEmployeeCode(), a.getFullName(), a.getDateOfBirth(), a.getPhoneNumber(), a.getCMTNumber(), EmployeeDAO.getPosition(a.getPositionCode()).getName(),
                     BranchDAO.getBranch(a.getBranchCode()).getBranchName(), status(a.isStatus()), a.getEmail(),
                     a.getAddress(), sex(a.isSex())});
             }

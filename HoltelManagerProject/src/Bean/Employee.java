@@ -11,29 +11,21 @@ import java.util.Date;
  *
  * @author VIETTHI_PC
  */
-public class Employee {
+public class Employee extends Person{
     private int employeeCode;
-    private String name;
     private Date dateOfBirth;
-    private String address;
-    private String numberPhone;
-    private String CMTNumber;
-    private String positionNumBer, email;
+    private String positionCode;
     private boolean sex, status;
     private int branchCode; 
 
     public Employee() {
     }
 
-    public Employee(int employeeCode, String name, Date dateOfBirth, String address, String numberPhone, String CMTNumber, String positionNumBer, String email, boolean sex, boolean status, int branchCode) {
+    public Employee(int employeeCode, String fullName, Date dateOfBirth, String address, String phoneNumber, String CMTNumber, String positionCode, String email, boolean sex, boolean status, int branchCode) {
+        super(fullName, phoneNumber, CMTNumber, email, address);
         this.employeeCode = employeeCode;
-        this.name = name;
         this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.numberPhone = numberPhone;
-        this.CMTNumber = CMTNumber;
-        this.positionNumBer = positionNumBer;
-        this.email = email;
+        this.positionCode = positionCode;
         this.sex = sex;
         this.status = status;
         this.branchCode = branchCode;
@@ -47,14 +39,6 @@ public class Employee {
         this.employeeCode = employeeCode;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Date getDateOfBirth() {
         return dateOfBirth;
     }
@@ -63,44 +47,12 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getAddress() {
-        return address;
+    public String getPositionCode() {
+        return positionCode;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getNumberPhone() {
-        return numberPhone;
-    }
-
-    public void setNumberPhone(String numberPhone) {
-        this.numberPhone = numberPhone;
-    }
-
-    public String getCMTNumber() {
-        return CMTNumber;
-    }
-
-    public void setCMTNumber(String CMTNumber) {
-        this.CMTNumber = CMTNumber;
-    }
-
-    public String getPositionNumBer() {
-        return positionNumBer;
-    }
-
-    public void setPositionNumBer(String positionNumBer) {
-        this.positionNumBer = positionNumBer;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setPositionCode(String positionCode) {
+        this.positionCode = positionCode;
     }
 
     public boolean isSex() {
@@ -129,7 +81,7 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employee{" + "employeeCode=" + employeeCode + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", address=" + address + ", numberPhone=" + numberPhone + ", CMTNumber=" + CMTNumber + ", positionNumBer=" + positionNumBer + ", email=" + email + ", sex=" + sex + ", status=" + status + ", branchCode=" + branchCode + '}';
+        return "Employee{" + "employeeCode=" + employeeCode + ", fullName=" + getFullName()+ ", dateOfBirth=" + dateOfBirth + ", address=" + getAddress() + ", phoneNumber=" + getPhoneNumber() + ", CMTNumber=" + getCMTNumber() + ", positionCode=" + positionCode + ", email=" + getEmail() + ", sex=" + sex + ", status=" + status + ", branchCode=" + branchCode + '}';
     }
     
 }

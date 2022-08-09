@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,16 +69,16 @@ public class EmployeeDAO{
                 + "CMTNumber, PositionNumBer, Email, Sex, Status, BranchCode) VALUES(?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
-            ps.setString(1, nv.getName());
+            ps.setString(1, nv.getFullName());
             try {
                 ps.setString(2, fm.format(nv.getDateOfBirth()));
             } catch (Exception ex) {
                 return false;
             }
             ps.setString(3, nv.getAddress());
-            ps.setString(4, nv.getNumberPhone());
+            ps.setString(4, nv.getPhoneNumber());
             ps.setString(5, nv.getCMTNumber());
-            ps.setString(6, nv.getPositionNumBer());
+            ps.setString(6, nv.getPositionCode());
             ps.setString(7, nv.getEmail());
             ps.setBoolean(8, nv.isSex());
             ps.setBoolean(9, nv.isStatus());
@@ -303,9 +302,9 @@ public class EmployeeDAO{
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setString(1, fm.format(nv.getDateOfBirth()));
             ps.setString(2, nv.getAddress());
-            ps.setString(3, nv.getNumberPhone());
+            ps.setString(3, nv.getPhoneNumber());
             ps.setString(4, nv.getCMTNumber());
-            ps.setString(5, nv.getPositionNumBer());
+            ps.setString(5, nv.getPositionCode());
             ps.setString(6, nv.getEmail());
             ps.setBoolean(7, nv.isSex());
             ps.setBoolean(8, nv.isStatus());

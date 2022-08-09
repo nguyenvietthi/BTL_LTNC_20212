@@ -45,7 +45,7 @@ public class ManagerHomeView extends javax.swing.JFrame {
         n.start();
         setInit(EmployeeNumber);
         setBranchCBB();
-        EmployeeName.setText("NHÂN VIÊN: " + employee.getName().toUpperCase());
+        EmployeeName.setText("NHÂN VIÊN: " + employee.getFullName().toUpperCase());
         RoomStatus tp = new RoomStatus(this);
         tp.start();
     }

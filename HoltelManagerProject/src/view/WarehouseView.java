@@ -215,7 +215,7 @@ public class WarehouseView extends javax.swing.JFrame {
 
     void setUI() {
         model = (DefaultTableModel) TbSanPham.getModel();
-        if (employee.getPositionNumBer().equals("NV")) {
+        if (employee.getPositionCode().equals("NV")) {
             cbbChiNhanh.setEnabled(false);
             int index;
             for (int i = 0; i < listBranch.size(); i++) {
@@ -226,7 +226,7 @@ public class WarehouseView extends javax.swing.JFrame {
             }
 
         }
-        if (employee.getPositionNumBer().equals("GD")) {
+        if (employee.getPositionCode().equals("GD")) {
             btnNhapKho.hide();
         } else{
             btnDieuChinhGia.hide();
