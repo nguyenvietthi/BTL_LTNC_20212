@@ -216,12 +216,12 @@ public class AddNewProduct extends javax.swing.JFrame {
         Product sp = new Product();
         try {
             sp.setPrice(Integer.parseInt(txtGiaSP.getText()));
+            sp.setDescription(txtMoTa.getText());
+            sp.setName(txtTenSP.getText());
             if (sp.getPrice() <= -1 || txtMoTa.getText().equals("") || txtTenSP.getText().equals("")) {
-                JOptionPane.showMessageDialog(this, "Nhập lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Nhập lại thông tin", "Thông báo", JOptionPane.INFORMATION_MESSAGE);   
             }
             else if (WarehouseDAO.addProduct(sp)) {
-                sp.setDescription(txtMoTa.getText());
-                sp.setName(txtTenSP.getText());
                 JOptionPane.showMessageDialog(this, "Đã thêm thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 importWarehouseView.showList();
                 txtGiaSP.setText("");

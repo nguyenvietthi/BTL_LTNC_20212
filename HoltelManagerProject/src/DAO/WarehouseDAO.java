@@ -468,8 +468,6 @@ public class WarehouseDAO{
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setString(1, sp.getName());
             ps.setInt(2, sp.getPrice());
-            
-        
             ps.setString(3, sp.getDescription());
 
             ps.execute();
