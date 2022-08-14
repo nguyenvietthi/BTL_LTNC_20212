@@ -23,7 +23,7 @@ public class AttendanceDAO{
       public static boolean attendant(Employee nv) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.chamcong(MaChiNhanh, MaNhanVien, NgayGio) VALUES(?,?,localtime())";
+        String sql = "INSERT INTO qlks.attendant(BranchCode, EmployeeCode, CheckInTime) VALUES(?,?,localtime())";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, nv.getBranchCode());
@@ -56,8 +56,8 @@ public class AttendanceDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT CASE WHEN timediff(localtime(), NgayGio) > '24:00:00' THEN 0 ELSE 1 "
-                + "END AS CheckDiemDanh FROM qlks.chamcong WHERE chamcong.MaNhanVien = ? ORDER BY NgayGio DESC LIMIT 1;";
+        String SQL = "SELECT CASE WHEN timediff(localtime(), CheckInTime) > '24:00:00' THEN 0 ELSE 1 "
+                + "END AS CheckDiemDanh FROM qlks.attendant WHERE attendant.EmployeeCode = ? ORDER BY CheckInTime DESC LIMIT 1;";
         try {
             ps = (PreparedStatement) conn.prepareStatement(SQL);
             ps.setInt(1, employeeCode);

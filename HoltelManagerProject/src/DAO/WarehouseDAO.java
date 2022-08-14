@@ -29,15 +29,15 @@ public class WarehouseDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.sanpham INNER JOIN qlks.chitietkho ON "
-                + "chitietkho.MaSanPham = sanpham.MaSanPham WHERE chitietkho.MaChiNhanh = ?";
+        String SQL = "SELECT * FROM qlks.product INNER JOIN qlks.warehousedetail ON "
+                + "warehousedetail.ProductCode = product.ProductCode WHERE warehousedetail.BranchCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                Product tmp = new Product(rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("Gia"), rs.getString("MoTa"));
+                Product tmp = new Product(rs.getInt("ProductCode"), rs.getString("Name"), rs.getInt("Price"), rs.getString("Description"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -65,9 +65,9 @@ public class WarehouseDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT chitietkho.MaChiNhanh, chitietkho.MaSanPham, chitietkho.SoLuong, sanpham.Ten,"
-                + " sanpham.Gia, sanpham.MoTa FROM qlks.chitietkho INNER JOIN"
-                + " qlks.sanpham ON chitietkho.MaSanPham = sanpham.MaSanPham WHERE chitietkho.MaChiNhanh = ?;";
+        String SQL = "SELECT warehousedetail.BranchCode, warehousedetail.ProductCode, warehousedetail.Amount, product.Name,"
+                + " product.Price, product.Description FROM qlks.warehousedetail INNER JOIN"
+                + " qlks.product ON warehousedetail.ProductCode = product.ProductCode WHERE warehousedetail.BranchCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
@@ -75,7 +75,7 @@ public class WarehouseDAO{
             rs = ps.executeQuery();
             while (rs.next()) {
                 Object tmp = new Object[]{
-                    rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("SoLuong"), rs.getInt("Gia"), rs.getString("MoTa")
+                    rs.getInt("ProductCode"), rs.getString("Name"), rs.getInt("Amount"), rs.getInt("Price"), rs.getString("Description")
                 };
                 list.add(tmp);
             }
@@ -105,15 +105,15 @@ public class WarehouseDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.nhapkho";
+        String SQL = "SELECT * FROM qlks.warehousereceipt";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             rs = ps.executeQuery();
             while (rs.next()) {
                 WarehouseReceipt tmp = new WarehouseReceipt(
-                        rs.getInt("MaHoaDon"), rs.getInt("MaChiNhanh"),
-                        rs.getInt("MaNhanVien"), rs.getDate("NgayGio"), rs.getString("CongTyGiao"),
-                        rs.getString("TenNhanVienGiao")
+                        rs.getInt("WarehouseReceiptCode"), rs.getInt("BranchCode"),
+                        rs.getInt("EmployeeCode"), rs.getDate("CheckInTime"), rs.getString("DeliveryCompany"),
+                        rs.getString("DeliveryEmployee")
                 );
                 list.add(tmp);
             }
@@ -141,8 +141,8 @@ public class WarehouseDAO{
     public static boolean addWarehouseReceipt(WarehouseReceipt hd) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.nhapkho(MaChiNhanh,MaNhanVien, NgayGio, CongTyGiao, "
-                + "TenNhanVienGiao) VALUES(?,?,localtime(),?,?)";
+        String sql = "INSERT INTO qlks.warehousereceipt(BranchCode,EmployeeCode, Time, DeliveryCompany, "
+                + "DeliveryEmployee) VALUES(?,?,localtime(),?,?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, hd.getBranchCode());
@@ -177,7 +177,7 @@ public class WarehouseDAO{
     public static boolean addNotAvailableProductToWarehouseReceipt(int branchCode, int productCode, int amount) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.chitietkho(MaChiNhanh, MaSanPham, SoLuong)  VALUES(?,?,?)";
+        String sql = "INSERT INTO qlks.warehousedetail(BranchCode, ProductCode, Amount)  VALUES(?,?,?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
 
@@ -214,7 +214,7 @@ public class WarehouseDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT COUNT(*) AS ch FROM qlks.chitietkho WHERE MaChiNhanh =? AND MaSanPham = ?";
+        String SQL = "SELECT COUNT(*) AS ch FROM qlks.warehousedetail WHERE BranchCode =? AND ProductCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
@@ -250,7 +250,7 @@ public class WarehouseDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT SoLuong FROM qlks.chitietkho WHERE MaChiNhanh =? AND MaSanPham = ?";
+        String SQL = "SELECT Amount FROM qlks.warehousedetail WHERE BranchCode =? AND ProductCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
@@ -258,7 +258,7 @@ public class WarehouseDAO{
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                amount = rs.getInt("SoLuong");
+                amount = rs.getInt("Amount");
             }
         } catch (SQLException ex) {
             Logger.getLogger(WarehouseDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -283,7 +283,7 @@ public class WarehouseDAO{
     public static boolean addProduct(int branchCode, int productCode, int amount) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "UPDATE qlks.chitietkho SET SoLuong = SoLuong + ? WHERE MaSanPham =? AND MaChiNhanh = ?";
+        String sql = "UPDATE qlks.warehousedetail SET Amount = Amount + ? WHERE ProductCode =? AND BranchCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, amount);
@@ -318,7 +318,7 @@ public class WarehouseDAO{
      public static boolean delProductAmount(int branchCode, int productCode, int amount) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "UPDATE qlks.chitietkho SET SoLuong = SoLuong - ? WHERE MaSanPham =? AND MaChiNhanh = ?";
+        String sql = "UPDATE qlks.warehousedetail SET Amount = Amount - ? WHERE ProductCode =? AND BranchCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, amount);
@@ -350,13 +350,13 @@ public class WarehouseDAO{
         return false;
     }
      
-    public static boolean addProductInWarehouseReceipt(ProductInWarehouseReceipt spnk, int billCode) {
+    public static boolean addProductInWarehouseReceipt(ProductInWarehouseReceipt spnk, int WarehouseReceiptCode) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.chitietnhapkho(MaHoaDon,MaSanPham, SoLuong, GiaSanPham) VALUES(?,?,?,?)";
+        String sql = "INSERT INTO qlks.warehousereceiptdetail(WarehouseReceiptCode,ProductCode, Amount, Price) VALUES(?,?,?,?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
-            ps.setInt(1, billCode);
+            ps.setInt(1, WarehouseReceiptCode);
             ps.setInt(2, spnk.getProductCode());
             ps.setInt(3, spnk.getAmount());
             ps.setInt(4, spnk.getPrice());
@@ -384,17 +384,17 @@ public class WarehouseDAO{
         return false;
     }
 
-    public static int getLatestBillCode() {
+    public static int getLatestWarehouseReceiptCode() {
         int MHD = 0;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT MaHoaDon FROM qlks.nhapkho ORDER BY MaHoaDon DESC LIMIT 1";
+        String SQL = "SELECT WarehouseReceiptCode FROM qlks.warehousereceipt ORDER BY WarehouseReceiptCode DESC LIMIT 1";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             rs = ps.executeQuery();
             while (rs.next()) {
-                MHD = rs.getInt("MaHoaDon");
+                MHD = rs.getInt("WarehouseReceiptCode");
 
             }
         } catch (SQLException ex) {
@@ -423,10 +423,10 @@ public class WarehouseDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT chitietkho.MaChiNhanh, chitietkho.MaSanPham, chitietkho.SoLuong, sanpham.Ten,"
-                + " sanpham.Gia, sanpham.MoTa FROM qlks.chitietkho INNER JOIN"
-                + " qlks.sanpham ON chitietkho.MaSanPham = "
-                + "sanpham.MaSanPham WHERE sanpham.Ten LIKE CONCAT('%', ?, '%') AND chitietkho.MaChiNhanh = ?;";
+        String SQL = "SELECT warehousedetail.BranchCode, warehousedetail.ProductCode, warehousedetail.Amount, product.Name,"
+                + " product.Price, product.Description FROM qlks.warehousedetail INNER JOIN"
+                + " qlks.product ON warehousedetail.ProductCode = "
+                + "product.ProductCode WHERE product.Name LIKE CONCAT('%', ?, '%') AND warehousedetail.BranchCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setString(1, str);
@@ -435,7 +435,7 @@ public class WarehouseDAO{
             rs = ps.executeQuery();
             while (rs.next()) {
                 Object tmp = new Object[]{
-                    rs.getInt("MaSanPham"), rs.getString("Ten"), rs.getInt("SoLuong"), rs.getInt("Gia"), rs.getString("MoTa")
+                    rs.getInt("ProductCode"), rs.getString("Name"), rs.getInt("Amount"), rs.getInt("Price"), rs.getString("Description")
                 };
                 list.add(tmp);
             }
@@ -463,7 +463,7 @@ public class WarehouseDAO{
 
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.sanpham(Ten, Gia, MoTa) VALUES(?, ?, ?)";
+        String sql = "INSERT INTO qlks.product(Name, Price, Description) VALUES(?, ?, ?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setString(1, sp.getName());
@@ -498,7 +498,7 @@ public class WarehouseDAO{
     public static boolean adjustPrice(int productCode, int price) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String SQL = "UPDATE qlks.sanpham SET gia = ? WHERE MaSanPham = ?";
+        String SQL = "UPDATE qlks.product SET Price = ? WHERE ProductCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(2, productCode);

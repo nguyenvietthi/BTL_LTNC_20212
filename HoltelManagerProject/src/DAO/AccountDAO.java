@@ -31,7 +31,7 @@ public class AccountDAO{
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                acc = new Account(rs.getInt("EmployeeNumber"), rs.getString("UserName"), rs.getString("PassWord"));
+                acc = new Account(rs.getInt("EmployeeCode"), rs.getString("UserName"), rs.getString("PassWord"));
             }
         } catch (SQLException ex) {
             System.out.println("catch");
@@ -51,19 +51,19 @@ public class AccountDAO{
         }
         return acc;
     }
-    public static Account findAccount(int EmployeeNumber) {
+    public static Account findAccount(int EmployeeCode) {
         Account acc = new Account();
         Connection conn = (Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.account WHERE EmployeeNumber = ?";
+        String SQL = "SELECT * FROM qlks.account WHERE EmployeeCode = ?";
         try {
             ps = conn.prepareStatement(SQL);
-            ps.setInt(1, EmployeeNumber);
+            ps.setInt(1, EmployeeCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                acc = new Account(rs.getInt("EmployeeNumber"), rs.getString("UserName"), rs.getString("PassWord"));
+                acc = new Account(rs.getInt("EmployeeCode"), rs.getString("UserName"), rs.getString("PassWord"));
             }
         } catch (SQLException ex) {
             System.out.println("catch");
@@ -88,7 +88,7 @@ public class AccountDAO{
         Connection conn = (Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT nhanvien.PositionNumBer FROM qlks.nhanvien INNER JOIN qlks.account ON nhanvien.EmployeeNumber = account.EmployeeNumber WHERE account.UserName = ?;";
+        String SQL = "SELECT employee.PositionNumBer FROM qlks.employee INNER JOIN qlks.account ON employee.EmployeeCode = account.EmployeeCode WHERE account.UserName = ?;";
         try {
             ps = conn.prepareStatement(SQL);
             ps.setString(1, UserName);
@@ -120,14 +120,14 @@ public class AccountDAO{
         Connection conn = (Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT nhanvien.EmployeeNumber FROM qlks.nhanvien INNER JOIN qlks.account ON nhanvien.EmployeeNumber = account.EmployeeNumber WHERE account.UserName = ?;";
+        String SQL = "SELECT employee.EmployeeCode FROM qlks.employee INNER JOIN qlks.account ON employee.EmployeeCode = account.EmployeeCode WHERE account.UserName = ?;";
         try {
             ps = conn.prepareStatement(SQL);
             ps.setString(1, UserName);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                EN = rs.getInt("EmployeeNumber");
+                EN = rs.getInt("EmployeeCode");
             }
         } catch (SQLException ex) {
             System.out.println("catch");
@@ -150,7 +150,7 @@ public class AccountDAO{
     public static boolean changePass(int employeeCode, String Pass) {
         java.sql.Connection conn = DBConnection.createConnection();
         com.mysql.jdbc.PreparedStatement ps = null;
-        String SQL = "UPDATE qlks.account SET PassWord = ? WHERE EmployeeNumber = ?";
+        String SQL = "UPDATE qlks.account SET PassWord = ? WHERE EmployeeCode = ?";
         try {
             ps = (com.mysql.jdbc.PreparedStatement) conn.prepareCall(SQL);
             ps.setString(1, Pass);
@@ -180,7 +180,7 @@ public class AccountDAO{
      public static boolean addUserName(String userName, int branchCode) {
         java.sql.Connection conn = DBConnection.createConnection();
         com.mysql.jdbc.PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.account(EmployeeNumber, UserName) VALUES(?,?)";
+        String sql = "INSERT INTO qlks.account(EmployeeCode, UserName) VALUES(?,?)";
         try {
             ps = (com.mysql.jdbc.PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, branchCode);
@@ -212,7 +212,7 @@ public class AccountDAO{
         com.mysql.jdbc.PreparedStatement ps = null;
 
         try {
-            String sql = "DELETE FROM qlks.account WHERE EmployeeNumber = ?";
+            String sql = "DELETE FROM qlks.account WHERE EmployeeCode = ?";
             ps = (com.mysql.jdbc.PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, branchCode);
             ps.execute();

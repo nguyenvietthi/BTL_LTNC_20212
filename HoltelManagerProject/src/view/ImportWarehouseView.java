@@ -347,7 +347,7 @@ public class ImportWarehouseView extends javax.swing.JFrame {
             WarehouseReceipt hd = new WarehouseReceipt(0, employee.getBranchCode(), employee.getEmployeeCode(), now, txtCongTyGiao.getText(), txtNhanVienGiao.getText());
             System.out.println(hd);
             if (WarehouseDAO.addWarehouseReceipt(hd)) {
-                int MHD = WarehouseDAO.getLatestBillCode();
+                int MHD = WarehouseDAO.getLatestWarehouseReceiptCode();
                 System.out.println(MHD);
                 boolean check = false;
                 for (ProductInWarehouseReceipt a : productInWarehouseReceiptList) {

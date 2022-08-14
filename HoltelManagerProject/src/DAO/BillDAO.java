@@ -26,15 +26,15 @@ import java.util.logging.Logger;
  */
 public class BillDAO{
     public static boolean addBill(Employee nv, int roomCode, int customerCode, double VAT) {
-        int GiaThue = HotelRoomDAO.getPrice(nv.getBranchCode(), roomCode);
+        int Price = HotelRoomDAO.getPrice(nv.getBranchCode(), roomCode);
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.hoadon(MaPhong, GioVao, GiaThue, ThueVAT, MaNhanVien, "
-                + "MaKhachHang, MaChiNhanh) VALUES(?,localtime(), ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO qlks.bill(RoomCode, CheckIn, Price, VATTax, EmployeeCode, "
+                + "CustomerCode, BranchCode) VALUES(?,localtime(), ?, ?, ?, ?, ?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, roomCode);
-            ps.setInt(2, GiaThue);
+            ps.setInt(2, Price);
             ps.setDouble(3, VAT);
             ps.setInt(4, nv.getEmployeeCode());
             ps.setInt(5, customerCode);
@@ -67,7 +67,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.hoadon WHERE MaChiNhanh = ? AND MaPhong = ? ORDER BY MaHoaDon DESC LIMIT 1;";
+        String SQL = "SELECT * FROM qlks.bill WHERE BranchCode = ? AND RoomCode = ? ORDER BY BillCode DESC LIMIT 1;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
@@ -75,9 +75,9 @@ public class BillDAO{
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                hd = new Bill(rs.getInt("MaHoaDon"), rs.getInt("MaPhong"), rs.getTimestamp("GioVao"),
-                        rs.getTimestamp("GioRa"), rs.getInt("GiaThue"), rs.getFloat("ThueVAT"),
-                        rs.getInt("MaNhanVien"), rs.getInt("MaKhachHang"), rs.getInt("MaChiNhanh"));
+                hd = new Bill(rs.getInt("BillCode"), rs.getInt("RoomCode"), rs.getTimestamp("CheckIn"),
+                        rs.getTimestamp("CheckOut"), rs.getInt("Price"), rs.getFloat("VATTax"),
+                        rs.getInt("EmployeeCode"), rs.getInt("CustomerCode"), rs.getInt("BranchCode"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,16 +105,16 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.hoadon WHERE MaHoaDon = ?;";
+        String SQL = "SELECT * FROM qlks.bill WHERE BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                hd = new Bill(rs.getInt("MaHoaDon"), rs.getInt("MaPhong"), rs.getTimestamp("GioVao"),
-                        rs.getTimestamp("GioRa"), rs.getInt("GiaThue"), rs.getFloat("ThueVAT"),
-                        rs.getInt("MaNhanVien"), rs.getInt("MaKhachHang"), rs.getInt("MaChiNhanh"));
+                hd = new Bill(rs.getInt("BillCode"), rs.getInt("RoomCode"), rs.getTimestamp("CheckIn"),
+                        rs.getTimestamp("CheckOut"), rs.getInt("Price"), rs.getFloat("VATTax"),
+                        rs.getInt("EmployeeCode"), rs.getInt("CustomerCode"), rs.getInt("BranchCode"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -142,7 +142,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT SUM(SoLuong * GiaSanPham) AS TongTienSanPham FROM qlks.chitiethoadon WHERE MaHoaDon = ?;";
+        String SQL = "SELECT SUM(Amount * Price) AS TongTienSanPham FROM qlks.billdetail WHERE BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
@@ -177,8 +177,8 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT (hour(timediff(GioRa, GioVao)) +  minute(timediff(GioRa, GioVao))/60) "
-                + "* GiaThue AS TongTienPhong FROM qlks.hoadon WHERE MaHoaDon = ?;";
+        String SQL = "SELECT (hour(timediff(CheckOut, CheckIn)) +  minute(timediff(CheckOut, CheckIn))/60) "
+                + "* Price AS TongTienPhong FROM qlks.bill WHERE BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
@@ -213,19 +213,19 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT SoPhanTram  FROM giamgia "
-                + "WHERE giamgia.MaGiamGia = (SELECT MaGiamGia FROM chitietgiamgia "
-                + "	WHERE chitietgiamgia.MaLoaiKhach = (SELECT LoaiKhach FROM khachhang "
-                + "		WHERE khachhang.MaKhachHang = ("
-                + "			SELECT MaKhachHang FROM hoadon WHERE hoadon.MaHoaDon = ?"
-                + "			))) AND TinhTrang = 1";
+        String SQL = "SELECT Percent  FROM discount "
+                + "WHERE discount.DiscountCode = (SELECT DiscountCode FROM discountdetail "
+                + "	WHERE discountdetail.CustomerType = (SELECT CustomerType FROM customer "
+                + "		WHERE customer.CustomerCode = ("
+                + "			SELECT CustomerCode FROM bill WHERE bill.BillCode = ?"
+                + "			))) AND Status = 1";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                total = rs.getDouble("SoPhanTram") * (getTotal(billCode) - getVATTax(billCode));
+                total = rs.getDouble("Percent") * (getTotal(billCode) - getVATTax(billCode));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -253,24 +253,24 @@ public class BillDAO{
         return total;
     }
 
-    public static Discount giamGia(int MaHoaDon) {
+    public static Discount giamGia(int BillCode) {
         Discount total = null;
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT MaGiamGia,SoPhanTram  FROM giamgia "
-                + "WHERE giamgia.MaGiamGia = (SELECT MaGiamGia FROM chitietgiamgia "
-                + "	WHERE chitietgiamgia.MaLoaiKhach = (SELECT LoaiKhach FROM khachhang "
-                + "		WHERE khachhang.MaKhachHang = ("
-                + "			SELECT MaKhachHang FROM hoadon WHERE hoadon.MaHoaDon = ?"
-                + "			))) AND TinhTrang = 1";
+        String SQL = "SELECT DiscountCode,Percent  FROM discount "
+                + "WHERE discount.DiscountCode = (SELECT DiscountCode FROM discountdetail "
+                + "	WHERE discountdetail.CustomerType = (SELECT CustomerType FROM customer "
+                + "		WHERE customer.CustomerCode = ("
+                + "			SELECT CustomerCode FROM bill WHERE bill.BillCode = ?"
+                + "			))) AND Status = 1";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setInt(1, MaHoaDon);
+            ps.setInt(1, BillCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                total = new Discount(rs.getString("MaGiamGia"), rs.getDouble("SoPhanTram"));
+                total = new Discount(rs.getString("DiscountCode"), rs.getDouble("Percent"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -303,8 +303,8 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT (hour(timediff(GioRa, GioVao)) +  minute(timediff(GioRa, GioVao))/60) "
-                + " AS SoGio FROM qlks.hoadon WHERE MaHoaDon = ?;";
+        String SQL = "SELECT (hour(timediff(CheckOut, CheckIn)) +  minute(timediff(CheckOut, CheckIn))/60) "
+                + " AS SoGio FROM qlks.bill WHERE BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
@@ -339,14 +339,14 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT ThueVAT FROM qlks.hoadon WHERE MaHoaDon = ?;";
+        String SQL = "SELECT VATTax FROM qlks.bill WHERE BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                total = rs.getDouble("ThueVAT") * getTotal(billCode);
+                total = rs.getDouble("VATTax") * getTotal(billCode);
             }
         } catch (SQLException ex) {
             Logger.getLogger(BillDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -374,7 +374,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT COUNT(*) AS kiemTra FROM qlks.chitiethoadon WHERE MaHoaDon = ? AND MaSanPham = ?;";
+        String SQL = "SELECT COUNT(*) AS kiemTra FROM qlks.billdetail WHERE BillCode = ? AND ProductCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
@@ -411,7 +411,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "INSERT INTO qlks.chitiethoadon VALUES(?, ?, ?, ?)";
+        String SQL = "INSERT INTO qlks.billdetail VALUES(?, ?, ?, ?)";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, sp.getProductCode());
@@ -445,7 +445,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "UPDATE qlks.hoadon SET GioRa = localtime() WHERE MaHoaDon = ?;";
+        String SQL = "UPDATE qlks.bill SET CheckOut = localtime() WHERE BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
@@ -476,7 +476,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "UPDATE qlks.chitiethoadon SET SoLuong = SoLuong + ? WHERE MaSanPham =? AND MaHoaDon = ?";
+        String SQL = "UPDATE qlks.billdetail SET Amount = Amount + ? WHERE ProductCode =? AND BillCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, amount);
@@ -510,18 +510,18 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT sanpham.MaSanPham, sanpham.Ten, chitiethoadon.SoLuong, chitiethoadon.GiaSanPham,"
-                + " chitiethoadon.SoLuong * chitiethoadon.GiaSanPham AS TongTien FROM "
-                + "qlks.chitiethoadon INNER JOIN qlks.sanpham ON chitiethoadon.MaSanPham = "
-                + "sanpham.MaSanPham WHERE chitiethoadon.MaHoaDon = ?;";
+        String SQL = "SELECT product.ProductCode, product.Name, billdetail.Amount, billdetail.Price,"
+                + " billdetail.Amount * billdetail.Price AS TongTien FROM "
+                + "qlks.billdetail INNER JOIN qlks.product ON billdetail.ProductCode = "
+                + "product.ProductCode WHERE billdetail.BillCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                ProductInBill tmp = new ProductInBill(rs.getInt("MaSanPham"),
-                        rs.getString("Ten"), rs.getInt("SoLuong"), rs.getInt("GiaSanPham"), rs.getInt("TongTien"));
+                ProductInBill tmp = new ProductInBill(rs.getInt("ProductCode"),
+                        rs.getString("Name"), rs.getInt("Amount"), rs.getInt("Price"), rs.getInt("TongTien"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -549,7 +549,7 @@ public class BillDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "DELETE FROM qlks.chitiethoadon WHERE MaHoaDon = ? AND MaSanPham = ?";
+        String SQL = "DELETE FROM qlks.billdetail WHERE BillCode = ? AND ProductCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);

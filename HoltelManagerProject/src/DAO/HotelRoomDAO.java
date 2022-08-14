@@ -22,18 +22,18 @@ import java.util.logging.Logger;
  */
 public class HotelRoomDAO {
 
-    /* public static List<HotelRoom> getListPhongKhachSan(int MaChiNhanh){
+    /* public static List<HotelRoom> getListPhongKhachSan(int BranchCode){
          List<HotelRoom> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         conn = DBConnection.createConnection();
         try {
-            String SQL = "SELECT * FROM qlks.phongkhachsan;";
+            String SQL = "SELECT * FROM qlks.hotelroom;";
             st = conn.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
-                HotelRoom tmp = new HotelRoom(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"), rs.getBoolean("TrangThai"));
+                HotelRoom tmp = new HotelRoom(rs.getInt("BranchCode"), rs.getInt("RoomCode"), rs.getBoolean("Status"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -54,15 +54,15 @@ public class HotelRoomDAO {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.phongkhachsan WHERE MaChiNhanh = ?;";
+        String SQL = "SELECT * FROM qlks.hotelroom WHERE BranchCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                HotelRoom tmp = new HotelRoom(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"),
-                        rs.getBoolean("TrangThai"), rs.getInt("GiaThue"), rs.getString("MoTa"));
+                HotelRoom tmp = new HotelRoom(rs.getInt("BranchCode"), rs.getInt("RoomCode"),
+                        rs.getBoolean("Status"), rs.getInt("Price"), rs.getString("Description"));
                 list.add(tmp);
             }
         } catch (SQLException ex) {
@@ -91,7 +91,7 @@ public class HotelRoomDAO {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT GiaThue FROM qlks.phongkhachsan WHERE MaChiNhanh = ? AND MaPhong = ?;";
+        String SQL = "SELECT Price FROM qlks.hotelroom WHERE BranchCode = ? AND RoomCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
@@ -99,7 +99,7 @@ public class HotelRoomDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                price = rs.getInt("GiaThue");
+                price = rs.getInt("Price");
             }
         } catch (SQLException ex) {
             Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
@@ -127,7 +127,7 @@ public class HotelRoomDAO {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.phongkhachsan WHERE MaChiNhanh = ? AND MaPhong = ?;";
+        String SQL = "SELECT * FROM qlks.hotelroom WHERE BranchCode = ? AND RoomCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);
@@ -135,8 +135,8 @@ public class HotelRoomDAO {
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                a = new HotelRoom(rs.getInt("MaChiNhanh"), rs.getInt("MaPhong"),
-                        rs.getBoolean("TrangThai"), rs.getInt("GiaThue"), rs.getString("MoTa"));
+                a = new HotelRoom(rs.getInt("BranchCode"), rs.getInt("RoomCode"),
+                        rs.getBoolean("Status"), rs.getInt("Price"), rs.getString("Description"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(HotelRoom.class.getName()).log(Level.SEVERE, null, ex);
@@ -163,7 +163,7 @@ public class HotelRoomDAO {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "UPDATE qlks.phongkhachsan SET GiaThue = ?, MoTa = ? WHERE MaChiNhanh = ? AND MaPhong = ?;";
+        String SQL = "UPDATE qlks.hotelroom SET Price = ?, Description = ? WHERE BranchCode = ? AND RoomCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, pks.getPrice());
@@ -196,7 +196,7 @@ public class HotelRoomDAO {
     public static boolean setRoomStatus(HotelRoom phong) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String SQL = "UPDATE qlks.phongkhachsan SET TrangThai = ? WHERE MaChiNhanh = ? AND MaPhong = ?";
+        String SQL = "UPDATE qlks.hotelroom SET Status = ? WHERE BranchCode = ? AND RoomCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setBoolean(1, phong.isStatus());
@@ -230,7 +230,7 @@ public class HotelRoomDAO {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT COUNT(*) AS 'SoPhong' FROM qlks.phongkhachsan WHERE MaChiNhanh = ?";
+        String SQL = "SELECT COUNT(*) AS 'SoPhong' FROM qlks.hotelroom WHERE BranchCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, branchCode);

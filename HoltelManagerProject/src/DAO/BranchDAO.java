@@ -26,7 +26,7 @@ public class BranchDAO{
         Connection conn = DBConnection.createConnection();
         java.sql.PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.chinhanh WHERE chinhanh.BranchCode = ?;";
+        String SQL = "SELECT * FROM qlks.branch WHERE branch.BranchCode = ?;";
         try {
             ps = conn.prepareStatement(SQL);
             ps.setInt(1, branchCode);
@@ -64,7 +64,7 @@ public class BranchDAO{
         Connection conn = DBConnection.createConnection();
         java.sql.PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.chinhanh";
+        String SQL = "SELECT * FROM qlks.branch";
         try {
             ps = conn.prepareStatement(SQL);
             rs = ps.executeQuery();

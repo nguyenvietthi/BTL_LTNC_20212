@@ -32,11 +32,11 @@ public class EmployeeDAO{
         ResultSet rs = null;
         conn = DBConnection.createConnection();
         try {
-            String SQL = "SELECT * FROM qlks.nhanvien;";
+            String SQL = "SELECT * FROM qlks.employee;";
             st = conn.createStatement();
             rs = st.executeQuery(SQL);
             while (rs.next()) {
-                Employee tmp = new Employee(rs.getInt("EmployeeNumber"), rs.getString("Name"), rs.getDate("DateOfBirth"), rs.getString("Address"), rs.getString("NumberPhone"), rs.getString("CMTNumber"), rs.getString("PositionNumBer"), rs.getString("Email"), rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
+                Employee tmp = new Employee(rs.getInt("EmployeeCode"), rs.getString("Name"), rs.getDate("DateOfBirth"), rs.getString("Address"), rs.getString("NumberPhone"), rs.getString("CMTNumber"), rs.getString("PositionNumBer"), rs.getString("Email"), rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
                 list.add(tmp);
                 System.out.println("ok");
             }
@@ -65,7 +65,7 @@ public class EmployeeDAO{
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.nhanvien(Name, DateOfBirth, Address, NumberPhone, "
+        String sql = "INSERT INTO qlks.employee(Name, DateOfBirth, Address, NumberPhone, "
                 + "CMTNumber, PositionNumBer, Email, Sex, Status, BranchCode) VALUES(?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
@@ -107,19 +107,19 @@ public class EmployeeDAO{
         return false;
     }
 
-    public static Employee getEmployee(int EmployeeNumber) {
+    public static Employee getEmployee(int EmployeeCode) {
         Employee nv = null;
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.nhanvien WHERE nhanvien.EmployeeNumber = ?;";
+        String SQL = "SELECT * FROM qlks.employee WHERE employee.EmployeeCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareStatement(SQL);
-            ps.setInt(1, EmployeeNumber);
+            ps.setInt(1, EmployeeCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                nv = new Employee(rs.getInt("EmployeeNumber"), rs.getString("Name"), rs.getDate("DateOfBirth"),
+                nv = new Employee(rs.getInt("EmployeeCode"), rs.getString("Name"), rs.getDate("DateOfBirth"),
                         rs.getString("Address"), rs.getString("NumberPhone"), rs.getString("CMTNumber"), rs.getString("PositionNumBer"),
                         rs.getString("Email"), rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
             }
@@ -151,14 +151,14 @@ public class EmployeeDAO{
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.nhanvien WHERE Name LIKE CONCAT('%', ?, '%');";
+        String SQL = "SELECT * FROM qlks.employee WHERE Name LIKE CONCAT('%', ?, '%');";
         try {
             ps = (PreparedStatement) conn.prepareStatement(SQL);
             ps.setString(1, keyWord);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                Employee nv = new Employee(rs.getInt("EmployeeNumber"), rs.getString("Name"),
+                Employee nv = new Employee(rs.getInt("EmployeeCode"), rs.getString("Name"),
                         rs.getDate("DateOfBirth"), rs.getString("Address"), rs.getString("NumberPhone"),
                         rs.getString("CMTNumber"), rs.getString("PositionNumBer"), rs.getString("Email"),
                         rs.getBoolean("Sex"), rs.getBoolean("Status"), rs.getInt("BranchCode"));
@@ -192,14 +192,14 @@ public class EmployeeDAO{
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.chucvu WHERE MaChucVu = ?;";
+        String SQL = "SELECT * FROM qlks.position WHERE PositionCode = ?;";
         try {
             ps = (PreparedStatement) conn.prepareStatement(SQL);
             ps.setString(1, positionCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                cv = new Position(rs.getString("MaChucVu"), rs.getString("MaChucVu"), rs.getInt("LuongCoBan"));
+                cv = new Position(rs.getString("PositionCode"), rs.getString("Position"), rs.getInt("BasicSalary"));
             }
         } catch (SQLException ex) {
             System.out.println("catch");
@@ -229,13 +229,13 @@ public class EmployeeDAO{
         Connection conn = (com.mysql.jdbc.Connection) DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.chucvu";
+        String SQL = "SELECT * FROM qlks.position";
         try {
             ps = (PreparedStatement) conn.prepareStatement(SQL);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                Position cv = new Position(rs.getString("MaChucVu"), rs.getString("ChucVu"), rs.getInt("LuongCoBan"));
+                Position cv = new Position(rs.getString("PositionCode"), rs.getString("Position"), rs.getInt("BasicSalary"));
                 list.add(cv);
             }
         } catch (SQLException ex) {
@@ -266,7 +266,7 @@ public class EmployeeDAO{
         PreparedStatement ps = null;
 
         try {
-            String sql = "DELETE FROM qlks.nhanvien WHERE EmployeeNumber = ?";
+            String sql = "DELETE FROM qlks.employee WHERE EmployeeCode = ?";
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setInt(1, employeeCode);
             ps.execute();
@@ -296,8 +296,8 @@ public class EmployeeDAO{
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String SQL = "UPDATE qlks.nhanvien SET DateOfBirth = ?, Address = ?, NumberPhone = ?, "
-                + "CMTNumber = ?, PositionNumBer = ?, Email = ?, Sex = ?, Status = ?, BranchCode = ? WHERE EmployeeNumber = ?";
+        String SQL = "UPDATE qlks.employee SET DateOfBirth = ?, Address = ?, NumberPhone = ?, "
+                + "CMTNumber = ?, PositionNumBer = ?, Email = ?, Sex = ?, Status = ?, BranchCode = ? WHERE EmployeeCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setString(1, fm.format(nv.getDateOfBirth()));

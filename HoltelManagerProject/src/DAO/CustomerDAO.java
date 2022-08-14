@@ -22,7 +22,7 @@ public class CustomerDAO{
     public static boolean addCustomer(Customer kh) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String sql = "INSERT INTO qlks.khachhang (HoVaTen, SoDienThoai, LoaiKhach, SoCMT, DiaChi, Email) VALUES (?,?,?,?,?,?);";
+        String sql = "INSERT INTO qlks.customer (FullName, PhoneNumber, CustomerType, CMTNumber, Address, Email) VALUES (?,?,?,?,?,?);";
         try {
             ps = (PreparedStatement) conn.prepareStatement(sql);
             ps.setString(1, kh.getFullName());
@@ -58,16 +58,16 @@ public class CustomerDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.khachhang WHERE SoDienThoai = ? ORDER BY MaKhachHang DESC LIMIT 1;";
+        String SQL = "SELECT * FROM qlks.customer WHERE PhoneNumber = ? ORDER BY CustomerCode DESC LIMIT 1;";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setString(1, phoneNumber);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                kh = new Customer(rs.getInt("MaKhachHang"), rs.getString("HoVaTen"), 
-                        rs.getString("SoDienThoai"), rs.getString("LoaiKhach"), rs.getString("SoCMT"),
-                        rs.getString("DiaChi"),rs.getString("Email") );
+                kh = new Customer(rs.getInt("CustomerCode"), rs.getString("FullName"), 
+                        rs.getString("PhoneNumber"), rs.getString("CustomerType"), rs.getString("CMTNumber"),
+                        rs.getString("Address"),rs.getString("Email") );
             }
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -94,16 +94,16 @@ public class CustomerDAO{
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String SQL = "SELECT * FROM qlks.khachhang INNER JOIN qlks.hoadon ON hoadon.MaKhachHang = khachhang.MaKhachHang WHERE hoadon.MaHoaDon = ?";
+        String SQL = "SELECT * FROM qlks.customer INNER JOIN qlks.bill ON bill.CustomerCode = customer.CustomerCode WHERE bill.BillCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
             ps.setInt(1, billCode);
             ps.execute();
             rs = ps.executeQuery();
             while (rs.next()) {
-                kh = new Customer(rs.getInt("MaKhachHang"), rs.getString("HoVaTen"), 
-                        rs.getString("SoDienThoai"), rs.getString("LoaiKhach"), rs.getString("SoCMT"),
-                        rs.getString("DiaChi"),rs.getString("Email") );
+                kh = new Customer(rs.getInt("CustomerCode"), rs.getString("FullName"), 
+                        rs.getString("PhoneNumber"), rs.getString("CustomerType"), rs.getString("CMTNumber"),
+                        rs.getString("Address"),rs.getString("Email") );
             }
         } catch (SQLException ex) {
             Logger.getLogger(CustomerDAO.class.getName()).log(Level.SEVERE, null, ex);
