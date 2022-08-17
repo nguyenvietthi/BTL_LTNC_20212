@@ -315,7 +315,7 @@ public class WarehouseDAO{
         return false;
     }
 
-     public static boolean delProductAmount(int branchCode, int productCode, int amount) {
+     public static boolean updateProductAmount(int branchCode, int productCode, int amount) {
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
         String sql = "UPDATE qlks.warehousedetail SET Amount = Amount - ? WHERE ProductCode =? AND BranchCode = ?";

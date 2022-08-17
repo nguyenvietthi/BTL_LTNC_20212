@@ -493,7 +493,7 @@ public class PayView extends javax.swing.JFrame {
                     >= Integer.parseInt(soLuongtxt.getText())) {
                 if (!BillDAO.checkProductAlreadyInBill(billCode, sanPham.get(0).getProductCode())) {
                     if (BillDAO.addProductToBill(sanPham.get(0), billCode, Integer.parseInt(soLuongtxt.getText()))) {
-                        WarehouseDAO.delProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
+                        WarehouseDAO.updateProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
                         amount = 0;
                         soLuongtxt.setText(Integer.toString(amount));
                         showListProduct();
@@ -501,7 +501,7 @@ public class PayView extends javax.swing.JFrame {
                     }
                 } else {
                     if (BillDAO.addProductAmount(sanPham.get(0), billCode, Integer.parseInt(soLuongtxt.getText()))) {
-                        WarehouseDAO.delProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
+                        WarehouseDAO.updateProductAmount(MaChiNhanh, sanPham.get(0).getProductCode(), Integer.parseInt(soLuongtxt.getText()));
                         amount = 0;
                         soLuongtxt.setText(Integer.toString(amount));
                         showListProduct();

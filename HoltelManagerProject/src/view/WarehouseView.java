@@ -28,7 +28,7 @@ public class WarehouseView extends javax.swing.JFrame {
     /**
      * Creates new form ImportWarehouseView
      */
-    DefaultComboBoxModel branchName;
+    private DefaultComboBoxModel branchName;
     private DefaultTableModel model;
     private List<Branch> listBranch;
     private Employee employee;

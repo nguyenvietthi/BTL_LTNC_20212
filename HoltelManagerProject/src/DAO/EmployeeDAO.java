@@ -296,20 +296,21 @@ public class EmployeeDAO{
         SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
         Connection conn = DBConnection.createConnection();
         PreparedStatement ps = null;
-        String SQL = "UPDATE qlks.employee SET DateOfBirth = ?, Address = ?, NumberPhone = ?, "
+        String SQL = "UPDATE qlks.employee SET Name = ?, DateOfBirth = ?, Address = ?, NumberPhone = ?, "
                 + "CMTNumber = ?, PositionNumBer = ?, Email = ?, Sex = ?, Status = ?, BranchCode = ? WHERE EmployeeCode = ?";
         try {
             ps = (PreparedStatement) conn.prepareCall(SQL);
-            ps.setString(1, fm.format(nv.getDateOfBirth()));
-            ps.setString(2, nv.getAddress());
-            ps.setString(3, nv.getPhoneNumber());
-            ps.setString(4, nv.getCMTNumber());
-            ps.setString(5, nv.getPositionCode());
-            ps.setString(6, nv.getEmail());
-            ps.setBoolean(7, nv.isSex());
-            ps.setBoolean(8, nv.isStatus());
-            ps.setInt(9, nv.getBranchCode());
-            ps.setInt(10, nv.getEmployeeCode());
+            ps.setString(1, nv.getFullName());
+            ps.setString(2, fm.format(nv.getDateOfBirth()));
+            ps.setString(3, nv.getAddress());
+            ps.setString(4, nv.getPhoneNumber());
+            ps.setString(5, nv.getCMTNumber());
+            ps.setString(6, nv.getPositionCode());
+            ps.setString(7, nv.getEmail());
+            ps.setBoolean(8, nv.isSex());
+            ps.setBoolean(9, nv.isStatus());
+            ps.setInt(10, nv.getBranchCode());
+            ps.setInt(11, nv.getEmployeeCode());
             ps.execute();
             return true;
         } catch (SQLException ex) {
